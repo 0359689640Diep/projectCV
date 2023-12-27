@@ -51,3 +51,39 @@ export const signUp = async (req, res) => {
         })
     }
 }
+
+export const signIn = async (req, res) =>{
+    try {
+        
+        const {error} = signInValidator.validate(req.body, {abortEarly: false});
+        if(error) {
+            const errors = error.details.map((err) => err.message);
+            return res.status(400).json({
+                message: errors
+            })
+        }
+        
+        const user = await Account.findOne({
+            email: req.body.email,
+            password: req.body.password
+        })
+        
+        if(user) {
+            user.password = undefined;
+            const accsessToken = Jwt.sign({_id: user._id}, token)
+            return res.status(200).json({
+                message: "Logged in successfully",
+                user,
+                accsessToken
+            })
+        }else{
+            return res.status(401).json({
+                message: "Login failed, please review your account"
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            message: "500 Server not found"
+        })
+    }
+}
