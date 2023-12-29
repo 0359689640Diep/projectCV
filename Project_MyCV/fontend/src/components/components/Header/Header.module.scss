@@ -5,7 +5,7 @@ header {
     height: 100px;
     position: fixed;
     background-color: rgba(10, 16, 30, 0.8);
-    z-index: 2;
+    z-index: 10;
     @include flexCenter(space-around, center);
 
     .logo {

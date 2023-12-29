@@ -4,7 +4,6 @@ import className from "classnames/bind";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-
 import styles from "./Home.module.scss";
 import { images } from "../../asset/img";
 
@@ -14,7 +13,7 @@ const cx = className.bind(styles);
 function Home() {
 
     useEffect(() => {
-        AOS.init(); // Khởi tạo thư viện AOS
+        AOS.init(); 
     }, []);
 
     const [isDesProjectVisible, setDesProjectVisible] = useState(false);
@@ -25,10 +24,10 @@ function Home() {
 
     const hideDesProject = () => {
         setDesProjectVisible(false);
-  };
+    };
 
     return ( 
-        <main className = {cx("homeMain")}>
+        <main className = {cx("homeMain")}>           
             <section className = {cx("home")} id="home">
                 <section className = {cx("contentHome")} data-aos="fade-up" data-aos-duration="1000">
                     <article className = {cx("itemContentHome")} data-aos="fade-up" data-aos-duration="1200">
@@ -359,7 +358,7 @@ function Home() {
         </main>
  
      );
-    //  AOS.init();
+
 }
 
 export default Home;
