@@ -23,13 +23,14 @@ function Login() {
             localStorage.setItem("accsessToken", response.data.accsessToken);
             window.location.replace("/admin");
         } catch (error) {
-            console.log(error.response.data.message);
+            // thông báo lỗi
+            alert(error.response.data.message);
         }
     };
 
 
     return ( 
-        <main>
+        <main className = {cx("loginMain")}>
             <section className={cx("container")}>
                 <article className = {cx("images")}>
                     <img src={images.Lovlyze} alt="lovlyze"/>
