@@ -1,5 +1,6 @@
-import Home from "../pages/Home";
-import Login from "../pages/Login";
+import Home from "../pages/user/Home";
+import Login from "../pages/user/Login";
+import admin from "../pages/admin/Home";
 
 const pulicRouter = [
     {
@@ -7,6 +8,9 @@ const pulicRouter = [
     },
     {
         path: "/login", component: Login
+    },
+    {
+        path: "/admin", component: admin
     }
 ]
 
