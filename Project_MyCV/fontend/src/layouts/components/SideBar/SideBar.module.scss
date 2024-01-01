@@ -1,0 +1,38 @@
+@import '../../../components/GlobalStyles/mixin.scss';
+
+.aside{
+    width: 20%;
+    height: 100%;
+    padding: 2% 2% 0%  2%;
+    background-color: var(--BackgrountColors1);
+
+
+    .logo{
+        @include widthHeight(100%, 15%);
+
+        img{
+            @include image;
+        }
+    }
+    .containerAside{
+        @include widthHeight(100%, 83%);
+        margin-top: 5%;
+        overflow-y: overlay;
+        background-color: var(--BackgrountColors1);
+    }
+    .containerAside::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .containerAside::-webkit-scrollbar-track {
+        background: var(--BackgrountColors1);
+    }
+
+    .containerAside::-webkit-scrollbar-thumb {
+        background: var(--BackgrountColors);
+    }
+    
+    .containerAside::-webkit-scrollbar-thumb:hover {
+        background: var(--BackgrountColors);
+    }
+}

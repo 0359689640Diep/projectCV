@@ -30,3 +30,7 @@
     opacity: 3;
     transition: 0.1s linear;
 }
+@mixin widthHeight($width, $height) {
+    width: $width;
+    height: $height;
+}

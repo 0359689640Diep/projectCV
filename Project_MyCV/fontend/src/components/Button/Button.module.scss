@@ -1,11 +1,10 @@
 @import "../GlobalStyles/mixin.scss";
 
-.href{
-    .button{
-        @include borderRadius;
-    }   
-    .button:hover{
-        @include buttonHover;
-    
-    }
+.button{
+    @include borderRadius;
+}   
+.button:hover{
+    @include buttonHover;
+
 }
+

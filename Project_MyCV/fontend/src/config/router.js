@@ -1,6 +1,7 @@
 const router = {
     Home: "/",
-    Login: "/login"
+    Login: "/login",
+    Admin: "/admin"
 }
 
 export default router;

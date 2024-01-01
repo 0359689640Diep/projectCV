@@ -2,12 +2,13 @@ import classNames from "classnames/bind";
 
 import styles from "./Home.module.scss";
 
-const cx  = classNames(styles);
+const cx  = classNames.bind(styles);
 function admin() {
     return ( 
-        <main className={cx("mainHomeAdmin")}>
-            <h1>admin</h1>
-        </main>
+        <section className={cx("item")}>
+
+            <h1  >admin</h1>
+        </section>
      );
 }
 

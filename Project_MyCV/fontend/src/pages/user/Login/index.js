@@ -23,7 +23,8 @@ function Login() {
                 email: email,
                 password: password
             });
-            localStorage.setItem("accsessToken", response.data.accsessToken);
+            console.log(response);
+            localStorage.setItem("accessToken", response.data.accessToken);
             window.location.replace("/admin");
         } catch (error) {
             setError(error.response.data.message); // Lưu thông báo lỗi vào state
@@ -56,7 +57,6 @@ function Login() {
                         />
                         <Button
                             name="Login"
-                            type="submit"
                             onClick={handleLogin}
                             width="30%"
                             height="15%"

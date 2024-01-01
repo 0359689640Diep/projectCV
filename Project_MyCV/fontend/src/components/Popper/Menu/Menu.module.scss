@@ -1,0 +1,68 @@
+@import "../../GlobalStyles/mixin.scss";
+.menu-item {
+    width: 100%;
+    height: auto;
+    padding: 0 3%;
+    margin-bottom: 5%;
+    font-size: 1.3rem;
+    border-radius: 10px;
+    color: var(--TextColor1);
+    // background-color: var(--BackgrountColors4);
+    border-bottom: 5px solid var(--BackgrountColors4);
+    
+    .titleMenu {
+        @include flexCenter(space-between, center);
+        width: 100%;
+        padding: 5% 0;
+
+        .contentTile {
+            font-size: 1.3rem;
+            color: var(--TextColor2);
+
+        }
+
+        .icontTitle {
+            font-size: 1rem;
+            color: var(--TextColor1);
+        }
+    }
+    .titleMenu:hover {
+        cursor: pointer;
+        transition: 1s linear;
+        .contentTile {
+            color: var(--TextColor1);
+            
+        }
+    }
+    .contentMenu{
+        width: 100%;
+        height: auto;
+        display: none;
+        padding: 1% 5% 0% 5% ;
+        
+        .itemContent{
+            @include flexCenter(space-between, center); 
+            padding: 5% 0;
+
+            .icontItem{
+                font-size: 1.2rem;
+                color: var(--TextColor2);
+            }
+            .contentItem{
+                width: 80%;
+
+                .value{
+                    font-size: 1.3rem;
+                    color: var(--TextColor2);
+                }
+            }
+        }
+        .itemContent:hover{
+            transition: 1s linear;
+            .icontItem,
+                .value {
+                    color: var(--TextColor1);
+                }
+        }
+    }
+}
