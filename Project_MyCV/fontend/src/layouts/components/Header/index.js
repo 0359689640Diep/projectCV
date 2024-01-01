@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import {Link} from "react-router-dom";
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import { useState } from 'react';
 
 import styles from "./Header.module.scss";
 import { images } from "../../../asset/img/index.js";
@@ -9,10 +9,17 @@ import routesConfig from "../../../config/router.js";
 const cx = classNames.bind(styles);
 
 function Header() {
+  const [to, setTo] = useState(null);
+  const handleCheckToken = () =>{
+    const token = localStorage.getItem("accessToken");
+    if(token){setTo(routesConfig.admin)}
+    else{setTo(routesConfig.login)}
+  }
+
   return (
     <header>
       <div className={cx("logo")}>
-      <Link to = {routesConfig.Home}> 
+      <Link to = {routesConfig.home}> 
         <img src={images.logo} alt="logo"/>
       </Link>
       </div>
@@ -31,7 +38,7 @@ function Header() {
           <ul>
             <li> <i className="bi bi-telephone-fill"></i> </li>
             <li>0359689640</li>
-            <li> <Link to={routesConfig.Login}><i className="bi bi-person-gear"></i></Link>  </li>
+            <li onClick={handleCheckToken}> <Link to={to}><i className="bi bi-person-gear"></i></Link>  </li>
           </ul>
         </div>
       </div>

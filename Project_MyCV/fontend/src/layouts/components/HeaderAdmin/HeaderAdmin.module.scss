@@ -1,0 +1,32 @@
+@import "../../../components/GlobalStyles/mixin.scss";
+
+.content{
+    width: 100%;
+    height: 100%;
+    @include flexCenter(right, center);
+    
+    .nav{
+        width: 70%;
+        height: 100%;
+        @include flexCenter(space-around, center);
+        
+        .itemNav{
+            width: 23%;
+            height: 100%;
+            @include flexCenter(space-around, center);
+
+            i, p{
+                font-size: 1.2rem;
+                color: var(--TextColor2);
+                transition: 0.5s linear;
+            }
+        }
+        .itemNav:hover{
+            i,p {
+                    font-size: 1.2rem;
+                    color: var(--TextColor1);
+                }
+            border-bottom: 2px solid var(--TextColor2);
+        }
+    }
+}   

@@ -12,7 +12,17 @@
         .mainAdmin{
             width: 80%;
             height:100% ;
-            border: 2px solid white;
+            
+            .headerAdmin{
+                width: 100%;
+                height: 10%;
+                padding: 1% 2%;
+            }
+            .main{
+                border: 2px solid rgb(14, 9, 155);
+                width: 100%;
+                height: 90%;
+            }
         }
     }
 }

@@ -23,8 +23,8 @@ function Login() {
                 email: email,
                 password: password
             });
-            console.log(response);
-            localStorage.setItem("accessToken", response.data.accessToken);
+            const token = response.data.accsessToken;
+            localStorage.setItem("accessToken", token);
             window.location.replace("/admin");
         } catch (error) {
             setError(error.response.data.message); // Lưu thông báo lỗi vào state

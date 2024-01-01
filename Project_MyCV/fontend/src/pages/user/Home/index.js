@@ -157,7 +157,7 @@ function Home() {
                                 <section className = {cx("itemContent")}>
                                     <article className = {cx("titleItemEducation")}>
                                         <svg  height="30">
-                                            <circle cx="30" cy="15" r="7" stroke="#101624" stroke-width="3" fill="#232935"></circle>
+                                            <circle cx="30" cy="15" r="7" stroke="#101624" strokeWidth="3" fill="#232935"></circle>
                                         </svg>
                                         <h2>Master of Computer Science</h2>
                                     </article>
@@ -185,7 +185,7 @@ function Home() {
                                 <section className = {cx("itemContent")}>
                                     <article className = {cx("titleItemExperience")}>
                                         <svg  height="30">
-                                            <circle cx="30" cy="15" r="7" stroke="#101624" stroke-width="3" fill="#232935"></circle>
+                                            <circle cx="30" cy="15" r="7" stroke="#101624" strokeWidth="3" fill="#232935"></circle>
                                         </svg>
                                         <h2>Master of Computer Science</h2>
                                     </article>

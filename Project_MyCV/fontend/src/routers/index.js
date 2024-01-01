@@ -9,11 +9,43 @@ const pulicRouter = [
     {
         path: "/login", component: Login
     },
-    {
-        path: "/admin", component: admin
-    }
+
 ]
 
-const privateRouters = [];
+const privateRouters = [
+    {
+        path: "/admin", component: admin
+    },
+    {
+        path: "/createAccount", component: admin
+    },
+    {
+        path: "/fixAccount", component: admin
+    },
+    {
+        path: "/createProject", component: admin
+    },
+    {
+        path: "/fixProject", component: admin
+    },
+    {
+        path: "/createResule", component: admin
+    },
+    {
+        path: "/fixResule", component: admin
+    },
+    {
+        path: "/createSkills", component: admin
+    },
+    {
+        path: "/fixSkills", component: admin
+    },
+    
+    {
+        path: "/myaccount", component: admin
+    },
+    
+
+];
 
 export {pulicRouter, privateRouters};
