@@ -3,11 +3,13 @@ import { Fragment } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
+
 import { pulicRouter, privateRouters } from "./routers";
 import { DefaultLayout, DefaultLayoutAdmin } from "./layouts";
 
 function App() {
   const token = localStorage.getItem("accessToken");
+
   return (
     <Router>
       <div className="App">

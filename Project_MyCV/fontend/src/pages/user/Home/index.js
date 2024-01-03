@@ -1,11 +1,12 @@
 import {  useState,useEffect } from "react";
-// import axios from "axios";
 import className from "classnames/bind";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 import styles from "./Home.module.scss";
 import { images } from "../../../asset/img";
+import { sendMessage } from "../../../Services/sendMessage";
+import Notification from "../../../components/Notification";
 
 const cx = className.bind(styles);
 
@@ -26,6 +27,32 @@ function Home() {
         setDesProjectVisible(false);
     };
 
+    const [message, setMessage] = useState(null);
+
+    // lay du lieu tu form
+    const [NameUserReceiver, setNameUserReceiver] = useState("");
+    const [EmailReceiver, setEmailReceiver] = useState("");
+    const [TitleMessage, setTitleMessage] = useState("");
+    const [Content, setContent] = useState("");
+
+
+    // call api
+    const fectAPI = async (e) => {
+       e.preventDefault();
+        const body = {
+            NameUserReceiver,
+            EmailReceiver,
+            TitleMessage,
+            Content
+        }
+       const response = await  sendMessage(body);
+        // Reset the input fields
+        setNameUserReceiver("");
+        setEmailReceiver("");
+        setTitleMessage("");
+        setContent("");
+        setMessage(response.message);
+    }
     return ( 
         <main className = {cx("homeMain")}>           
             <section className = {cx("home")} id="home">
@@ -312,17 +339,25 @@ function Home() {
                     </article>
                     <section className = {cx("contentContact")} data-aos="fade-up" data-aos-duration="13000">
                         <section className = {cx("formContact")}>
-                            <h2>Chỉ cần nói xin chào</h2>
+                            <h2>Just say Hello</h2>
                             <form action="" method="post">
-                                <input type="text" name="name" required placeholder="Tên của bạn"/>
-                                <input type="text" name="email" required placeholder="Email của bạn"/>
-                                <input type="text" name="title" required placeholder="Tiêu đề thư của bạn"/>
-                                <textarea name="content" id="" cols="30" rows="10" placeholder="Nội dung thư của bạn"></textarea>
-                                <button type="submit">Send Message</button>
+                                <input type="text" name="NameUserReceiver" required value={NameUserReceiver} placeholder="Your Name" onChange={(e) => setNameUserReceiver(e.target.value)}/>
+                                <input type="email" name="EmailReceiver" required value={EmailReceiver} placeholder="Your Email" onChange={(e) => setEmailReceiver(e.target.value)}/>
+                                <input type="text" name="TitleMessage" required value={TitleMessage} placeholder="Your Subject" onChange={(e) => setTitleMessage(e.target.value)}/>
+                                <textarea name="Content" id="" cols="30" rows="10" value={Content} placeholder="Your Message" onChange={(e) => setContent(e.target.value)}></textarea>
+                                <button type="submit" onClick={fectAPI}>Send Message</button>
+
+                            {message && (
+                                <Notification
+                                    content={message}
+                                    title="Message"
+                                />
+                            )}
+
                             </form>
                         </section>
                         <section className = {cx("ContactInfro")}>
-                            <h2>Thông tin liên hệ</h2>
+                            <h2>Contact Info</h2>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ligula nulla tincidunt id faucibus sed suscipit feugiat.</p>
                             <section className = {cx("contentContactInfro")}>
                                 <article className = {cx("icontContentContactInfro")}>
@@ -338,7 +373,7 @@ function Home() {
                                     <i className="bi bi-telephone"></i>
                                 </article>
                                 <article className = {cx("itemContentContactInfro")}>
-                                    <h2>Số điện thoại</h2>
+                                    <h2>Phone</h2>
                                     <p>0976142427</p>
                                 </article>
                             </section>
@@ -347,7 +382,7 @@ function Home() {
                                     <i className="bi bi-geo-alt"></i>
                                 </article>
                                 <article className = {cx("itemContentContactInfro")}>
-                                    <h2>Địa chỉ</h2>
+                                    <h2>Address</h2>
                                     <p>Tu Hoàn Phương Canh Hà Nội</p>
                                 </article>
                             </section>
