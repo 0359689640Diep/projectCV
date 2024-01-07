@@ -16,3 +16,12 @@ export const post = async(url, option = {}) => {
     return response.data;
 
 }
+
+export const update = async(url, id) => {
+    const response = await httpRequest.put(url, id);
+    return response.data
+}
+export const remote = async(url, id) => {
+    const response = await httpRequest.delete(url, id);
+    return response.data
+}

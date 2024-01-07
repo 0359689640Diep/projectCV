@@ -6,6 +6,6 @@ import routerMessage from "./message.js"
 const router = Router();
 
 router.use("/account", routerAccount);
-router.use("/send", routerMessage)
+router.use("/message", routerMessage)
 
 export default router;

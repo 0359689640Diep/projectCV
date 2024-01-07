@@ -5,7 +5,7 @@ import 'aos/dist/aos.css';
 
 import styles from "./Home.module.scss";
 import { images } from "../../../asset/img";
-import { sendMessage } from "../../../Services/sendMessage";
+import { sendMessage } from "../../../Services/message";
 import Notification from "../../../components/Notification";
 
 const cx = className.bind(styles);

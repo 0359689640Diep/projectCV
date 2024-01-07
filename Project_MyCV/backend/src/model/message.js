@@ -21,6 +21,9 @@ const messageSchema = new mongoose.Schema({
         type: String,
         require: true
     },
+    ReplyMessage: {
+        type: String
+    },
     Status: {
         type: Number,
         default: 0
