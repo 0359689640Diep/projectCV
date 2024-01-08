@@ -4,7 +4,7 @@ import styles from "./Input.module.scss";
 
 const cx = classNames.bind(styles);
 
-function Input({ name, type, required = false, title, id, value, onChange, onFocus = false }) {
+  function Input({ name, type, required = false, multiple = false, onKeyPress,title, id, value, onChange, onFocus = false }) {
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -29,6 +29,7 @@ function Input({ name, type, required = false, title, id, value, onChange, onFoc
       <input 
         type={type} 
         required={required} 
+        multiple = {multiple}
         title={title} 
         name={id} 
         id={id} 
@@ -36,6 +37,7 @@ function Input({ name, type, required = false, title, id, value, onChange, onFoc
         value={value}
         onChange={onChange}
         ref={inputRef}
+        onKeyPress = {onKeyPress}
       />
     </>
   );

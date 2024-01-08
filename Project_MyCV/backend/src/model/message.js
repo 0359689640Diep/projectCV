@@ -17,10 +17,12 @@ const messageSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    Content: {
-        type: String,
-        require: true
-    },
+    Content: [
+        {
+            type: String,
+            require: true
+        }
+    ],
     ReplyMessage: {
         type: String
     },

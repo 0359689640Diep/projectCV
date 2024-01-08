@@ -49,12 +49,6 @@ const userSchema = new mongoose.Schema({
             required: true
         }
     ],
-    SocialNetwork: [
-        {
-            type: String,
-            required: true
-        }
-    ],
     Maxim: {
         type: String,
         required: true
@@ -67,15 +61,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    IconLogo: {
+        type: String,
+        required: true
+    },
     Logo: {
-        IconLogo: {
-            type: String,
-            required: true
-        },
-        Logo: {
-            type: String,
-            required: true
-        }
+        type: String,
+        required: true
     },
     Status: {
         type: Number,

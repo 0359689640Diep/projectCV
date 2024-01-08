@@ -1,6 +1,7 @@
 import Home from "../pages/user/Home";
 import Login from "../pages/user/Login";
 import admin from "../pages/admin/Home";
+import CreateAccount from "../pages/admin/CreateAccount";
 
 const pulicRouter = [
     {
@@ -17,7 +18,7 @@ const privateRouters = [
         path: "/admin", component: admin
     },
     {
-        path: "/createAccount", component: admin
+        path: "/createAccount", component: CreateAccount
     },
     {
         path: "/fixAccount", component: admin

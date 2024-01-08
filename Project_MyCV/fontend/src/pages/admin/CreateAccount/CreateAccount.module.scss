@@ -1,0 +1,49 @@
+@import "../../../components/GlobalStyles/mixin.scss";
+
+.Container {
+    width: 100%;
+    height: 100%;
+    @include flexCenter(space-around, center);
+    
+    .itemLeft{
+        width: 43%;
+        height: 100%;
+        overflow-x: auto;
+        @include customScrollbar(var(--BackgroundColors1), var(--BackgroundColors));
+    }
+    .itemRight{
+        width: 43%;
+        height: 100%;
+        overflow-x: auto;
+        @include customScrollbar(var(--BackgroundColors1), var(--BackgroundColors));
+
+    }
+}
+.containerProduct {
+    width: 100%;
+    height: auto;
+
+    .listProduct {
+        width: 100%;
+        padding: 2% 5%;
+        color: var(--TextColor2);
+        // display: none;
+    }
+}
+.itemProduct {
+
+    @include flexCenter(space-between, center);
+
+    p {
+        font-size: 1.2rem;
+    }
+
+    .close {
+        font-size: 1.5rem;
+    }
+
+    .close:hover {
+        color: var(--TextColor1);
+        cursor: pointer;
+    }
+}

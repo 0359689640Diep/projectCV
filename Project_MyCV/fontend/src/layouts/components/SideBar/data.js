@@ -14,24 +14,24 @@ export const dataProject = [
     {
         to: "/createProject",
         value: "Create Project",
-        icont: "bi bi-cloud-arrow-up"
+        icont: "bi bi-clipboard-plus"
     },
     {
         to: "/fixProject",
         value: "Edit Project",
-        icont: "bi bi-cloud-plus"
+        icont: "bi bi-clipboard-pulse"
     }
 ]
 export const dataResule = [
     {
         to: "/createResule",
         value: "Create Resule",
-        icont: "bi bi-cloud-arrow-up"
+        icont: "bi bi-journal-plus"
     },
     {
         to: "/fixResule",
         value: "Edit Resule",
-        icont: "bi bi-cloud-plus"
+        icont: "bi bi-journal-text"
     }
 ]
 export const dataSkills = [

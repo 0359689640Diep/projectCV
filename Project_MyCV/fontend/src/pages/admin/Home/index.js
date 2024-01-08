@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 import { useState, useEffect } from "react";
 
 import styles from "./Home.module.scss";
-import Message from "./Message";
+    import Message from "./Message";
 import { getMessage } from "../../../Services/message";
 
 const cx = classNames.bind(styles);
