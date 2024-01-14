@@ -3,24 +3,35 @@ import bcrypjs from "bcryptjs";
 import dotenv from "dotenv";
 
 import Account from "../model/account.js";
-import { signInValidator, signUpValidator } from "../validation/account.js";
+import { signInValidator, CreateAccountValidator, validateImage } from "../validation/account.js";
 
 dotenv.config();
 
 const {token} = process.env;
-export const signUp = async (req, res) => {
+
+export const CreateAccount = async (req, res) => {
     try {
+        const Images = req.files.find(file => file.fieldname == "Images").path;
+        const CV = req.files.find(file => file.fieldname == "CV").path;
+        const IconLogo = req.files.find(file => file.fieldname == "IconLogo").path;
+        const Logo = req.files.find(file => file.fieldname == "Logo").path;
+        if (!Images || !CV || !IconLogo || !Logo) {
+            return res.status(400).json({
+                message: "One or more required files are missing."
+            });
+        }
         // hứng lỗi khi validate
-        const {error} = signUpValidator.validate(req.body, {abortEarly: false})
+        const {error} = CreateAccountValidator.validate(req.body,{abortEarly: false});
+        const validateCV = validateImage(req.files[0]);
         if(error) {
             const errors = error.details.map((err) =>err.message);
             return res.status(400).json({
                 message: errors
             })
         }
-
+        console.log(error);
         const userExist = await Account.findOne({
-            email: req.body.email
+            Email: req.body.Email
         });
         // kiem tra email co ton tai hay khong
         if(userExist) {
@@ -30,16 +41,23 @@ export const signUp = async (req, res) => {
         }
 
         // mã hóa password
-        const hashePassword = await req.body.password;
+        const hashePassword = await req.body.Password;
+
         // const hashePassword = await bcrypjs.hash(req.body.password, 10);
         // lưu tài khoản vào db
-        const account = await Account.create({
+
+        const retult = await Account.create({
             ...req.body,
-            password: hashePassword
-        })
+            Image: Images,
+            CV: CV,
+            IconLogo: IconLogo,
+            Logo: Logo,
+            Password: hashePassword
+        });
+        console.log(retult);
         // thông báo cho người dùng
         // xoa mật khẩu khi gửi tới người dùng
-        account.password = undefined;
+        retult.Password = undefined;
         return res.status(200).json({
             message: "Sign up success"
         })

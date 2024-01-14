@@ -83,7 +83,6 @@ function Message({item}) {
                     <p>{item.Content}</p>
                 </article>
                 <article className={cx("itemReplyMessage")}>
-                    <h3>I'm: </h3>
                     <p>{item.ReplyMessage}</p>   
                 </article>
                 <article  className={cx("itemButtonReplyMessage")}>

@@ -12,9 +12,7 @@ export const get = async(url, option = {}) => {
 
 export const post = async(url, option = {}) => {
     const response = await httpRequest.post(url, option);
-
     return response.data;
-
 }
 
 export const update = async(url, id) => {

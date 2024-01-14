@@ -5,26 +5,30 @@ import styles from "./CreateAccount.module.scss";
 import Input from "../../../components/Input";
 import Button from  "../../../components/Button";
 import Product from "./MoreProduct";
+import { postAccount } from "../../../Services/account";
+import Notification from "../../../components/Notification";
 
 const cx =classNames.bind(styles);
 
 function Account() {
 
-    const [name, setName] = useState(null);
-    const [email, setEmail] = useState(null);
-    const [birthday, setBirthday] = useState(null);
-    const [from, setFrom] = useState(null);
-    const [password, setPassword] = useState(null);
-    const [majors, setMajors] = useState(null);
-    const [maxim, setMaxim] = useState(null);
-    const [describe, setDescribe] = useState(null);
-    const [CV, setCV] = useState(null);
-    const [images, setImages] = useState(null);
-    const [logo, setLogo] = useState(null);
-    const [iconLogo, setIconLogo] = useState(null);
-    const [job, setJob] = useState(null);
-    const [phone, setPhone] = useState(null);
-    const [language, setLanguage] = useState(null);
+    const [Name, setName] = useState("");
+    const [Email, setEmail] = useState("");
+    const [Birthday, setBirthday] = useState("");
+    const [From, setFrom] = useState("");
+    const [Password, setPassword] = useState("");
+    const [Majors, setMajors] = useState("");
+    const [Maxim, setMaxim] = useState("");
+    const [Describe, setDescribe] = useState("");
+    const [CV, setCV] = useState("");
+    const [Image, setImages] = useState("");
+    const [Logo, setLogo] = useState("");
+    const [IconLogo, setIconLogo] = useState("");
+    const [Job, setJob] = useState("");
+    const [Phone, setPhone] = useState("");
+    const [Language, setLanguage] = useState("");
+    // thông báo lỗi
+    const [error, setError] = useState("");
 
     const handleJob = (data) => {
         setJob(data);
@@ -35,7 +39,35 @@ function Account() {
     const handleLanguage = (data) => {
         setLanguage(data);
     };
-    // console.log(job)
+    
+    const handleUpAccount = async () => {
+        const formData = new FormData();
+        formData.append("Name", Name);
+        formData.append("Email", Email);
+        formData.append("Images", Image);
+        formData.append("Birthday", Birthday);
+        formData.append("Phone", Phone);
+        formData.append("From", From);
+        formData.append("Language", Language);
+        formData.append("Password", Password);
+        formData.append("Majors", Majors);
+        formData.append("Maxim", Maxim);
+        formData.append("Describe", Describe);
+        formData.append("CV", CV);
+        formData.append("Logo", Logo);
+        formData.append("IconLogo", IconLogo);
+        formData.append("Job", Job);
+
+        try {
+            const retult = await postAccount(formData);
+            setError(retult.response.data.message);
+        } catch (error) {
+            setError(error.response.data.message);
+        }
+
+
+    }
+
     return ( 
         <section className={cx("Container")}>
             <article className={cx("itemLeft")}>
@@ -106,16 +138,16 @@ function Account() {
 
             </article>
             <article className={cx("itemRight")}>
-                <Product name = "Job" onDataUpdate={handleJob}/>
-                <Product name = "Language" onDataUpdate={handleLanguage}/>
-                <Product name = "Phone" onDataUpdate={handlePhone}/>
+                <Product name = "Job" type="text" onDataUpdate={handleJob}/>
+                <Product name = "Language" type="text" onDataUpdate={handleLanguage}/>
+                <Product name = "Phone" type="number" onDataUpdate={handlePhone}/>
                 <Input 
                     name="CV"
                     type="file"
                     required
                     title="Can not be empty"
                     id="CV"
-                    onChange={(e) => setCV(e.target.files)}
+                    onChange={(e) => setCV(e.target.files[0])}
                 />
                 <Input 
                     name="Images"
@@ -124,7 +156,7 @@ function Account() {
                     title="Can not be empty"
                     id="Images"
                     multiple
-                    onChange={(e) => setImages(e.target.files)}
+                    onChange={(e) => setImages(e.target.files[0])}
                 />
                <Input 
                     name="Logo"
@@ -132,7 +164,7 @@ function Account() {
                     required
                     title="Can not be empty"
                     id="Logo"
-                    onChange={(e) => setLogo(e.target.files)}
+                    onChange={(e) => setLogo(e.target.files[0])}
                 />      
                <Input 
                     name="IconLogo"
@@ -140,14 +172,21 @@ function Account() {
                     required
                     title="Can not be empty"
                     id="IconLogo"
-                    onChange={(e) => setIconLogo(e.target.files)}
+                    onChange={(e) => setIconLogo(e.target.files[0])}
                 />   
                 <Button
                     name="Create Account"
                     width = "30%"
                     height = "7%"
+                    onClick={handleUpAccount}
                 />                       
             </article>
+            {error && (
+                <Notification
+                    content={error}
+                    title="Message"
+                />
+            )}
         </section>
      );
 }

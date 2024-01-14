@@ -6,7 +6,7 @@ import Input from "../../../components/Input";
 
 const cx = classNames.bind(styles);
 
-function MoreProduct({ name, onDataUpdate }) {
+function MoreProduct({ name, type,onDataUpdate }) {
   const [data, setData] = useState([]);
   const [inputValue, setInputValue] = useState('');
 
@@ -31,8 +31,7 @@ function MoreProduct({ name, onDataUpdate }) {
     <article className={cx("containerProduct")}>
       <Input
         name={name}
-        type="text"
-        required
+        type={type}
         title="Can not be empty"
         id={name}
         value={inputValue}
