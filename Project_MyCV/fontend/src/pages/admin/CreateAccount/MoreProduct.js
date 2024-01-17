@@ -6,9 +6,17 @@ import Input from "../../../components/Input";
 
 const cx = classNames.bind(styles);
 
-function MoreProduct({ name, type,onDataUpdate }) {
+function MoreProduct({ name, type, onDataUpdate, value }) {
   const [data, setData] = useState([]);
   const [inputValue, setInputValue] = useState('');
+
+  useEffect(() => {
+    // Update data when the value prop changes
+    if (value === "") {
+      setData([]);
+      setInputValue("");
+    }
+  }, [value]);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -35,6 +43,7 @@ function MoreProduct({ name, type,onDataUpdate }) {
         title="Can not be empty"
         id={name}
         value={inputValue}
+        min={0}
         onChange={handleInputChange}
         onKeyPress={handleInputKeyDown}
       />

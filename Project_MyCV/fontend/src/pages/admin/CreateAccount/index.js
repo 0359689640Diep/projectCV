@@ -1,11 +1,11 @@
 import classNames from "classnames/bind";
-import { useState } from "react";
+import { useState} from "react";
 
 import styles from "./CreateAccount.module.scss";
 import Input from "../../../components/Input";
 import Button from  "../../../components/Button";
 import Product from "./MoreProduct";
-import { postAccount } from "../../../Services/account";
+import { postAccount, uploadImage } from "../../../Services/account";
 import Notification from "../../../components/Notification";
 
 const cx =classNames.bind(styles);
@@ -27,8 +27,13 @@ function Account() {
     const [Job, setJob] = useState("");
     const [Phone, setPhone] = useState("");
     const [Language, setLanguage] = useState("");
+
+
     // thông báo lỗi
     const [error, setError] = useState("");
+    const [alert, setAlert] = useState("");
+
+    const [notificationKey, setNotificationKey] = useState(0);
 
     const handleJob = (data) => {
         setJob(data);
@@ -41,28 +46,56 @@ function Account() {
     };
     
     const handleUpAccount = async () => {
-        const formData = new FormData();
-        formData.append("Name", Name);
-        formData.append("Email", Email);
-        formData.append("Images", Image);
-        formData.append("Birthday", Birthday);
-        formData.append("Phone", Phone);
-        formData.append("From", From);
-        formData.append("Language", Language);
-        formData.append("Password", Password);
-        formData.append("Majors", Majors);
-        formData.append("Maxim", Maxim);
-        formData.append("Describe", Describe);
-        formData.append("CV", CV);
-        formData.append("Logo", Logo);
-        formData.append("IconLogo", IconLogo);
-        formData.append("Job", Job);
-
+        
         try {
-            const retult = await postAccount(formData);
-            setError(retult.response.data.message);
+            const body = {
+                "Name": Name,
+                "Email": Email,
+                "Birthday": Birthday,
+                "Phone": Phone,
+                "From": From,
+                "Language": Language,
+                "Password": Password,
+                "Majors": Majors,
+                "Maxim": Maxim,
+                "Describe": Describe,
+                "Job": Job,
+            }
+            const formImage = new FormData();
+            formImage.append("Images", Image);
+            formImage.append("CV", CV);
+            formImage.append("Logo", Logo);
+            formImage.append("IconLogo", IconLogo);
+
+            const retultForm = await postAccount(body);
+            if(retultForm.message === "Sign up success") await uploadImage(formImage);            
+
+            if(retultForm.response !== undefined){
+                setError(retultForm.response.data.message);
+                setAlert("");
+            }else{
+                setAlert(retultForm.message);
+                setError("");
+                
+                setName("");
+                setEmail("");
+                setBirthday("");
+                setFrom("");
+                setPassword("");
+                setMajors("");
+                setMaxim("");
+                setDescribe("");
+                setCV("");
+                setImages("");
+                setLogo("");
+                setIconLogo("");
+                setJob("");
+                setPhone("");
+                setLanguage("");
+            }
+            setNotificationKey(prevKey => prevKey + 1);
         } catch (error) {
-            setError(error.response.data.message);
+            console.log(error);
         }
 
 
@@ -77,6 +110,8 @@ function Account() {
                     required
                     title="Can not be empty"
                     id="Name"
+                    onFocus
+                    value = {Name}
                     onChange={(e) => setName(e.target.value)}
                 />
                 <Input 
@@ -85,6 +120,7 @@ function Account() {
                     required
                     title="Can not be empty"
                     id="Email"
+                    value = {Email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <Input 
@@ -93,6 +129,7 @@ function Account() {
                     required
                     title="Can not be empty"
                     id="Birthday"
+                    value = {Birthday}
                     onChange={(e) => setBirthday(e.target.value)}
                 />
                 <Input 
@@ -101,6 +138,7 @@ function Account() {
                     required
                     title="Can not be empty"
                     id="From"
+                    value = {From}
                     onChange={(e) => setFrom(e.target.value)}
                 />
                 <Input 
@@ -109,6 +147,7 @@ function Account() {
                     required
                     title="Can not be empty"
                     id="Password"
+                    value = {Password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <Input 
@@ -117,6 +156,7 @@ function Account() {
                     required
                     title="Can not be empty"
                     id="Majors"
+                    value = {Majors}
                     onChange={(e) => setMajors(e.target.value)}
                 />
                 <Input 
@@ -125,6 +165,7 @@ function Account() {
                     required
                     title="Can not be empty"
                     id="Maxim"
+                    value = {Maxim}
                     onChange={(e) => setMaxim(e.target.value)}
                 />
                 <Input 
@@ -133,14 +174,15 @@ function Account() {
                     required
                     title="Can not be empty"
                     id="Describe"
+                    value = {Describe}
                     onChange={(e) => setDescribe(e.target.value)}
                 />
 
             </article>
             <article className={cx("itemRight")}>
-                <Product name = "Job" type="text" onDataUpdate={handleJob}/>
-                <Product name = "Language" type="text" onDataUpdate={handleLanguage}/>
-                <Product name = "Phone" type="number" onDataUpdate={handlePhone}/>
+                <Product value = {Job} name = "Job" type="text" onDataUpdate={handleJob}/>
+                <Product value = {Language} name = "Language" type="text" onDataUpdate={handleLanguage}/>
+                <Product value = {Phone} name = "Phone" type="number" onDataUpdate={handlePhone}/>
                 <Input 
                     name="CV"
                     type="file"
@@ -183,7 +225,15 @@ function Account() {
             </article>
             {error && (
                 <Notification
+                    key={notificationKey}
                     content={error}
+                    title="Warning"
+                    type="warning"
+                />
+            )}
+            {alert && (
+                <Notification
+                    content={alert}
                     title="Message"
                 />
             )}

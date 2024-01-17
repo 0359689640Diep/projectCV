@@ -12,7 +12,6 @@ const userSchema = new mongoose.Schema({
     Image: [
         {
             type: String,
-            required: true
         }
     ],
     Birthday: {
@@ -58,16 +57,13 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     CV: {
-        type: String,
-        required: true
+        type: String
     },
     IconLogo: {
-        type: String,
-        required: true
+        type: String
     },
     Logo: {
-        type: String,
-        required: true
+        type: String
     },
     Status: {
         type: Number,

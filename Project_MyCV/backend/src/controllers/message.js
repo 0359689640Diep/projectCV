@@ -12,7 +12,7 @@ export const sendMessage = async (req, res) => {
         }
 
         await message.create({...req.body});
-        // sendEmailMailer(email)
+
         return res.status(200).json({
             message: "Thank you for sending me message. I will reply you as soon as possible"
         })

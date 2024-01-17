@@ -2,7 +2,7 @@
 
 .container{
     width: 430px;
-    max-height: 200px;
+    height: auto;
     z-index: 11;
     top: 0px;
     left: 40%;
@@ -11,6 +11,7 @@
     padding: 1% 2%;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
+    transition: visibility 0s 0.3s, opacity 0.3s linear;
 
     .header{
         width: 100%;

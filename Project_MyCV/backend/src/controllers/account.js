@@ -3,33 +3,24 @@ import bcrypjs from "bcryptjs";
 import dotenv from "dotenv";
 
 import Account from "../model/account.js";
-import { signInValidator, CreateAccountValidator, validateImage } from "../validation/account.js";
+import { signInValidator, CreateAccountValidator} from "../validation/account.js";
 
 dotenv.config();
 
 const {token} = process.env;
+let id = "";
 
 export const CreateAccount = async (req, res) => {
     try {
-        const Images = req.files.find(file => file.fieldname == "Images").path;
-        const CV = req.files.find(file => file.fieldname == "CV").path;
-        const IconLogo = req.files.find(file => file.fieldname == "IconLogo").path;
-        const Logo = req.files.find(file => file.fieldname == "Logo").path;
-        if (!Images || !CV || !IconLogo || !Logo) {
-            return res.status(400).json({
-                message: "One or more required files are missing."
-            });
-        }
+
         // hứng lỗi khi validate
         const {error} = CreateAccountValidator.validate(req.body,{abortEarly: false});
-        const validateCV = validateImage(req.files[0]);
         if(error) {
             const errors = error.details.map((err) =>err.message);
             return res.status(400).json({
-                message: errors
+                message: errors[0]
             })
         }
-        console.log(error);
         const userExist = await Account.findOne({
             Email: req.body.Email
         });
@@ -39,7 +30,7 @@ export const CreateAccount = async (req, res) => {
                 message: "this email has been registered. Would you like to log in ? "
             })
         }
-
+        
         // mã hóa password
         const hashePassword = await req.body.Password;
 
@@ -48,26 +39,62 @@ export const CreateAccount = async (req, res) => {
 
         const retult = await Account.create({
             ...req.body,
-            Image: Images,
-            CV: CV,
-            IconLogo: IconLogo,
-            Logo: Logo,
             Password: hashePassword
         });
-        console.log(retult);
         // thông báo cho người dùng
         // xoa mật khẩu khi gửi tới người dùng
         retult.Password = undefined;
+        id = retult._id;
         return res.status(200).json({
             message: "Sign up success"
         })
 
     }catch (error) {
         return res.status(500).json({
-            message: error.message,
-            name: error.name
+            message: error
         })
     }
+}
+
+export const uploadImage = async (req, res) => {
+
+try {
+    const Images = req.files.find(file => file.fieldname == "Images").path;
+    const CV = req.files.find(file => file.fieldname == "CV").path;
+    const IconLogo = req.files.find(file => file.fieldname == "IconLogo").path;
+    const Logo = req.files.find(file => file.fieldname == "Logo").path;
+    if (!Images || !CV || !IconLogo || !Logo) {
+        return res.status(400).json({
+            message: "One or more required files are missing."
+        });
+    }
+    const result = await Account.findByIdAndUpdate(
+    id,
+    {
+        Image: Images,
+        CV: CV,
+        IconLogo: IconLogo,
+        Logo: Logo
+    },
+    { new: true }
+    );
+  
+    if(result) {
+        return res.status(200).json({
+            message: "push image success"
+        })
+    }else{
+        return res.status(400).json({
+            message: "push image failed"
+        })
+
+    }
+} catch (error) {
+    return res.status(500).json({
+        message: error.message,
+        name: error.name
+    })
+}
 }
 
 export const signIn = async (req, res) =>{

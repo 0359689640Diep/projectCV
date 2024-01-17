@@ -18,7 +18,7 @@ function Notification({ content, title, type, handleClose }) {
     }
   }, [type]);
 
-  const [visible, setVisible] = useState(true);
+const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     setVisible(true); // Thiết lập hiển thị khi nhận props mới
@@ -48,3 +48,4 @@ function Notification({ content, title, type, handleClose }) {
 }
 
 export default Notification;
+// transition: "visibility 0s 0.3s, opacity 0.3s linear
