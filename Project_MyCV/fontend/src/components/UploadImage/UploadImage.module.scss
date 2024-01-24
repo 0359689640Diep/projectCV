@@ -1,0 +1,40 @@
+@import "../GlobalStyles/mixin.scss";
+
+.wrapper{
+    @include widthHeight(100%, auto);
+    @include flexCenter(space-around, center);
+    border-bottom: 2px solid var(--TextColor1);
+    flex-wrap: wrap;
+    margin: 5% 0;
+} 
+.content{
+    @include widthHeight(150px, 150px);
+    margin:2% 0 ;
+    border-bottom: 2px solid var(--TextColor1);
+
+    img{
+        @include widthHeight(100%, 80%);
+        object-fit: cover;
+        object-position: center
+    }
+    .item{
+        @include widthHeight(100%, 15%);
+        @include flexCenter(center, center);
+        button{
+            max-width: 90%;
+            height: 100%;
+            border-radius: 5px;
+            border: none;
+            font-size: 0.7rem;
+            padding: 0 5%;
+
+            input{
+                display: none;
+            }
+        }
+
+        button:hover{
+            @include buttonHover;
+        }
+    }
+}

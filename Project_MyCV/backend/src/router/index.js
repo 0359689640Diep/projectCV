@@ -9,5 +9,6 @@ const router = Router();
 router.use("/account", routerAccount);
 router.use("/message", routerMessage);
 router.use("/image", routerImages);
+router.use("/cancelAPI", routerImages);
 
 export default router;

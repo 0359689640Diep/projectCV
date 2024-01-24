@@ -15,6 +15,8 @@ function MoreProduct({ name, type, onDataUpdate, value }) {
     if (value === "") {
       setData([]);
       setInputValue("");
+    }else{
+      setData(value);
     }
   }, [value]);
 

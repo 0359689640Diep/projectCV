@@ -2,7 +2,7 @@ import className from "classnames/bind";
 
 import styles from "./SideBar.module.scss";
 import { images } from "../../../asset/img";
-import MenuItem from "../../../components/Popper/Menu";
+import MenuItem from "../../../components/Menu";
 import { dataAccount, dataProject, dataResule, dataSkills } from "./data";
 
 const cx = className.bind(styles);

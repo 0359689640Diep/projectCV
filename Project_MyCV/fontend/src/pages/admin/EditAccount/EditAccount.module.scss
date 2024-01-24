@@ -1,0 +1,21 @@
+@import "../../../components/GlobalStyles/mixin.scss";
+.wrapper {
+    @include widthHeight(100%, 100%);
+    @include flexCenter(space-around, center);
+    overflow-x: auto;
+    
+        .itemLeft {
+            width: 43%;
+            height: 100%;
+            overflow-x: auto;
+            @include customScrollbar(var(--BackgroundColors1), var(--BackgroundColors));
+        }
+    
+        .itemRight {
+            width: 43%;
+            height: 100%;
+            overflow-x: auto;
+            @include customScrollbar(var(--BackgroundColors1), var(--BackgroundColors));
+    
+        }
+}

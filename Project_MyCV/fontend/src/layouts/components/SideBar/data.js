@@ -5,7 +5,7 @@ export const dataAccount = [
         icont: "bi bi-person-add"
     },
     {
-        to: "/fixAccount",
+        to: "/editAccount",
         value: "Edit Account",
         icont: "bi bi-person-up"
     }

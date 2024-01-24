@@ -32,9 +32,7 @@ export const CreateAccount = async (req, res) => {
         }
         
         // mã hóa password
-        const hashePassword = await req.body.Password;
-
-        // const hashePassword = await bcrypjs.hash(req.body.password, 10);
+        const hashePassword = await bcrypjs.hash(req.body.Password, 10);
         // lưu tài khoản vào db
 
         const retult = await Account.create({
@@ -50,51 +48,48 @@ export const CreateAccount = async (req, res) => {
         })
 
     }catch (error) {
+        console.log(error);
         return res.status(500).json({
-            message: error
+            message: "The system is maintenance"
         })
     }
 }
 
 export const uploadImage = async (req, res) => {
 
-try {
-    const Images = req.files.find(file => file.fieldname == "Images").path;
-    const CV = req.files.find(file => file.fieldname == "CV").path;
-    const IconLogo = req.files.find(file => file.fieldname == "IconLogo").path;
-    const Logo = req.files.find(file => file.fieldname == "Logo").path;
-    if (!Images || !CV || !IconLogo || !Logo) {
-        return res.status(400).json({
-            message: "One or more required files are missing."
-        });
-    }
-    const result = await Account.findByIdAndUpdate(
-    id,
-    {
-        Image: Images,
-        CV: CV,
-        IconLogo: IconLogo,
-        Logo: Logo
-    },
-    { new: true }
-    );
-  
-    if(result) {
-        return res.status(200).json({
-            message: "push image success"
-        })
-    }else{
-        return res.status(400).json({
-            message: "push image failed"
-        })
+    try {
+        const Images = req.files.find(file => file.fieldname == "Images").path;
+        const CV = req.files.find(file => file.fieldname == "CV").path;
+        const IconLogo = req.files.find(file => file.fieldname == "IconLogo").path;
+        const Logo = req.files.find(file => file.fieldname == "Logo").path;
 
+        const result = await Account.findByIdAndUpdate(
+        id,
+        {
+            Image: Images,
+            CV: CV,
+            IconLogo: IconLogo,
+            Logo: Logo
+        },
+        { new: true }
+        );
+    
+        if(result) {
+            return res.status(200).json({
+                message: true
+            })
+        }else{
+            return res.status(400).json({
+                message: "The system is maintenance"                 
+            })
+
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "The system is maintenance"
+        })
     }
-} catch (error) {
-    return res.status(500).json({
-        message: error.message,
-        name: error.name
-    })
-}
 }
 
 export const signIn = async (req, res) =>{
@@ -112,8 +107,10 @@ export const signIn = async (req, res) =>{
             email: req.body.email,
             password: req.body.password
         })
+        const isMatch = await bcrypjs.compare(req.body.password, user.password);
         
-        if(user) {
+        if(user && !isMatch) {
+
             user.password = undefined;
             const accsessToken = Jwt.sign({_id: user._id}, token)
             return res.status(200).json({
@@ -129,6 +126,25 @@ export const signIn = async (req, res) =>{
     } catch (error) {
         return res.status(500).json({
             message: "500 Server not found"
+        })
+    }
+}
+
+export const cancelAPICreateAccount = async (req, res) => {
+    try {
+        const result = await Account.findByIdAndDelete(id);
+        if(result) {
+            return res.status(200).json({
+                message: "cancel api create account successfully"
+            })
+        }else{
+            return res.status(400).json({
+                message: "cancel api create account failed"
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
         })
     }
 }

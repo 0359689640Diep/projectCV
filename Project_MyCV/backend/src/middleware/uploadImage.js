@@ -19,7 +19,8 @@ const upload = multer({
             cb(null, true);
         } else {
             cb(null, false);
-            return cb(new Error("Only .png, .jpg .pdf and .jpeg format allowed!"));
+            // Trả về một phản hồi JSON với thông báo lỗi và trạng thái 415 (Unsupported Media Type)
+            return cb(new Error("Hệ thống chỉ cho phép tải lên các file định dạng .png, .jpg, .pdf và .jpeg"));
         }
     },
     //limits: { fileSize: 1 * 1024 * 1024 }, // Giới hạn kích thước tệp, ví dụ 1MB

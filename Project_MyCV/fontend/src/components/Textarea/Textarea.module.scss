@@ -1,0 +1,34 @@
+.Textarea{
+    width: 100%;
+    height: 25px;
+    margin: 15px 0;
+    outline: none;
+    font-size: 1rem;
+    background-color: var(--BackgrountColors1);
+    color: var(--TextColor2);
+    border: none;
+    border-bottom: 2px solid var(--TextColor2);
+
+}
+.Textarea:-webkit-autofill,
+.Textarea:-webkit-autofill:hover, 
+.Textarea:-webkit-autofill:focus, 
+.Textarea:-webkit-autofill:active{
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: var(--TextColor2);
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px var(--BackgrountColors1);
+}
+.Textarea[type="number"]::-webkit-inner-spin-button,
+.Textarea[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+.Textarea[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+.label{
+    width: 100%;
+    height: 15px;
+    font-size: 1.5rem;
+    color: var(--TextColor1);
+}

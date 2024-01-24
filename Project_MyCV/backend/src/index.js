@@ -3,10 +3,9 @@ import dotenv from "dotenv";
 import cors from "cors"
 import {connect} from "mongoose";
 import bodyParser from "body-parser";
-import multer from "multer";
-import path from "path";
 
 import router from "./router/index.js";
+
 const app = express();
 dotenv.config();
 

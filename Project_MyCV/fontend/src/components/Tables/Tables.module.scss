@@ -1,0 +1,5 @@
+@import "../../GlobalStyles/mixin.scss";
+.tables{
+    @include widthHeight(100%, 100%);
+        @include test;
+}

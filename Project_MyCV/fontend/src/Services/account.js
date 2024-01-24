@@ -11,6 +11,17 @@ export const postAccount = async (body) => {
         return error;
     }
 };
+export const cancenAPIAccount = async (body) => {
+    
+    try {
+        const response = await httpRequest.remote(`account/cancelAPI`, {
+            ...body
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+};
 
 export const uploadImage = async (formData) => {
     try {

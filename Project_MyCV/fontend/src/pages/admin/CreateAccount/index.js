@@ -5,7 +5,7 @@ import styles from "./CreateAccount.module.scss";
 import Input from "../../../components/Input";
 import Button from  "../../../components/Button";
 import Product from "./MoreProduct";
-import { postAccount, uploadImage } from "../../../Services/account";
+import { postAccount, uploadImage, cancenAPIAccount } from "../../../Services/account";
 import Notification from "../../../components/Notification";
 
 const cx =classNames.bind(styles);
@@ -68,12 +68,16 @@ function Account() {
             formImage.append("IconLogo", IconLogo);
 
             const retultForm = await postAccount(body);
-            if(retultForm.message === "Sign up success") await uploadImage(formImage);            
+            if(retultForm.message === "Sign up success"){
 
-            if(retultForm.response !== undefined){
-                setError(retultForm.response.data.message);
-                setAlert("");
-            }else{
+               const retultImage =  await uploadImage(formImage);
+
+               if(retultImage.message !== true) {
+                   await cancenAPIAccount();
+                   setError(retultImage.response.data.error);
+                    setNotificationKey(prevKey => prevKey + 1);
+
+               }else{
                 setAlert(retultForm.message);
                 setError("");
                 
@@ -92,8 +96,12 @@ function Account() {
                 setJob("");
                 setPhone("");
                 setLanguage("");
-            }
-            setNotificationKey(prevKey => prevKey + 1);
+               }
+            }else{
+                setError(retultForm.response.data.message);
+
+                setNotificationKey(prevKey => prevKey + 1);
+            }            
         } catch (error) {
             console.log(error);
         }
