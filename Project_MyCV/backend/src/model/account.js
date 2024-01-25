@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     },
     Phone: [
         {
-            type: Number,
+            type: String,
             required: true
         }
     ],
@@ -64,10 +64,6 @@ const userSchema = new mongoose.Schema({
     },
     Logo: {
         type: String
-    },
-    Status: {
-        type: Number,
-        default: 0
     }
 }, { versionKey: false, timestamps: true }); 
 

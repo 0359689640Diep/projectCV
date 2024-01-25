@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 
 import Account from "../model/account.js";
 import { signInValidator, CreateAccountValidator} from "../validation/account.js";
+import account from "../model/account.js";
 
 dotenv.config();
 
@@ -145,6 +146,23 @@ export const cancelAPICreateAccount = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             message: error.message
+        })
+    }
+}
+
+export const getAccount = async (req, res) => {
+    try {
+        const dataAccount = await account.find();
+        if(dataAccount.length === 0) {
+            return res.status(404).json({
+                message: "No Account"
+            })
+        }else{
+            return res.status(200).json({dataAccount: dataAccount})
+        }
+    } catch (error) {
+        return res.status(500).json({
+            message: "The system is maintenance"
         })
     }
 }

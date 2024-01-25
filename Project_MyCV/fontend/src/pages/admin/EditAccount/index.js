@@ -8,7 +8,7 @@ const cx = classNames.bind(styles);
 
 function EditAccount() {
     return ( 
-        <section className= {cx("wrapper")}>
+        <section className= {cx("container")}>
             <FormListAccount/>
         </section>
      );
