@@ -6,10 +6,11 @@ import Input from "../../../components/Input";
 
 const cx = classNames.bind(styles);
 
-function MoreProduct({ name, type, onDataUpdate, value }) {
+function MoreProduct({name, type, onDataUpdate, value }) {
   const [data, setData] = useState([]);
   const [inputValue, setInputValue] = useState('');
 
+  
   useEffect(() => {
     // Update data when the value prop changes
     if (value === "") {

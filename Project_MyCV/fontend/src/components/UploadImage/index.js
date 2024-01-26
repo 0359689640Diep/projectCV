@@ -4,18 +4,30 @@
 
     const cx = classNames.bind(style);
 
-    function UploadImage({ data, name, id, required = false, multiple = false }) {
+    function UploadImage({ Item, name, id, required = false, multiple = false }) {
 
         // Sử dụng useRef để tham chiếu đến thẻ input
         const fileInputRef = useRef(null);
-        const [image, setImages] = useState();
+        const [images, setImages] = useState([]);
+
+        useEffect(() => {
+            if (Item) {
+            if (Array.isArray(Item)) {
+                // Trường hợp Item là mảng, setImages với mảng này
+                setImages(Item.map((url) => ({ preview: url })));
+            } else {
+                // Trường hợp Item là chuỗi, setImages với mảng chứa 1 phần tử
+                setImages([{ preview: Item }]);
+            }
+            }
+        }, [Item]);
 
         useEffect(() => {
             // cleanup
-            return() =>{
-                image && URL.revokeObjectURL(image.preview)
-            }
-        }, [image])
+            return () => {
+            images.forEach((image) => URL.revokeObjectURL(image.preview));
+            };
+        }, [images]);
 
         // Hàm xử lý khi nút được nhấn
         const handleButtonClick = () => {
@@ -26,16 +38,25 @@
         // Hàm xử lý khi có sự thay đổi trên thẻ input (đã chọn file)
         const handleFileInputChange = () => {
             // Thực hiện các hành động xử lý file ở đây (ví dụ: hiển thị tên file đã chọn)
-            const selectedFiles = fileInputRef.current.files[0];
-            selectedFiles.preview = URL.createObjectURL(selectedFiles);
-            setImages(selectedFiles);
-        };
+            const selectedFiles = fileInputRef.current.files;
 
+            const newImages = Array.from(selectedFiles).map((file) => {
+            file.preview = URL.createObjectURL(file);
+            return file;
+            });
+
+            setImages(newImages);
+        };
         return (
             <section className={cx("wrapper")}>
                 <section className={cx("content")}>
-                    
-                    {image && (<img src={image.preview} alt="Image" />)}
+                    <article className={cx("images")}>
+
+                        {images.map((img) => (
+                            <img key={img.preview} src={img.preview} alt="img" />
+                        ))}
+
+                    </article>
                     <article className={cx("item")}>
                         <button onClick={handleButtonClick}>
                             Chọn {name}

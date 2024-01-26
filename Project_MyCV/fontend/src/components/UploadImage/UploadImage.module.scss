@@ -8,33 +8,42 @@
     margin: 5% 0;
 } 
 .content{
-    @include widthHeight(150px, 150px);
     margin:2% 0 ;
-    border-bottom: 2px solid var(--TextColor1);
+    @include widthHeight(100%, auto);
 
-    img{
-        @include widthHeight(100%, 80%);
+}
+
+.images {
+    @include widthHeight(100%, auto);
+    @include flexCenter(space-around, center);
+    flex-wrap: wrap;
+    
+    img {
         object-fit: cover;
-        object-position: center
+        object-position: center;
+        margin: 2% 0;
+        @include widthHeight(30%, 200px);
     }
-    .item{
-        @include widthHeight(100%, 15%);
-        @include flexCenter(center, center);
-        button{
-            max-width: 90%;
-            height: 100%;
-            border-radius: 5px;
-            border: none;
-            font-size: 0.7rem;
-            padding: 0 5%;
+}
 
-            input{
-                display: none;
-            }
-        }
+.item {
+    @include widthHeight(100%, 15%);
+    @include flexCenter(center, center);
 
-        button:hover{
-            @include buttonHover;
+    button {
+        width: 20%;
+        height: 100%;
+        border-radius: 5px;
+        border: none;
+        font-size: 0.7rem;
+        padding: 2%;
+
+        input {
+            display: none;
         }
+    }
+
+    button:hover {
+        @include buttonHover;
     }
 }

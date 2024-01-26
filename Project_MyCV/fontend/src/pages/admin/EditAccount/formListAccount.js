@@ -1,4 +1,5 @@
 import classNames from "classnames/bind";
+import { useState } from "react";
 
 import styles from "./EditAccount.module.scss";
 import Input from "../../../components/Input";
@@ -9,7 +10,21 @@ import UploadImage from "../../../components/UploadImage";
 
 const cx = classNames.bind(styles);
 
-function FormListAccount() {
+function FormListAccount({Item}) {
+    const [Job, setJob] = useState("");
+    const [Phone, setPhone] = useState("");
+    const [Language, setLanguage] = useState("");
+
+    const handleJob = (data) => {
+        setJob(data);
+    };
+    const handlePhone = (data) => {
+        setPhone(data);
+    };
+    const handleLanguage = (data) => {
+        setLanguage(data);
+    };
+
     return ( 
         <section className={cx("wrapper")}>
             <article className={cx("itemLeft")}>
@@ -20,7 +35,7 @@ function FormListAccount() {
                     title="Can not be empty"
                     id="Name"
                     onFocus
-                    value = "value"
+                    value = {Item.Name}
                     // onChange={(e) => setName(e.target.value)}
                 />
                 <Input 
@@ -29,7 +44,7 @@ function FormListAccount() {
                     required
                     title="Can not be empty"
                     id="Email"
-                    // value = {Email}
+                    value = {Item.Email}
                     // onChange={(e) => setEmail(e.target.value)}
                 />
                 <Input 
@@ -38,7 +53,7 @@ function FormListAccount() {
                     required
                     title="Can not be empty"
                     id="Birthday"
-                    // value = {Birthday}
+                    value = {Item.Birthday}
                     // onChange={(e) => setBirthday(e.target.value)}
                 />
                 <Input 
@@ -47,7 +62,7 @@ function FormListAccount() {
                     required
                     title="Can not be empty"
                     id="From"
-                    // value = {From}
+                    value = {Item.From}
                     // onChange={(e) => setFrom(e.target.value)}
                 />
                 <Input 
@@ -56,7 +71,7 @@ function FormListAccount() {
                     required
                     title="Can not be empty"
                     id="Password"
-                    // value = {Password}
+                    value = {Item.Password}
                     // onChange={(e) => setPassword(e.target.value)}
                 />
                 <Input 
@@ -65,7 +80,7 @@ function FormListAccount() {
                     required
                     title="Can not be empty"
                     id="Majors"
-                    // value = {Majors}
+                    value = {Item.Majors}
                     // onChange={(e) => setMajors(e.target.value)}
                 />
                 <Textarea 
@@ -74,7 +89,7 @@ function FormListAccount() {
                     required
                     title="Can not be empty"
                     id="Maxim"
-                    // value = {Maxim}
+                    value = {Item.Maxim}
                     // onChange={(e) => setMaxim(e.target.value)}
                 />
                 <Textarea 
@@ -83,36 +98,40 @@ function FormListAccount() {
                     required
                     title="Can not be empty"
                     id="Describe"
-                    // value = {Describe}
+                    value = {Item.Describe}
                     // onChange={(e) => setDescribe(e.target.value)}
                 />
 
-                {/* <Product value = {Job} name = "Job" type="text" onDataUpdate={handleJob}/>
-                <Product value = {Language} name = "Language" type="text" onDataUpdate={handleLanguage}/>
-                <Product value = {Phone} name = "Phone" type="number" onDataUpdate={handlePhone}/> */}
+                <Product value = {Item.Job} name = "Job" type="text" onDataUpdate={handleJob}/>
+                <Product value = {Item.Language} name = "Language" type="text" onDataUpdate={handleLanguage}/>
+                <Product value = {Item.Phone} name = "Phone" type="number" onDataUpdate={handlePhone}/>
             </article>
             <article className={cx("itemRight")}>
                 <UploadImage 
                     name="CV"
                     type="file"
+                    Item = {Item.CV}
                     id="CV"
                     // onChange={(e) => setCV(e.target.files[0])}
                 />
                 <UploadImage 
                     name="Images"
                     type="file"
+                    Item = {Item.Images}
                     id="Images" 
                     // onChange={(e) => setImages(e.target.files[0])}
                 />
                <UploadImage 
                     name="Logo"
                     type="file"
+                    Item = {Item.Logo}
                     id="Logo"
                     // onChange={(e) => setLogo(e.target.files[0])}
                 />      
                <UploadImage 
                     name="IconLogo"
                     type="file"
+                    Item = {Item.IconLogo}
                     id="IconLogo"
                     // onChange={(e) => setIconLogo(e.target.files[0])}
                 />   

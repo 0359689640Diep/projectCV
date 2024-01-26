@@ -11,6 +11,16 @@ export const postAccount = async (body) => {
         return error;
     }
 };
+
+export const getAccount = async () => {
+    try {
+        const response = await httpRequest.get(`account/getAllAccount`, {});
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const cancenAPIAccount = async (body) => {
     
     try {
