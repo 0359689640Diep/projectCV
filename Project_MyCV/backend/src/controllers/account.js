@@ -64,27 +64,30 @@ export const uploadImage = async (req, res) => {
         const IconLogo = req.files.find(file => file.fieldname == "IconLogo").path;
         const Logo = req.files.find(file => file.fieldname == "Logo").path;
 
-        const result = await Account.findByIdAndUpdate(
-        id,
-        {
-            Image: Images,
-            CV: CV,
-            IconLogo: IconLogo,
-            Logo: Logo
-        },
-        { new: true }
-        );
-    
-        if(result) {
-            return res.status(200).json({
-                message: true
-            })
-        }else{
-            return res.status(400).json({
-                message: "The system is maintenance"                 
-            })
+        console.log(Images);
+        res.send("");
 
-        }
+        // const result = await Account.findByIdAndUpdate(
+        // id,
+        // {
+        //     Image: Images,
+        //     CV: CV,
+        //     IconLogo: IconLogo,
+        //     Logo: Logo
+        // },
+        // { new: true }
+        // );
+    
+        // if(result) {
+        //     return res.status(200).json({
+        //         message: true
+        //     })
+        // }else{
+        //     return res.status(400).json({
+        //         message: "The system is maintenance"                 
+        //     })
+
+        // }
     } catch (error) {
         console.log(error);
         return res.status(500).json({

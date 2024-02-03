@@ -14,10 +14,10 @@
             if (Item) {
             if (Array.isArray(Item)) {
                 // Trường hợp Item là mảng, setImages với mảng này
-                setImages(Item.map((url) => ({ preview: url })));
+                setImages(Item.map((url) => ({ preview: "http://localhost:7000/api/image/getImages/"+url })));
             } else {
                 // Trường hợp Item là chuỗi, setImages với mảng chứa 1 phần tử
-                setImages([{ preview: Item }]);
+                setImages([{ preview: "http://localhost:7000/api/image/getImages/"+ Item }]);
             }
             }
         }, [Item]);
@@ -25,7 +25,7 @@
         useEffect(() => {
             // cleanup
             return () => {
-            images.forEach((image) => URL.revokeObjectURL(image.preview));
+                images.forEach((image) => URL.revokeObjectURL(image.preview));
             };
         }, [images]);
 
@@ -47,6 +47,7 @@
 
             setImages(newImages);
         };
+        
         return (
             <section className={cx("wrapper")}>
                 <section className={cx("content")}>
