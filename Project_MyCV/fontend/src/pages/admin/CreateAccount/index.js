@@ -5,8 +5,8 @@ import styles from "./CreateAccount.module.scss";
 import Input from "../../../components/Input";
 import Button from  "../../../components/Button";
 import Product from "./MoreProduct";
-import { postAccount, uploadImage, cancenAPIAccount } from "../../../Services/account";
-import Notification from "../../../components/Notification";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const cx =classNames.bind(styles);
 
@@ -29,12 +29,6 @@ function Account() {
     const [Language, setLanguage] = useState("");
 
 
-    // thông báo lỗi
-    const [error, setError] = useState("");
-    const [alert, setAlert] = useState("");
-
-    const [notificationKey, setNotificationKey] = useState(0);
-
     const handleJob = (data) => {
         setJob(data);
     };
@@ -48,39 +42,30 @@ function Account() {
     const handleUpAccount = async () => {
         
         try {
-            const body = {
-                "Name": Name,
-                "Email": Email,
-                "Birthday": Birthday,
-                "Phone": Phone,
-                "From": From,
-                "Language": Language,
-                "Password": Password,
-                "Majors": Majors,
-                "Maxim": Maxim,
-                "Describe": Describe,
-                "Job": Job,
-            }
-            const formImage = new FormData();
-            formImage.append("Images", Image);
-            formImage.append("CV", CV);
-            formImage.append("Logo", Logo);
-            formImage.append("IconLogo", IconLogo);
-
-            const retultForm = await postAccount(body);
-            if(retultForm.message === "Sign up success"){
-
-               const retultImage =  await uploadImage(formImage);
-
-               if(retultImage.message !== true) {
-                   await cancenAPIAccount();
-                   setError(retultImage.response.data.error);
-                    setNotificationKey(prevKey => prevKey + 1);
-
-               }else{
-                setAlert(retultForm.message);
-                setError("");
-                
+            const formData  = new FormData();
+            formData.append("Images", Image);
+            formData.append("CV", CV);
+            formData.append("Logo", Logo);
+            formData.append("IconLogo", IconLogo);
+            formData.append("Name", Name);
+            formData.append("Email", Email);
+            formData.append("Birthday", Birthday);
+            formData.append("From", From);
+            formData.append("Password", Password);
+            formData.append("Majors", Majors);
+            formData.append("Maxim", Maxim);
+            formData.append("Describe", Describe);
+            // Chuyển mảng thành chuỗi JSON trước khi thêm vào FormData
+            formData.append("Job", Job);
+            formData.append("Language", Language);
+            formData.append("Phone", Phone);
+            const retultformData  = await axios.post("http://localhost:7000/api/account/createAccount", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+            });;
+            console.log(retultformData);
+            if(retultformData.status === 200){
                 setName("");
                 setEmail("");
                 setBirthday("");
@@ -96,14 +81,12 @@ function Account() {
                 setJob("");
                 setPhone("");
                 setLanguage("");
-               }
-            }else{
-                setError(retultForm.response.data.message);
-
-                setNotificationKey(prevKey => prevKey + 1);
-            }            
+                toast.success(retultformData.data.message);
+            }
+            
         } catch (error) {
-            console.log(error);
+            console.log(error.response);
+            toast.error(error.response.data.message);
         }
 
 
@@ -231,20 +214,6 @@ function Account() {
                     onClick={handleUpAccount}
                 />                       
             </article>
-            {error && (
-                <Notification
-                    key={notificationKey}
-                    content={error}
-                    title="Warning"
-                    type="warning"
-                />
-            )}
-            {alert && (
-                <Notification
-                    content={alert}
-                    title="Message"
-                />
-            )}
         </section>
      );
 }

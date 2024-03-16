@@ -3,9 +3,12 @@ import * as httpRequest from "../utils/httpRequest";
 export const postAccount = async (body) => {
     
     try {
-        const response = await httpRequest.post(`account/createAccount`, {
-            ...body
-        });
+        const response = await httpRequest.post(`account/createAccount`, {...body}, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+            }
+        );
         return response;
     } catch (error) {
         return error;
@@ -32,6 +35,15 @@ export const cancenAPIAccount = async (body) => {
         return error;
     }
 };
+
+export const deleteAccount = async (id) => {
+    try {
+        const response = await httpRequest.remote(`account/deleteAccount/${id}`);
+        return response;
+    } catch (error) {
+        
+    }
+}
 
 export const uploadImage = async (formData) => {
     try {

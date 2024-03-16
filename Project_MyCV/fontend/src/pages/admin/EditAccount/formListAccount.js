@@ -1,5 +1,6 @@
 import classNames from "classnames/bind";
 import { useState } from "react";
+ import {toast } from 'react-toastify';
 
 import styles from "./EditAccount.module.scss";
 import Input from "../../../components/Input";
@@ -7,10 +8,11 @@ import Textarea from "../../../components/Textarea";
 import Button from "../../../components/Button";
 import Product from "../CreateAccount/MoreProduct";
 import UploadImage from "../../../components/UploadImage";
+import { deleteAccount } from "../../../Services/account";
 
 const cx = classNames.bind(styles);
 
-function FormListAccount({Item}) {
+function FormListAccount({Item, onUpdateData}) {
     const [Job, setJob] = useState("");
     const [Phone, setPhone] = useState("");
     const [Language, setLanguage] = useState("");
@@ -24,6 +26,17 @@ function FormListAccount({Item}) {
     const handleLanguage = (data) => {
         setLanguage(data);
     };
+    
+    const handleDeleteAccount = async (id) => {
+        try {
+            let result = await deleteAccount(id);
+            toast.success(result.message);   
+             // Gọi hàm callback để cập nhật lại DOM
+            onUpdateData();
+        } catch (error) {
+            toast.error("Hệ thống đang bảo trì");   
+        }
+    }
 
     return ( 
         <section className={cx("wrapper")}>
@@ -139,7 +152,7 @@ function FormListAccount({Item}) {
                     name="Delete Account"
                     width = "30%"
                     height = "7%"
-                    // onClick={handleUpAccount}
+                    onClick={ () => handleDeleteAccount(Item._id)}
                 />                       
                 <Button
                     name="Update Account"
@@ -149,6 +162,7 @@ function FormListAccount({Item}) {
                     // onClick={handleUpAccount}
                 />                       
             </article>
+
         </section> 
     );
 }

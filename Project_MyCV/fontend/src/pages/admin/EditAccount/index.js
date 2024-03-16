@@ -25,11 +25,14 @@ function EditAccount() {
             console.log(error);
         }
     }
+    const handleUpdateData = () => {
+        fetchAPI(); // Gọi lại hàm fetchAPI để cập nhật lại dữ liệu từ API
+    };
 
     return ( 
         <section className= {cx("container")}>
             {data.map((item) => (
-                <FormListAccount key={item._id} Item ={item} />
+                <FormListAccount key={item._id} Item ={item} onUpdateData={handleUpdateData}/>
             ))}
         </section>
      );

@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import Account from "../model/account.js";
 import { signInValidator, CreateAccountValidator} from "../validation/account.js";
 import account from "../model/account.js";
+import { deleteUploadedImages } from "../helpers/image.js";
 
 dotenv.config();
 
@@ -14,84 +15,101 @@ let id = "";
 export const CreateAccount = async (req, res) => {
     try {
 
-        // hứng lỗi khi validate
-        const {error} = CreateAccountValidator.validate(req.body,{abortEarly: false});
-        if(error) {
-            const errors = error.details.map((err) =>err.message);
+        const { error } = CreateAccountValidator.validate(req.body, { abortEarly: false });
+        if (error) {
+             // Nếu có lỗi, xóa các file ảnh đã được tải lên
+            deleteUploadedImages(req.files);
+
+            const errors = error.details.map((err) => err.message);
             return res.status(400).json({
                 message: errors[0]
+            });
+        }
+
+        if (req.files && req.files.CV && req.files.CV.length < 0) {
+            return res.status(400).json({
+                message: "CV cannot be empty"
             })
         }
+        if (req.files && req.files.Images && req.files.Images.length < 0) {
+            return res.status(400).json({
+                message: "Images cannot be empty"
+            })
+        }
+        if (req.files && req.files.IconLogo && req.files.IconLogo.length < 0) {
+            return res.status(400).json({
+                message: "Icon Logo cannot be empty"
+            })
+        }
+        if (req.files && req.files.Logo && req.files.Logo.length < 0) {
+            return res.status(400).json({
+                message: "Logo cannot be empty"
+            })
+        }
+
+        const Images = req.files.Images[0].filename;
+        const CV = req.files.CV[0].filename;
+        const IconLogo = req.files.IconLogo[0].filename;
+        const Logo = req.files.Logo[0].filename;
+
         const userExist = await Account.findOne({
             Email: req.body.Email
         });
-        // kiem tra email co ton tai hay khong
-        if(userExist) {
+        if (userExist) {
+            // Nếu có lỗi, xóa các file ảnh đã được tải lên
+            deleteUploadedImages(req.files);
             return res.status(400).json({
-                message: "this email has been registered. Would you like to log in ? "
-            })
+                message: "This email has been registered. Would you like to log in?"
+            });
         }
-        
-        // mã hóa password
+
         const hashePassword = await bcrypjs.hash(req.body.Password, 10);
-        // lưu tài khoản vào db
 
-        const retult = await Account.create({
+        const result = await Account.create({
             ...req.body,
-            Password: hashePassword
-        });
-        // thông báo cho người dùng
-        // xoa mật khẩu khi gửi tới người dùng
-        retult.Password = undefined;
-        id = retult._id;
-        return res.status(200).json({
-            message: "Sign up success"
-        })
-
-    }catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            message: "The system is maintenance"
-        })
-    }
-}
-
-export const uploadImage = async (req, res) => {
-
-    try {
-        const Images = req.files.find(file => file.fieldname == "Images").path;
-        const CV = req.files.find(file => file.fieldname == "CV").path;
-        const IconLogo = req.files.find(file => file.fieldname == "IconLogo").path;
-        const Logo = req.files.find(file => file.fieldname == "Logo").path;
-
-        const result = await Account.findByIdAndUpdate(
-        id,
-        {
-            Image: Images,
             CV: CV,
             IconLogo: IconLogo,
-            Logo: Logo
-        },
-        { new: true }
-        );
-    
-        if(result) {
-            return res.status(200).json({
-                message: true
-            })
-        }else{
-            return res.status(400).json({
-                message: "The system is maintenance"                 
-            })
+            Logo: Logo,
+            Images: Images,
+            Password: hashePassword
+        });
 
+        result.Password = undefined;
+        id = result._id;
+        return res.status(200).json({
+            message: "Create account success"
+        });
+    } catch (error) {
+        // Nếu có lỗi, xóa các file ảnh đã được tải lên
+        deleteUploadedImages(req.files);
+
+        console.error(error);
+        return res.status(500).json({
+            message: "The system is maintenance"
+        });
+    }
+};
+
+export const deleteAccount = async (req, res) => {
+    try {
+        let id = req.params.id;
+        const result = await Account.deleteOne({_id: id});
+        if(result.deletedCount === 0 ){
+            return res.status(404).json({
+                message: "The requested account could not be found"
+            })
         }
+        return res.status(200).json({
+            message: "Product deletion was successful"
+        })
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-            message: "The system is maintenance"
+            message: "Hệ thống đang bảo trì"
         })
     }
 }
+
 
 export const signIn = async (req, res) =>{
     try {
@@ -105,14 +123,14 @@ export const signIn = async (req, res) =>{
         }
         
         const user = await Account.findOne({
-            email: req.body.email,
-            password: req.body.password
+            Email: req.body.email,
+            Password: req.body.Password
         })
-        const isMatch = await bcrypjs.compare(req.body.password, user.password);
-        
-        if(user && !isMatch) {
+        // const isMatch = await bcrypjs.compare(req.body.Password, user.Password);
+        //  && !isMatch
+        if(user) {
 
-            user.password = undefined;
+            user.Password = undefined;
             const accsessToken = Jwt.sign({_id: user._id}, token)
             return res.status(200).json({
                 message: "Logged in successfully",

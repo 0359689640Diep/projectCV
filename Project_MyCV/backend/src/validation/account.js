@@ -41,12 +41,6 @@ export const CreateAccountValidator = Joi.object({
             "date.format": "Date of birth is not in correct format",
             "any.required": "Birthday is required",
             "any.custom": "The date must be before the current date",
-        }),
-    Phone: Joi.array()
-        .items(Joi.number().required()).required().messages({
-        "array.empty": "Phone array cannot be empty",
-        "any.required": "Phone is required",
-        "number.empty": "Phone cannot be empty"
     }),
     From: Joi.string().min(8).max(255).required().messages({
         "string.empty": "From cannot be empty",
@@ -54,12 +48,7 @@ export const CreateAccountValidator = Joi.object({
         "string.max": "From must have at most {#limit} characters",
         "any.required": "From is required", 
     }),
-    Language: Joi.array()
-        .items(Joi.string().required()).required().messages({
-        "array.empty": "Language array cannot be empty",
-        "any.required": "Language is required",
-        "string.empty": "Language cannot be empty"
-    }),
+
     Password: Joi.string().min(8).max(255).required().messages({
         "string.empty": "password cannot be empty",
         "string.min": "password must have at least {#limit} characters",
@@ -72,13 +61,7 @@ export const CreateAccountValidator = Joi.object({
         "string.max": "Majors must have at most {#limit} characters",
         "any.required": "Majors is required",
     }),
-    Job: Joi.array()
-        .items(Joi.string().required()).required().messages({
-        "array.base": "Job must be an array",
-        "array.empty": "Job array cannot be empty",
-        "any.required": "Job is required",
-        "string.empty": "Job cannot be empty"
-    }),
+
     Maxim: Joi.string().min(8).max(255).required().messages({
         "string.empty": "Maxim cannot be empty",
         "string.min": "Maxim must have at least {#limit} characters",
@@ -90,9 +73,28 @@ export const CreateAccountValidator = Joi.object({
         "string.min": "Describe must have at least {#limit} characters",
         "string.max": "Describe must have at most {#limit} characters",
         "any.required": "Describe is required",
-    })
+    }),
+    Job: Joi.string().min(3).max(255).required().required().messages({
+        "string.empty": "Job cannot be empty",
+        "string.min": "Job must have at least {#limit} characters",
+        "string.max": "Job must have at most {#limit} characters",
+        "any.required": "Job is required",
+    }),
+    Language: Joi.string().min(3).max(255).required().required().messages({
+        "string.empty": "Language cannot be empty",
+        "string.min": "Language must have at least {#limit} characters",
+        "string.max": "Language must have at most {#limit} characters",
+        "any.required": "Language is required",
+    }),
+    Phone: Joi.string().min(10).max(255).required().required().messages({
+        "number.empty": "Phone cannot be empty",
+        "string.min": "Phone must have at least {#limit} characters",
+        "string.max": "Phone must have at most {#limit} characters",
+        "any.required": "Phone is required",
+    }),
 });
 
 export const validateImage = (data) => {
     console.log(data);
 }
+
