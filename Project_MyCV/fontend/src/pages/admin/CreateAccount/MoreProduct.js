@@ -16,7 +16,6 @@ function MoreProduct({name, type, onDataUpdate, value}) {
       setInputValue("");
     } else {
       // Chỉ cập nhật data nếu value không rỗng
-      // setData(value);
     }
   }, [value]);
 

@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use("/api", router);
 // Định nghĩa thư mục lưu trữ ảnh
 app.use("/uploads/Images", express.static(path.join(process.cwd(), "uploads/Images")));
-console.log("Static image directory:", path.join(process.cwd(), "uploads/Images"));
+
 
 app.listen(port, () =>{
     console.log(`Server is running on port: ${port}`)
