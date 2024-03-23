@@ -1,20 +1,22 @@
 import Jwt from "jsonwebtoken";
-import bcrypjs from "bcryptjs";
+import CryptoJS from "crypto-js";
 import dotenv from "dotenv";
+import { compareAsc, format } from "date-fns";
 
 import Account from "../model/account.js";
 import { signInValidator, CreateAccountValidator} from "../validation/account.js";
 import account from "../model/account.js";
-import { deleteUploadedImages } from "../helpers/image.js";
+import { deleteUploadedImages, deleteImage } from "../helpers/image.js";
+
 
 dotenv.config();
 
 const {token} = process.env;
-let id = "";
+const secretKey = process.env.secretKey; 
+const baseUrl = "http://localhost:7000/api/image/get-image/";
 
 export const CreateAccount = async (req, res) => {
     try {
-
         const { error } = CreateAccountValidator.validate(req.body, { abortEarly: false });
         if (error) {
              // Nếu có lỗi, xóa các file ảnh đã được tải lên
@@ -25,7 +27,7 @@ export const CreateAccount = async (req, res) => {
                 message: errors[0]
             });
         }
-
+        
         if (req.files && req.files.CV && req.files.CV.length < 0) {
             return res.status(400).json({
                 message: "CV cannot be empty"
@@ -47,7 +49,7 @@ export const CreateAccount = async (req, res) => {
             })
         }
 
-        const Images = req.files.Images[0].filename;
+        const Images = req.files.Image.map(file => file.filename);
         const CV = req.files.CV[0].filename;
         const IconLogo = req.files.IconLogo[0].filename;
         const Logo = req.files.Logo[0].filename;
@@ -62,15 +64,24 @@ export const CreateAccount = async (req, res) => {
                 message: "This email has been registered. Would you like to log in?"
             });
         }
+        const {Job, Language, Phone, Password, ...body} = req.body;
 
-        const hashePassword = await bcrypjs.hash(req.body.Password, 10);
+        const JobArr = Job.split(",");
+        const LanguageArr = Language.split(",");
+        const PhoneArr = Phone.split(",");
+        const password = Password;
+
+        const hashePassword = await CryptoJS.AES.encrypt(password, secretKey).toString();
 
         const result = await Account.create({
-            ...req.body,
+            ...body,
+            Language: LanguageArr,
+            Phone: PhoneArr,
+            Job: JobArr,
             CV: CV,
             IconLogo: IconLogo,
             Logo: Logo,
-            Images: Images,
+            Image: Images,
             Password: hashePassword
         });
 
@@ -82,8 +93,6 @@ export const CreateAccount = async (req, res) => {
     } catch (error) {
         // Nếu có lỗi, xóa các file ảnh đã được tải lên
         deleteUploadedImages(req.files);
-
-        console.error(error);
         return res.status(500).json({
             message: "The system is maintenance"
         });
@@ -93,24 +102,101 @@ export const CreateAccount = async (req, res) => {
 export const deleteAccount = async (req, res) => {
     try {
         let id = req.params.id;
-        const result = await Account.deleteOne({_id: id});
-        if(result.deletedCount === 0 ){
+        const result = await Account.findOneAndDelete({_id: Object(id)});
+        if(result !== null){
+            deleteImage(result.Image);
+            deleteImage(result.CV);
+            deleteImage(result.IconLogo);
+            deleteImage(result.Logo);
+
+            return res.status(200).json({
+                message: "Product deletion was successful"
+            })
+        }else{
             return res.status(404).json({
                 message: "The requested account could not be found"
             })
+
         }
-        return res.status(200).json({
-            message: "Product deletion was successful"
-        })
 
     } catch (error) {
-        console.log(error);
         return res.status(500).json({
             message: "Hệ thống đang bảo trì"
         })
     }
 }
 
+export const updateAccount = async (req, res) => {
+    try {
+        const { error } = CreateAccountValidator.validate(req.body, { abortEarly: false });
+        if (error) {
+             // Nếu có lỗi, xóa các file ảnh đã được tải lên
+            deleteUploadedImages(req.files);
+
+            const errors = error.details.map((err) => err.message);
+            return res.status(400).json({
+                message: errors[0]
+            });
+        }
+        const {Job, Language, Phone, Password, ...body} = req.body;
+        const JobArr = Job.split(",");
+        const LanguageArr = Language.split(",");
+        const PhoneArr = Phone.split(",");
+        const password = Password;
+        const id = req.params.id;
+
+        const hashePassword = await CryptoJS.AES.encrypt(password, secretKey).toString();
+        // kiểm tra xem có được up ảnh lên hay không
+        if(Object.keys(req.files).length > 0){
+            let dataImage = {};
+            const getImageByIdAccount = await Account.findById({_id: Object(id)}, {CV: 1, Image: 1, IconLogo: 1, Logo: 1});
+            const {CV, IconLogo, Logo, Image} = req.files ;
+            if (CV && CV !== undefined) {
+                dataImage["CV"] = CV[0].filename;
+                deleteImage(getImageByIdAccount.CV);
+            }
+            if (Image && Image !== undefined) {
+                dataImage["Image"] = Image.map(file => file.filename);
+                deleteImage(getImageByIdAccount.Image);
+            }
+            if (IconLogo && IconLogo !== undefined) {
+                dataImage["IconLogo"] = IconLogo[0].filename;
+                deleteImage(getImageByIdAccount.IconLogo);
+            }
+            if (Logo && Logo !== undefined) {
+                dataImage["Logo"] = Logo[0].filename;
+                deleteImage(getImageByIdAccount.Logo);
+            }
+            
+            await Account.findByIdAndUpdate(id, {
+                ...body,
+                Language: LanguageArr,
+                Phone: PhoneArr,
+                Job: JobArr,
+                Password: hashePassword,
+                ...dataImage
+            }); 
+            return res.status(201).json({
+                message: "Update successful"
+            })            
+        }else{
+            await Account.findByIdAndUpdate(id, {
+                ...body,
+                Language: LanguageArr,
+                Phone: PhoneArr,
+                Job: JobArr,
+                Password: hashePassword,                
+            });       
+            return res.status(201).json({
+                message: "Update successful"
+            })
+        }        
+    } catch (error) {
+        return res.status(500).json({
+            message: "The system is maintenance"
+        });
+    }
+}
 
 export const signIn = async (req, res) =>{
     try {
@@ -123,12 +209,11 @@ export const signIn = async (req, res) =>{
             })
         }
         
+        const hashePassword = await CryptoJS.AES.encrypt(req.body.Password, secretKey).toString();
         const user = await Account.findOne({
             Email: req.body.email,
-            Password: req.body.Password
+            Password: hashePassword
         })
-        // const isMatch = await bcrypjs.compare(req.body.Password, user.Password);
-        //  && !isMatch
         if(user) {
 
             user.Password = undefined;
@@ -150,25 +235,6 @@ export const signIn = async (req, res) =>{
     }
 }
 
-export const cancelAPICreateAccount = async (req, res) => {
-    try {
-        const result = await Account.findByIdAndDelete(id);
-        if(result) {
-            return res.status(200).json({
-                message: "cancel api create account successfully"
-            })
-        }else{
-            return res.status(400).json({
-                message: "cancel api create account failed"
-            })
-        }
-    } catch (error) {
-        return res.status(500).json({
-            message: error.message
-        })
-    }
-}
-
 export const getAccount = async (req, res) => {
     try {
         const dataAccount = await account.find();
@@ -177,6 +243,23 @@ export const getAccount = async (req, res) => {
                 message: "No Account"
             })
         }else{
+            dataAccount.forEach(obj => {
+                // format dữ liệu
+                const password = obj.Password; 
+                const dateFormat = format(new Date(obj.Birthday), "yyyy-MM-dd");
+                
+                obj.Password = CryptoJS.AES.decrypt(password,  secretKey).toString(CryptoJS.enc.Utf8);
+                obj.CV = baseUrl + obj.CV;
+                obj.IconLogo = baseUrl + obj.IconLogo;
+                obj.Logo = baseUrl + obj.Logo;
+                obj.Birthday = dateFormat;
+
+                if(obj.Image.length !== 0) {
+                    obj.Image.forEach((field, key) => {
+                            obj.Image[key] = baseUrl + field;
+                    })
+                }
+            })
             return res.status(200).json({dataAccount: dataAccount})
         }
     } catch (error) {

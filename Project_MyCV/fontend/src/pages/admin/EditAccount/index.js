@@ -22,7 +22,7 @@ function EditAccount() {
             const result = await getAccount();
             setData(result.dataAccount);
         } catch (error) {
-            console.log(error);
+           return "no data";
         }
     }
     const handleUpdateData = () => {

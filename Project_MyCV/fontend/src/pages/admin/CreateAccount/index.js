@@ -1,12 +1,12 @@
 import classNames from "classnames/bind";
-import { useState} from "react";
+import {useState} from "react";
 
 import styles from "./CreateAccount.module.scss";
 import Input from "../../../components/Input";
 import Button from  "../../../components/Button";
 import Product from "./MoreProduct";
-import axios from "axios";
 import { toast } from "react-toastify";
+import { postAccount } from "../../../Services/account";
 
 const cx =classNames.bind(styles);
 
@@ -32,18 +32,19 @@ function Account() {
     const handleJob = (data) => {
         setJob(data);
     };
+
     const handlePhone = (data) => {
+        
         setPhone(data);
     };
     const handleLanguage = (data) => {
+        
         setLanguage(data);
     };
     
     const handleUpAccount = async () => {
-        
         try {
             const formData  = new FormData();
-            formData.append("Images", Image);
             formData.append("CV", CV);
             formData.append("Logo", Logo);
             formData.append("IconLogo", IconLogo);
@@ -55,16 +56,19 @@ function Account() {
             formData.append("Majors", Majors);
             formData.append("Maxim", Maxim);
             formData.append("Describe", Describe);
-            // Chuyển mảng thành chuỗi JSON trước khi thêm vào FormData
             formData.append("Job", Job);
             formData.append("Language", Language);
             formData.append("Phone", Phone);
-            const retultformData  = await axios.post("http://localhost:7000/api/account/createAccount", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                },
-            });;
-            console.log(retultformData);
+
+            // Lặp qua từng phần tử trong object Image
+            for (const key in Image) {
+                if (Object.hasOwnProperty.call(Image, key)) {
+                    const file = Image[key];
+                    formData.append("Image", file);
+                }
+            }
+            const retultformData  = await postAccount(formData);
+
             if(retultformData.status === 200){
                 setName("");
                 setEmail("");
@@ -82,11 +86,11 @@ function Account() {
                 setPhone("");
                 setLanguage("");
                 toast.success(retultformData.data.message);
+            }else{
+                toast.warning(retultformData.data.message);           
             }
-            
         } catch (error) {
-            console.log(error.response);
-            toast.error(error.response.data.message);
+            toast.error(error);
         }
 
 
@@ -139,6 +143,7 @@ function Account() {
                     title="Can not be empty"
                     id="Password"
                     value = {Password}
+                    Icons = "true"
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <Input 
@@ -189,7 +194,7 @@ function Account() {
                     title="Can not be empty"
                     id="Images"
                     multiple
-                    onChange={(e) => setImages(e.target.files[0])}
+                    onChange={(e) => setImages(e.target.files)}
                 />
                <Input 
                     name="Logo"

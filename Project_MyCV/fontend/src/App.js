@@ -4,10 +4,16 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { pdfjs } from 'react-pdf';
 
 import { pulicRouter, privateRouters } from "./routers";
 import { DefaultLayout, DefaultLayoutAdmin } from "./layouts";
+
+
+// pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+//   'pdfjs-dist/build/pdf.worker.min.js',
+//   import.meta.url,
+// ).toString();
 
 function App() {
   const token = localStorage.getItem("accessToken");

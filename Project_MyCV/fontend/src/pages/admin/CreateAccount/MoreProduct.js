@@ -11,13 +11,13 @@ function MoreProduct({name, type, onDataUpdate, value}) {
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
-    if (value === "") {
-      setData([]);
-      setInputValue("");
-    } else {
-      // Chỉ cập nhật data nếu value không rỗng
-    }
-  }, [value]);
+    if ((typeof value === 'string' && value.trim() !== '') || (Array.isArray(value) && value.length !== 0)) {
+        setData(value);
+      } 
+    else {
+        // setData([]);
+      }
+  }, [value])
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);

@@ -19,12 +19,19 @@ const upload = multer({
             cb(null, true);
         } else {
             cb(null, false);
-            // Trả về một phản hồi JSON với thông báo lỗi và trạng thái 415 (Unsupported Media Type)
             return cb(new Error("Hệ thống chỉ cho phép tải lên các file định dạng .png, .jpg, .pdf và .jpeg"));
         }
     },
     //limits: { fileSize: 1 * 1024 * 1024 }, // Giới hạn kích thước tệp, ví dụ 1MB
-});
+})
+.fields([
+    {name: "CV", maxCount: 1},
+    {name: "Image", maxCount: 4},
+    {name: "Logo", maxCount: 1},
+    {name: "IconLogo", maxCount: 1} // Định nghĩa cấu hình cho trường "Image"
+]);
+
+
 
 // xử lý lỗi khi tệp tải lên không hợp lệ
 function handleInvalidFile(err, req, res, next) {

@@ -21,7 +21,7 @@ function Home() {
             const result = await getMessage();
             setData(result.dataMessage);
         } catch (error) {
-            console.log(error);
+            return "no data";
         }
     };
     // săp xếp mảng

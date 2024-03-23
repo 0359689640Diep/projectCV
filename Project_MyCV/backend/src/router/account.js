@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { CreateAccount, signIn, cancelAPICreateAccount, getAccount, deleteAccount } from "../controllers/account.js";
+import { CreateAccount, signIn,  getAccount, deleteAccount, updateAccount } from "../controllers/account.js";
 import {upload, handleInvalidFile, deleteUploadImg} from "../middleware/image.js";
 
 const routerAccount = Router();
@@ -25,19 +25,12 @@ routerAccount.get('/images/:filename', async (req, res) => {
         res.status(500).json({ message: 'Đã xảy ra lỗi khi lấy hình ảnh từ cơ sở dữ liệu' });
     }
 });
-routerAccount.post("/createAccount",  
-upload.fields([
-    {name: "CV", maxCount: 1},
-    {name: "Images", maxCount: 4},
-    {name: "Logo", maxCount: 1},
-    {name: "IconLogo", maxCount: 1}
-]), handleInvalidFile, deleteUploadImg, CreateAccount);
-
-routerAccount.post("/signin", signIn);
-routerAccount.delete("/cancelAPI", cancelAPICreateAccount);
+routerAccount.post("/createAccount", upload, handleInvalidFile, deleteUploadImg, CreateAccount);
 routerAccount.get("/getAllAccount", getAccount);
 routerAccount.delete("/deleteAccount/:id", deleteAccount);
-// Endpoint để trả về URL của hình ảnh từ tên tệp
+routerAccount.put("/updateAccount/:id", upload, handleInvalidFile, deleteUploadImg,updateAccount);
+
+routerAccount.post("/signin", signIn);
 
 
 export default routerAccount;

@@ -1,19 +1,23 @@
 import * as httpRequest from "../utils/httpRequest";
 
 export const postAccount = async (body) => {
-    
+
     try {
-        const response = await httpRequest.post(`account/createAccount`, {...body}, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                },
-            }
-        );
+        const response = await httpRequest.post(`account/createAccount`, body);
         return response;
     } catch (error) {
         return error;
     }
 };
+
+export const updateAccount = async (data, id) => {
+    try {
+        const response = await httpRequest.update("account/updateAccount/", data, id);
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
 
 export const getAccount = async () => {
     try {
