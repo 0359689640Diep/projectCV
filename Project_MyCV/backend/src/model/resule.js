@@ -14,7 +14,7 @@ const resuleSchema = new mongoose.Schema({
         required: true
     },
     Date: {
-        type: Date,
+        type: String,
         required: true
     },
     Describe: {

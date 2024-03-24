@@ -1,12 +1,12 @@
 import className from "classnames/bind";
 import { useState } from "react";
-import axios from "axios";
 
 import styles from "./Login.module.scss";
 import { images } from "../../../asset/img";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
-import Notification from "../../../components/Notification"
+import { singIn } from "../../../Services/account";
+import { toast } from "react-toastify";
 
 const cx = className.bind(styles);
 
@@ -14,20 +14,22 @@ function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState(null); // Thêm state để lưu thông báo lỗi
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:7000/api/account/signin", {
-                email: email,
-                password: password
-            });
-            const token = response.data.accsessToken;
-            localStorage.setItem("accessToken", token);
+            const response = await singIn({email,password});
+            if(response.status >= 400){
+                toast.warning(response.data.message);
+                return ;
+            }
+            localStorage.setItem("accessToken", response.data.accessToken);
+            localStorage.setItem("user", response.data.user);
+            toast.success(response.data.message);
             window.location.replace("/admin");
         } catch (error) {
-            setError(error.response.data.message); // Lưu thông báo lỗi vào state
+            console.log(error);
+            toast.error("500 Server not found");
         }
     };
 
@@ -53,6 +55,7 @@ function Login() {
                             required
                             title="password cannot be empty"
                             id="password"
+                            Icons = {true}
                             onChange={(e) => setPassword(e.target.value)}
                         />
                         <Button
@@ -62,13 +65,7 @@ function Login() {
                             height="15%"
                             margin="4% 35%"
                         />
-                        {error && ( // Hiển thị Notification khi có lỗi
-                            <Notification
-                                content={error}
-                                title="Message"
-                                type="error"
-                            />
-                        )}
+  
                     </form>
                 </section>
             </section>

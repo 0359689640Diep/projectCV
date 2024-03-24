@@ -9,6 +9,15 @@ export const postAccount = async (body) => {
         return error;
     }
 };
+export const singIn = async (body) => {
+
+    try {
+        const response = await httpRequest.post(`account/signin`, body, '"Content-Type": "application/json"');
+        return response;
+    } catch (error) {
+        return error;
+    }
+};
 
 export const updateAccount = async (data, id) => {
     try {

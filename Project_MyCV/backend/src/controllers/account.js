@@ -121,7 +121,7 @@ export const deleteAccount = async (req, res) => {
 
     } catch (error) {
         return res.status(500).json({
-            message: "Hệ thống đang bảo trì"
+            message: "The system is maintenance"
         })
     }
 }
@@ -139,58 +139,42 @@ export const updateAccount = async (req, res) => {
             });
         }
         const {Job, Language, Phone, Password, ...body} = req.body;
-        const JobArr = Job.split(",");
-        const LanguageArr = Language.split(",");
-        const PhoneArr = Phone.split(",");
-        const password = Password;
         const id = req.params.id;
+        const hashePassword = await CryptoJS.AES.encrypt(Password, secretKey).toString();
 
-        const hashePassword = await CryptoJS.AES.encrypt(password, secretKey).toString();
+        const newData = {
+                ...body,
+            Language: Language.split(","),
+            Phone: Phone.split(","),
+            Job: Job.split(","),
+            Password: hashePassword,  
+        }
         // kiểm tra xem có được up ảnh lên hay không
         if(Object.keys(req.files).length > 0){
-            let dataImage = {};
             const getImageByIdAccount = await Account.findById({_id: Object(id)}, {CV: 1, Image: 1, IconLogo: 1, Logo: 1});
             const {CV, IconLogo, Logo, Image} = req.files ;
             if (CV && CV !== undefined) {
-                dataImage["CV"] = CV[0].filename;
+                newData["CV"] = CV[0].filename;
                 deleteImage(getImageByIdAccount.CV);
             }
             if (Image && Image !== undefined) {
-                dataImage["Image"] = Image.map(file => file.filename);
+                newData["Image"] = Image.map(file => file.filename);
                 deleteImage(getImageByIdAccount.Image);
             }
             if (IconLogo && IconLogo !== undefined) {
-                dataImage["IconLogo"] = IconLogo[0].filename;
+                newData["IconLogo"] = IconLogo[0].filename;
                 deleteImage(getImageByIdAccount.IconLogo);
             }
             if (Logo && Logo !== undefined) {
-                dataImage["Logo"] = Logo[0].filename;
+                newData["Logo"] = Logo[0].filename;
                 deleteImage(getImageByIdAccount.Logo);
             }
-            
-            await Account.findByIdAndUpdate(id, {
-                ...body,
-                Language: LanguageArr,
-                Phone: PhoneArr,
-                Job: JobArr,
-                Password: hashePassword,
-                ...dataImage
-            }); 
-            return res.status(201).json({
-                message: "Update successful"
-            })            
-        }else{
-            await Account.findByIdAndUpdate(id, {
-                ...body,
-                Language: LanguageArr,
-                Phone: PhoneArr,
-                Job: JobArr,
-                Password: hashePassword,                
-            });       
-            return res.status(201).json({
-                message: "Update successful"
-            })
+                    
         }        
+        await Account.findByIdAndUpdate(id, {...newData}); 
+        return res.status(201).json({
+            message: "Update successful"
+        })            
     } catch (error) {
         return res.status(500).json({
             message: "The system is maintenance"
@@ -198,42 +182,52 @@ export const updateAccount = async (req, res) => {
     }
 }
 
+
 export const signIn = async (req, res) =>{
     try {
-        
-        const {error} = signInValidator.validate(req.body, {abortEarly: false});
+        const { error } = signInValidator.validate(req.body, { abortEarly: false });
         if(error) {
             const errors = error.details.map((err) => err.message);
             return res.status(400).json({
-                message: errors
+                message: errors[0]
             })
         }
         
-        const hashePassword = await CryptoJS.AES.encrypt(req.body.Password, secretKey).toString();
-        const user = await Account.findOne({
-            Email: req.body.email,
-            Password: hashePassword
-        })
-        if(user) {
+        const user = await Account.findOne({ Email: req.body.email });
 
-            user.Password = undefined;
-            const accsessToken = Jwt.sign({_id: user._id}, token)
-            return res.status(200).json({
-                message: "Logged in successfully",
-                user,
-                accsessToken
-            })
-        }else{
+        if(!user) {
             return res.status(401).json({
                 message: "Login failed, please review your account"
-            })
+            });
         }
+
+        const decodePassword = CryptoJS.AES.decrypt(user.Password, secretKey).toString(CryptoJS.enc.Utf8);
+
+        if(req.body.password !== decodePassword) {
+            return res.status(401).json({
+                message: "Login failed, please review your account"
+            });
+        }
+
+        // Tạo token
+        const accessToken = Jwt.sign({ _id: user._id }, secretKey);
+
+        // Xóa mật khẩu trước khi gửi thông tin người dùng và token về
+        user.Password = undefined;
+
+        return res.status(200).json({
+            message: "Logged in successfully",
+            user,
+            accessToken
+        });
+
     } catch (error) {
         return res.status(500).json({
             message: "500 Server not found"
-        })
+        });
     }
 }
+
 
 export const getAccount = async (req, res) => {
     try {
