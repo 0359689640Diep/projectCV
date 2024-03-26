@@ -24,7 +24,8 @@ function Login() {
                 return ;
             }
             localStorage.setItem("accessToken", response.data.accessToken);
-            localStorage.setItem("user", response.data.user);
+            const userJson = JSON.stringify(response.data.user);
+            localStorage.setItem("user", userJson);
             toast.success(response.data.message);
             window.location.replace("/admin");
         } catch (error) {

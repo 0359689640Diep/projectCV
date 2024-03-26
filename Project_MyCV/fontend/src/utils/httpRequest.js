@@ -1,15 +1,14 @@
 import axios from "axios";
-import Header from './../layouts/components/Header/index';
 
 const httpRequest = axios.create({
     baseURL: "http://localhost:7000/api/"
 });
 
-export const update = async (url, data, id) => {
+export const update = async (url, data, id, headers = '"Content-Type": "multipart/form-data"') => {
     try {
         const response = await httpRequest.put(`${url}${id}`, data, {
             headers: {
-                "Content-Type": "multipart/form-data"
+                headers
             }
         });
         return response;

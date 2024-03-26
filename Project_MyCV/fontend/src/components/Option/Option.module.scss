@@ -1,0 +1,34 @@
+@import "../GlobalStyles/mixin.scss";
+.warpper{
+    width: 100%;
+    height: 90px;
+    margin: 15px 0;
+
+    .title{
+        width: 100%;
+        height: 50%;
+        font-size: 1.3rem;
+        color: var(--TextColor1);
+
+    }
+    .select{
+        width: 100%;
+        height: 50%;
+        font-size: 1.1rem;
+        border: none;
+        outline: none;
+        color: var(--TextColor2);
+        background-color: transparent;
+        border-bottom: 2px solid var(--TextColor2);
+        
+        option{
+            color: inherit;
+            border: none;
+            outline: none;            
+            background-color: var(--BackgrountColors1);
+        }
+    }
+    .title:hover, .select:hover{
+        cursor: pointer;
+    }
+}

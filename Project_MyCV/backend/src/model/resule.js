@@ -17,6 +17,10 @@ const resuleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    SchoolName: {
+        type: String,
+        required: true
+    },
     Describe: {
         type: String,
         required: true

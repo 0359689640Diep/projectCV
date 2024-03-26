@@ -1,8 +1,10 @@
 import Home from "../pages/user/Home";
 import Login from "../pages/user/Login";
 import admin from "../pages/admin/Home";
-import CreateAccount from "../pages/admin/CreateAccount";
-import EditAccount from "../pages/admin/EditAccount";
+import CreateAccount from "../pages/admin/account/CreateAccount";
+import EditAccount from "../pages/admin/account/EditAccount";
+import CreateResult from "../pages/admin/result/Create";
+import ListResult from "../pages/admin/result/List";
 
 const pulicRouter = [
     {
@@ -31,10 +33,10 @@ const privateRouters = [
         path: "/fixProject", component: admin
     },
     {
-        path: "/createResule", component: admin
+        path: "/createResule", component: CreateResult
     },
     {
-        path: "/fixResule", component: admin
+        path: "/listResule", component: ListResult
     },
     {
         path: "/createSkills", component: admin
@@ -49,5 +51,8 @@ const privateRouters = [
     
 
 ];
+
+
+
 
 export {pulicRouter, privateRouters};

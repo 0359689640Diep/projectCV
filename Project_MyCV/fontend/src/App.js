@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { pdfjs } from 'react-pdf';
+
 
 import { pulicRouter, privateRouters } from "./routers";
 import { DefaultLayout, DefaultLayoutAdmin } from "./layouts";

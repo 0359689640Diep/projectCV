@@ -29,8 +29,8 @@ export const dataResule = [
         icont: "bi bi-journal-plus"
     },
     {
-        to: "/fixResule",
-        value: "Edit Resule",
+        to: "/listResule",
+        value: "List Resule",
         icont: "bi bi-journal-text"
     }
 ]
