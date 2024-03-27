@@ -94,7 +94,4 @@ export const CreateAccountValidator = Joi.object({
     }),
 });
 
-export const validateImage = (data) => {
-    console.log(data);
-}
 

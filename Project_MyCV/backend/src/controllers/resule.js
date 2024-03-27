@@ -24,7 +24,6 @@ const createResul = async (req, res) => {
         const { error } = resuleValidator.validate(data, { abortEarly: false });
         if (error) {
             const errors = error.details.map((err) => err.message);
-            console.log(errors);
             return res.status(400).json({
                 message: errors[0]
             });

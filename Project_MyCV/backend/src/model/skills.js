@@ -13,19 +13,21 @@ const skillsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    Skills: {
-        Name: {
-            type: String,
-            required: true 
-        },
-        Percentage: {
-            type: Number,
-            required: true,
-            default: 0,
-            min: 0,
-            max: 100
-        },
+    Skills: [
+        {
+            Name: {
+                type: String,
+                required: true 
+            },
+            Percentage: {
+                type: Number,
+                required: true,
+                default: 0,
+                min: 0,
+                max: 100
+            },
+        }
 
-    }
+    ]
 }, {versionKey: false, timestamps: true});
 export default mongoose.model("Skills", skillsSchema);

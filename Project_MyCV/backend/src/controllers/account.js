@@ -11,9 +11,9 @@ import { deleteUploadedImages, deleteImage } from "../helpers/image.js";
 
 dotenv.config();
 
-const {token} = process.env;
+
 const secretKey = process.env.secretKey; 
-const baseUrl = "http://localhost:7000/api/image/get-image/";
+const baseUrl = process.env.baseUrl;
 
 export const CreateAccount = async (req, res) => {
     try {
@@ -236,26 +236,25 @@ export const getAccount = async (req, res) => {
             return res.status(404).json({
                 message: "No Account"
             })
-        }else{
-            dataAccount.forEach(obj => {
-                // format dữ liệu
-                const password = obj.Password; 
-                const dateFormat = format(new Date(obj.Birthday), "yyyy-MM-dd");
-                
-                obj.Password = CryptoJS.AES.decrypt(password,  secretKey).toString(CryptoJS.enc.Utf8);
-                obj.CV = baseUrl + obj.CV;
-                obj.IconLogo = baseUrl + obj.IconLogo;
-                obj.Logo = baseUrl + obj.Logo;
-                obj.Birthday = dateFormat;
-
-                if(obj.Image.length !== 0) {
-                    obj.Image.forEach((field, key) => {
-                            obj.Image[key] = baseUrl + field;
-                    })
-                }
-            })
-            return res.status(200).json({dataAccount: dataAccount})
         }
+        dataAccount.forEach(obj => {
+            // format dữ liệu
+            const password = obj.Password; 
+            const dateFormat = format(new Date(obj.Birthday), "yyyy-MM-dd");
+            
+            obj.Password = CryptoJS.AES.decrypt(password,  secretKey).toString(CryptoJS.enc.Utf8);
+            obj.CV = baseUrl + obj.CV;
+            obj.IconLogo = baseUrl + obj.IconLogo;
+            obj.Logo = baseUrl + obj.Logo;
+            obj.Birthday = dateFormat;
+
+            if(obj.Image.length !== 0) {
+                obj.Image.forEach((field, key) => {
+                        obj.Image[key] = baseUrl + field;
+                })
+            }
+        })
+        return res.status(200).json({dataAccount: dataAccount})
     } catch (error) {
         return res.status(500).json({
             message: "The system is maintenance"
