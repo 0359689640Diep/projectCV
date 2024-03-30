@@ -34,7 +34,7 @@
     width: $width;
     height: $height;
 }
-@mixin customScrollbar($trackColor, $thumbColor) {
+@mixin customScrollbar($trackColor: var(--BackgroundColors1), $thumbColor: var(--BackgroundColors)) {
     &::-webkit-scrollbar {
         width: 5px;
     }

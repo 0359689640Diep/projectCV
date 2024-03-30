@@ -5,6 +5,7 @@ import email from "../helpers/sendEmail.js"
 
 export const sendMessage = async (req, res) => {
     try {
+        console.log(req.body);
         const {error} = sendMessageValidator.validate(req.body, {abortEarly: false});
         if(error) {
             const errors = error.details.map((error) => error.message);

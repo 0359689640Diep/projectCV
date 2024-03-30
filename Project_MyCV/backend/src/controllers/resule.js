@@ -12,7 +12,7 @@ const getAll = async (req, res) => {
 
         return res.status(200).json({ data: result });
     } catch (error) {
-        console.error(error);
+
         return res.status(500).json({ message: "The system is under maintenance" });
     }
 };

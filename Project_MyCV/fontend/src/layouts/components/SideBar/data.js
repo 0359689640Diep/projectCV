@@ -1,48 +1,48 @@
 export const dataAccount = [
     {
-        to: "/createAccount",
+        to: "/create-account",
         value: "Create Account",
         icont: "bi bi-person-add"
     },
     {
-        to: "/editAccount",
+        to: "/edit-account",
         value: "Edit Account",
         icont: "bi bi-person-up"
     }
 ]
 export const dataProject = [
     {
-        to: "/createProject",
+        to: "/create-project",
         value: "Create Project",
         icont: "bi bi-clipboard-plus"
     },
     {
-        to: "/fixProject",
-        value: "Edit Project",
+        to: "/list-project",
+        value: "List Project",
         icont: "bi bi-clipboard-pulse"
     }
 ]
 export const dataResule = [
     {
-        to: "/createResule",
+        to: "/create-resule",
         value: "Create Resule",
         icont: "bi bi-journal-plus"
     },
     {
-        to: "/listResule",
+        to: "/list-resule",
         value: "List Resule",
         icont: "bi bi-journal-text"
     }
 ]
 export const dataSkills = [
     {
-        to: "/createSkills",
+        to: "/create-skills",
         value: "Create Skills",
         icont: "bi bi-cloud-arrow-up"
     },
     {
-        to: "/fixSkills",
-        value: "Edit Skills",
+        to: "/list-skills",
+        value: "List Skills",
         icont: "bi bi-cloud-plus"
     }
 ]

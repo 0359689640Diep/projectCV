@@ -7,6 +7,10 @@ import styles from "./Home.module.scss";
 import { images } from "../../../asset/img";
 import { sendMessage } from "../../../Services/message";
 import Notification from "../../../components/Notification";
+import { getAccount } from "../../../Services/account";
+import { getResult } from "../../../Services/result";
+import { getProject } from "../../../Services/project";
+import { getSkill } from "../../../Services/skills";
 
 const cx = className.bind(styles);
 
@@ -17,6 +21,10 @@ function Home() {
         AOS.init(); 
     }, []);
 
+    const [DataAccount, SetDataAccount] = useState([]);
+    const [DataProject, SetDataProject] = useState([]);
+    const [DataSkills, SetDataSkills] = useState([]);
+    const [DataResule, SetdataResule] = useState([]);
     const [isDesProjectVisible, setDesProjectVisible] = useState(false);
 
     const toggleDesProjectVisibility = () => {
@@ -35,6 +43,25 @@ function Home() {
     const [TitleMessage, setTitleMessage] = useState("");
     const [Content, setContent] = useState("");
 
+    const getData = async () => {
+        try {
+            const account = await getAccount();
+            const result = await getResult();
+            const project = await getProject();
+            const skill = await getSkill();
+
+            SetDataAccount(account.dataAccount);
+            SetDataSkills(skill.data);
+            SetDataProject(project.data);
+            SetdataResule(result.data);
+            
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {getData()}, []);
 
     // call api
     const fectAPI = async (e) => {
@@ -54,26 +81,30 @@ function Home() {
         setMessage(response.message);
     }
     return ( 
-        <main className = {cx("homeMain")}>           
+ 
+        <main className = {cx("homeMain")}>   
+            {DataAccount  && DataAccount[0] && DataSkills && DataSkills[0] && DataProject && DataProject && DataResule &&   
+            <>      
             <section className = {cx("home")} id="home">
                 <section className = {cx("contentHome")} data-aos="fade-up" data-aos-duration="1000">
                     <article className = {cx("itemContentHome")} data-aos="fade-up" data-aos-duration="1200">
                         <h5>Hello, I'm</h5>
                     </article>
                      <article className = {cx("itemContentHome")} data-aos="fade-up" data-aos-duration="1500">
-                        <h1>Vũ Hồng Điệp</h1>
+                    <h1>{DataAccount[0].Name}</h1>
+
                     </article>
                      <article className = {cx("itemContentHome")} data-aos="fade-up" data-aos-duration="1400">
                         <h3>Backend Devoloper</h3>
                     </article>
                      <article className = {cx("itemContentHomeButton")} data-aos="fade-up" data-aos-duration="1500">
-                        <a href="/">
+                        <a href="#contact">
                             <button>Hire Me </button>
                         </a>
                     </article>
                 </section>
                 <section className = {cx("imgHome")} data-aos="fade-left" data-aos-duration="1400">
-                    <img src={images.imageAvata} alt="avata"/>
+                    <img src={DataAccount[0].Image[0]} alt="avata"/>
                     <section className = {cx("media")} data-aos="fade-right">
                         <article className = {cx("contentMedia")} >
                             <a href="/">
@@ -95,17 +126,17 @@ function Home() {
                         <article className = {cx("imgAbout")} data-aos="fade-right"
                         data-aos-offset="300"
                         data-aos-easing="ease-in-sine">
-                            <img src={images.imageAvata} alt="avata"/>
+                            <img src={DataAccount[0].Image[1]} alt="avata"/>
                         </article>
                         <section className = {cx("itemAbout")} data-aos="zoom-in">
                             <article className = {cx("titleItemAbout")}>
-                                <h2>Hi There! I'm Vũ Hồng Điệp</h2>
+                                <h2>Hi There! I'm {DataAccount[0].Name}</h2>
                             </article>
                             <article className = {cx("titleItemAbout")}>
                                 <h5>Backend Devoloper</h5>
                             </article>
                             <article className = {cx("titleItemAbout")}>
-                                <p>I am a Visual Designer with a strong focus on digital branding. Visul design seeks to attract, inspire, create desires and otivate people to respond to messages, with a view to making a favorable impact.</p>
+                                <p>{DataAccount[0].Describe}</p>
                             </article>
                             <section className = {cx("titleItemAboutPersonalInformation")}>
                                 <section className = {cx("contentTitleItemAbout")}>
@@ -113,7 +144,7 @@ function Home() {
                                         <p>Birthday</p>
                                     </article>
                                     <article className = {cx("itemContent")}>
-                                        <p>: December 27, 2004</p>
+                                        <p>: {DataAccount[0].Birthday}</p>
                                     </article>
                                 </section>
                                 <section className = {cx("contentTitleItemAbout")}>
@@ -121,7 +152,7 @@ function Home() {
                                         <p>Phone</p>
                                     </article>
                                     <article className = {cx("itemContent")}>
-                                        <p>: 0359689640</p>
+                                        <p>: {DataAccount[0].Phone.join(" - ")}</p>
                                     </article>
                                 </section>
                                 <section className = {cx("contentTitleItemAbout")}>
@@ -129,7 +160,7 @@ function Home() {
                                         <p>Email</p>
                                     </article>
                                     <article className = {cx("itemContent")}>
-                                        <p>: Vudiep621@gmail.com</p>
+                                        <p>: {DataAccount[0].Email}</p>
                                     </article>
                                 </section>
                                 <section className = {cx("contentTitleItemAbout")}>
@@ -137,7 +168,7 @@ function Home() {
                                         <p>From</p>
                                     </article>
                                     <article className = {cx("itemContent")}>
-                                        <p>: Tu Hoàn Phương Canh Hà Nội</p>
+                                        <p>: {DataAccount[0].From}</p>
                                     </article>
                                 </section>
                                 <section className = {cx("contentTitleItemAbout")}>
@@ -145,7 +176,7 @@ function Home() {
                                         <p>Language</p>
                                     </article>
                                     <article className = {cx("itemContent")}>
-                                        <p>: English,  VietNameses</p>
+                                        <p>: {DataAccount[0].Language.join(", ")}</p>
                                     </article>
                                 </section>
                                 <section className = {cx("contentTitleItemAbout")}>
@@ -153,12 +184,12 @@ function Home() {
                                         <p>Job</p>
                                     </article>
                                     <article className = {cx("itemContent")}>
-                                        <p>: Student</p>
+                                        <p>: {DataAccount[0].Job.join(", ")}</p>
                                     </article>
                                 </section>
                             </section>
                             <article className = {cx("titleItemDownloadAbout")}>
-                                <a href="/">
+                                <a href={DataAccount[0].CV}>
                                     <button>Download CV</button>
                                 </a>
                             </article>
@@ -180,26 +211,33 @@ function Home() {
                                 <h2>Education</h2>
                             </section>
                             <section className = {cx("contentEducation")} >
-                                
-                                <section className = {cx("itemContent")}>
-                                    <article className = {cx("titleItemEducation")}>
-                                        <svg  height="30">
-                                            <circle cx="30" cy="15" r="7" stroke="#101624" strokeWidth="3" fill="#232935"></circle>
-                                        </svg>
-                                        <h2>Master of Computer Science</h2>
-                                    </article>
-                                    <section className = {cx("contentItemEducation")}>
-                                    <svg height="100%">
-                                        <line x1="30" y1="0" x2="30" y2="100%" style={{stroke: "#232935", strokeWidth: 1}}></line>
-                                    </svg>
-                                    
-                                        <article className = {cx("content")}>
-                                            <h4>2022 - 2025</h4>
-                                            <h2>FPT Polytechnic College</h2>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ligula nulla, tincidunt id faucibus sed, suscipit feugiat turpis.</p>
-                                        </article>
-                                    </section>
-                                </section>
+                                {
+                                    DataResule.map((item, index) => {
+                                        if(item.Type === 0){
+                                            return (
+                                                <section key={index} className = {cx("itemContent")}>
+                                                    <article className = {cx("titleItemEducation")}>
+                                                        <svg  height="30">
+                                                            <circle cx="30" cy="15" r="7" stroke="#101624" strokeWidth="3" fill="#232935"></circle>
+                                                        </svg>
+                                                        <h2>{item.Name}</h2>
+                                                    </article>
+                                                    <section className = {cx("contentItemEducation")}>
+                                                    <svg height="100%">
+                                                        <line x1="30" y1="0" x2="30" y2="100%" style={{stroke: "#232935", strokeWidth: 1}}></line>
+                                                    </svg>
+                                                    
+                                                        <article className = {cx("content")}>
+                                                            <h4>{item.Date}</h4>
+                                                            <h2>{item.SchoolName}</h2>
+                                                            <p>{item.Describe}</p>
+                                                        </article>
+                                                    </section>
+                                                </section>
+                                            )
+                                        }
+                                    })
+                                }
 
                             </section>
                         </section>
@@ -209,25 +247,33 @@ function Home() {
                                 <h2>Experience</h2>
                             </section>
                             <section className = {cx("contentExperience")} >
-                                <section className = {cx("itemContent")}>
-                                    <article className = {cx("titleItemExperience")}>
-                                        <svg  height="30">
-                                            <circle cx="30" cy="15" r="7" stroke="#101624" strokeWidth="3" fill="#232935"></circle>
-                                        </svg>
-                                        <h2>Master of Computer Science</h2>
-                                    </article>
-                                    <section className = {cx("contentItemExperience")}>
-                                        <svg height="100%">
-                                            <line x1="30" y1="0" x2="30" y2="100%" style={{ stroke: '#232935', strokeWidth: 1 }}></line>
-                                        </svg>
-                                    
-                                        <article className = {cx("content")}>
-                                            <h4>2022 - 2025</h4>
-                                            <h2>FPT Polytechnic College</h2>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ligula nulla, tincidunt id faucibus sed, suscipit feugiat turpis.</p>
-                                        </article>
-                                    </section>
-                                </section>
+                            {
+                                DataResule.map((item, index) => {
+                                        if(item.Type === 1){
+                                            return (
+                                                <section key={index} className = {cx("itemContent")}>
+                                                    <article className = {cx("titleItemExperience")}>
+                                                        <svg  height="30">
+                                                            <circle cx="30" cy="15" r="7" stroke="#101624" strokeWidth="3" fill="#232935"></circle>
+                                                        </svg>
+                                                    <h2>{item.Name}</h2>
+                                                    </article>
+                                                    <section className = {cx("contentItemExperience")}>
+                                                        <svg height="100%">
+                                                            <line x1="30" y1="0" x2="30" y2="100%" style={{ stroke: '#232935', strokeWidth: 1 }}></line>
+                                                        </svg>
+                                                    
+                                                        <article className = {cx("content")}>
+                                                            <h4>{item.Date}</h4>
+                                                            <h2>{item.SchoolName}</h2>
+                                                            <p>{item.Describe}</p>
+                                                        </article>
+                                                    </section>
+                                                </section>
+                                            )
+                                        }
+                                        })
+                            }
 
                             </section>
                         </section>
@@ -243,21 +289,25 @@ function Home() {
                     </article>
                     <section className = {cx("contentSkills")}>
                         <article className = {cx("titleContentSkills")}  data-aos="fade-right">
-                            <h2>All the skills that I have in that field of work are mentioned.</h2>
-                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt.</p>
+                            <h2>{DataSkills[0].TitleSkills}</h2>
+                            <p>{DataSkills[0].ContentSkills}</p>
                         </article>
                         <section className = {cx("listChartsSkills")}>
-                            <section className = {cx("chartsSkils")} data-aos="fade-up"
-                            data-aos-duration="1000">
-                                <article className = {cx("titleChartsSkils")}>
-                                    <h3>HTML</h3>
-                                    <h4>70%</h4>
-                                </article>
-                                <article className = {cx("contentChartsSkils")}>
-                                    <article style={{width: "70%"}} className = {cx("contentShow")}></article>
-                                    <article className = {cx("contentHidden")}></article>
-                                </article>
-                            </section>
+                        {DataSkills[0].Skills.map((item, index) => {
+                            return (
+                                <section key={index} className = {cx("chartsSkils")} data-aos="fade-up"
+                                data-aos-duration="1000">
+                                    <article className = {cx("titleChartsSkils")}>
+                                        <h3>{item.Name}</h3>
+                                        <h4>{item.Percentage}%</h4>
+                                    </article>
+                                    <article className = {cx("contentChartsSkils")}>
+                                        <article style={{width: `${item.Percentage}%`}} className={cx("contentShow")}></article>
+                                        <article className = {cx("contentHidden")}></article>
+                                    </article>
+                                </section>
+                            )
+                        })}
                         </section>
                     </section>
                 </section>
@@ -271,57 +321,50 @@ function Home() {
                     </article>
                     <section className = {cx("contentProject")}>
                         <section className = {cx("listContentProject")}>
-                            <section className = {cx("itemListContentProject")}  onClick={toggleDesProjectVisibility}>
-                                <img src={images.logo} alt="imgProject"/>
-                                <article className = {cx("contentItem")} >
-                                    <h2>Backend Devoloper</h2>
-                                    <p>Design / Marketing</p>
-                                </article>
-                                <section className={cx("desProject")} style={{ display: isDesProjectVisible ? 'flex' : 'none' }}>
-                                    <article className = {cx("imageDesProject")}>
-                                        <img src={images.logo} alt="imgProject"/>
+                        {DataProject.map((item, index) => {
+                            return (
+                                <section key={index} className = {cx("itemListContentProject")}  onClick={toggleDesProjectVisibility}>
+                                    <img src={item.Image[0]} alt="imgProject"/>
+                                    <article className = {cx("contentItem")} >
+                                        <h2>{item.Name}</h2>
+                                        <p>Design / Marketing</p>
                                     </article>
-                                    <section className = {cx("contentDesProject")}>
-                                        <section className = {cx("itemContentDesProject")}>
-                                            <h2>Giới thiệu</h2>
-                                            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt.</p>
-                                            <h2>Cộng nghệ</h2>
-                                            <ul>
-                                                <li>PHP</li>
-                                                <li>Node js</li>
-                                                <li>Mogo Db</li>
-                                                <li>PHP</li>
-                                                <li>Node js</li>
-                                                <li>Mogo Db</li>
-                                                <li>PHP</li>
-                                                <li>Node js</li>
-                                                <li>Mogo Db</li>
-                                                <li>PHP</li>
-                                                <li>Node js</li>
-                                                <li>Mogo Db</li>
-                                            </ul>
-                                            <h2> Đối tượng có trong dự án</h2>
-                                            <ul>
-                                                <li>Nhân viên</li>
-                                                <li>Quản lý</li>
-                                                <li>Khách hàng</li>
-                                                <li>Nhân viên</li>
-                                                <li>Quản lý</li>
-                                                <li>Khách hàng</li>
-                                                <li>Nhân viên</li>
-                                                <li>Quản lý</li>
-                                                <li>Khách hàng</li>
-                                            </ul>
-                                            <a href="/">
-                                                <button>Trải nhiệm ngay</button>
-                                            </a>
-                                        </section>
-                                        <article className = {cx("icontDesProject")}>
-                                            <i className="bi bi-x-circle" onClick={hideDesProject}></i>
+                                    <section className={cx("desProject")} style={{ display: isDesProjectVisible ? 'flex' : 'none' }}>
+                                        <article className = {cx("imageDesProject")}>
+                                            <img src={item.Image[1]} alt="imgProject"/>
                                         </article>
+                                        <section className = {cx("contentDesProject")}>
+                                            <section className = {cx("itemContentDesProject")}>
+                                                <h2>Giới thiệu</h2>
+                                                <p>{item.Introduce}</p>
+                                                <h2>Cộng nghệ</h2>
+                                                <ul>
+                                                {item.Technology.map((itemTechnology, indexTechnology) => {
+                                                    return (
+                                                        <li key={indexTechnology}>{itemTechnology}</li>
+                                                    )
+                                                })}
+                                                </ul>
+                                                <h2> Đối tượng có trong dự án</h2>
+                                                <ul>
+                                                {item.ObjectInProject.map((itemObjectInProject, indexObjectInProject) => {
+                                                    return (
+                                                        <li key={indexObjectInProject}>{itemObjectInProject}</li>
+                                                    )
+                                                })}
+                                                </ul>
+                                                <a href={`${item.LinkProject}`}>
+                                                    <button>Trải nhiệm ngay</button>
+                                                </a>
+                                            </section>
+                                            <article className = {cx("icontDesProject")}>
+                                                <i className="bi bi-x-circle" onClick={hideDesProject}></i>
+                                            </article>
+                                        </section>
                                     </section>
                                 </section>
-                            </section>
+                            )
+                        })}
                         </section>
                         <article className = {cx("loadMore")}>
                             <a href="/">
@@ -390,6 +433,7 @@ function Home() {
                     </section>
                 </section>
             </section>
+            </>}
         </main>
  
      );

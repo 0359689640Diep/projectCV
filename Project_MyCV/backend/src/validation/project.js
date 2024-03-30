@@ -1,6 +1,6 @@
 import Joi from "joi";
 export const projectValidator = Joi.object({
-    Name: Joi.string().min(6).max(255).required().messages({
+    Name: Joi.string().min(3).max(255).required().messages({
         "string.empty": "Name cannot be empty",
         "string.min": "Name must have at least {#limit} characters",
         "string.max": "Name must have at most {#limit} characters",

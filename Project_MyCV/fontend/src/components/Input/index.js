@@ -5,7 +5,7 @@ import styles from "./Input.module.scss";
 const cx = classNames.bind(styles);
 
   function Input(
-    { name, type, required = false, onKeyPress,title, id, value, onChange, min = 0,  multiple = false, onFocus = false, Icons = false}
+    { name, type, required = false, onKeyPress,title, id, value, onChange, min = 0, max = 0, multiple = false, onFocus = false, Icons = false}
     ) {
   const inputRef = useRef(null);
 
@@ -51,6 +51,7 @@ const cx = classNames.bind(styles);
         className={cx('input')} 
         value={value}
         min={min}
+        max={max}
         onChange={onChange}
         ref={inputRef}
         onKeyPress ={onKeyPress}

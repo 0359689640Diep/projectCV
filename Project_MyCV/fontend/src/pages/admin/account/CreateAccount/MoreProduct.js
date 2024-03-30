@@ -14,8 +14,8 @@ function MoreProduct({name, type, onDataUpdate, value}) {
     if ((typeof value === 'string' && value.trim() !== '') || (Array.isArray(value) && value.length !== 0)) {
         setData(value);
       } 
-    else {
-        // setData([]);
+    if(value === "") {
+        setData([]);
       }
   }, [value])
 

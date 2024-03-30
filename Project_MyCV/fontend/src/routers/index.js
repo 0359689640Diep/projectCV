@@ -5,6 +5,10 @@ import CreateAccount from "../pages/admin/account/CreateAccount";
 import EditAccount from "../pages/admin/account/EditAccount";
 import CreateResult from "../pages/admin/result/Create";
 import ListResult from "../pages/admin/result/List";
+import CreateSkills from "../pages/admin/skills/Create";
+import ListSkills from "../pages/admin/skills/List";
+import ListProject from '../pages/admin/project/ListProject/index';
+import CreateProject from "../pages/admin/project/CreateProject";
 
 const pulicRouter = [
     {
@@ -21,28 +25,28 @@ const privateRouters = [
         path: "/admin", component: admin
     },
     {
-        path: "/createAccount", component: CreateAccount
+        path: "/create-account", component: CreateAccount
     },
     {
-        path: "/editAccount", component: EditAccount
+        path: "/edit-account", component: EditAccount
     },
     {
-        path: "/createProject", component: admin
+        path: "/create-project", component: CreateProject
     },
     {
-        path: "/fixProject", component: admin
+        path: "/list-project", component: ListProject
     },
     {
-        path: "/createResule", component: CreateResult
+        path: "/create-resule", component: CreateResult
     },
     {
-        path: "/listResule", component: ListResult
+        path: "/list-resule", component: ListResult
     },
     {
-        path: "/createSkills", component: admin
+        path: "/create-skills", component: CreateSkills
     },
     {
-        path: "/fixSkills", component: admin
+        path: "/list-skills", component: ListSkills
     },
     
     {

@@ -1,0 +1,71 @@
+@import "../../../../components/GlobalStyles/mixin.scss";
+.warpper{
+    width: 100%;
+    height: 82%;
+    
+    .title{
+        color: var(--TextColor1);
+        font-size: 1.5rem;
+    }
+}
+.container{
+    width: 100%;
+    @include flexCenter(space-between);
+
+    .input_item{
+        width: 45%;
+        height: 219px;
+
+    }
+
+    .list-skills{
+        width: 50%;
+        height: auto;
+        overflow-x: auto;
+        @include customScrollbar(var(--BackgroundColors1), var(--BackgroundColors));
+        
+        .table{
+            width: 100%;
+            height: auto;
+    
+            tr{
+                th, td{
+                    height: 20px;
+                    font-size: 1.5rem;
+                    padding: 2% 0;
+                    color: var(--TextColor1);
+                    border-bottom: 2px solid var(--TextColor2);
+                }
+                td{
+                    font-size: 1rem;
+                    text-align: center;
+                    color: var(--TextColor2);
+    
+                    .Edit, .Delete, .Update{
+                        width: 45%;
+                        height: 100%;
+                        margin: 0 1%;
+                        font-size: 0.7rem;
+                        color: var(--TextColor1);
+                        border: none;
+                        border-radius: 5px;
+                        background-color: #198754;
+                        transition: linear 1s;
+                    }
+                    .Edit:hover, .Delete:hover, .Update:hover{
+                        cursor: pointer;
+                    }
+                    .Edit:active, .Delete:active, .Update:active{
+                        transform: scale(0, 1);
+                    }
+                    .Delete{
+                        background-color: #dc3545;
+
+                    }                    
+    
+                }
+        
+            }
+        }
+    }
+}

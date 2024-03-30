@@ -22,7 +22,6 @@ const deleteImage = (files) => {
             // Nếu files là một chuỗi
             let pathFile = "src/uploads/Images/" + files;
             fs.unlink(pathFile, (err) => {
-                console.log(err);
                 return err;
             })
         } else if (Array.isArray(files)) {
@@ -30,7 +29,6 @@ const deleteImage = (files) => {
             for (const item of files) {
                 let pathFile = "src/uploads/Images/" + item;
             fs.unlink(pathFile, (err) => {
-                console.log(err);
                 return err;
             })
             }

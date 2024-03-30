@@ -47,6 +47,7 @@ export const deleteSkills = async (req, res) => {
 export const updateSkills = async (req, res) => {
     try {
         const id = req.params.id;
+        console.log(req.body);
         const {error} = skillsValidator.validate(req.body, {abortEarly: false});
         if(error){
             const errors = error.details.map((err) => err.message);

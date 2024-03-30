@@ -193,6 +193,7 @@ function FormListAccount({Item, onUpdateData}) {
                     type="file"
                     Item = {CV}
                     id="CV"
+                    value="1"
                     onImageChange = {handleCV}
                 />
                 <UploadImage 
@@ -200,6 +201,7 @@ function FormListAccount({Item, onUpdateData}) {
                     type="file"
                     Item = {Item.Image}
                     id="Images"
+                    value="1"
                     multiple = {true} 
                     onImageChange = {handleImage}
                 />
@@ -208,6 +210,7 @@ function FormListAccount({Item, onUpdateData}) {
                     type="file"
                     Item = {Item.Logo}
                     id="Logo"
+                    value="1"
                     onImageChange = {handleLogo}
                 />      
                <UploadImage 
@@ -215,6 +218,7 @@ function FormListAccount({Item, onUpdateData}) {
                     type="file"
                     Item = {Item.IconLogo}
                     id="IconLogo"
+                    value="1"
                     onImageChange = {handleIconLogo}
                 />   
                 <Button

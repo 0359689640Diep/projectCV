@@ -9,7 +9,10 @@ const baseUrl = process.env.baseUrl;
 
 export const update = async (req,res) => {
     try {
-        const { error } = projectValidator.validate(req.body, { abortEarly: false });
+         const {Image,...data} = req.body;
+         const {Author, Technology, ObjectInProject, ...dataObject} = data;
+        const { error } = projectValidator.validate(data, { abortEarly: false });
+  
         if (error) {
              // Nếu có lỗi, xóa các file ảnh đã được tải lên
             deleteUploadedImages(req.files)
@@ -21,9 +24,8 @@ export const update = async (req,res) => {
         }
 
         const id = req.params.id;
-        const {Author, Technology, ObjectInProject, ...data} = req.body;
         const newData = {
-            ...data,
+            ...dataObject,
             Technology: Technology.split(","),
             Author: Author.split(","),
             ObjectInProject: ObjectInProject.split(","),          
@@ -31,7 +33,6 @@ export const update = async (req,res) => {
 
         // kiem tra xem anh co duoc up len hay khong
         if(Object.keys(req.files).length >0) {
-
             // lay anh cu dua theo id
             const imageByIdProduct = await Project.findById({_id: Object(id)}, {Image: 1});
 

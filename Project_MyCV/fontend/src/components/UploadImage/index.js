@@ -5,24 +5,31 @@
 
     const cx = classNames.bind(style);
 
-    function UploadImage({ Item, name, id, required = false, multiple = false, onImageChange}) {
+    function UploadImage({ Item, name, id, value = "" ,required = false, multiple = false, onImageChange}) {
         // Sử dụng useRef để tham chiếu đến thẻ input
         const fileInputRef = useRef(null);
         const [images, setImages] = useState([]);
 
         useEffect(() => {
+ 
             if (Item) {
                 if (Array.isArray(Item)) {
                     // Trường hợp Item là mảng, setImages với mảng này
-                    setImages(Item.map((url) => ({ preview: url })));
-
+                    const Images = Item.map((url) => ({ preview: url }));
+                    setImages(Images);
                 } else {
                     // Trường hợp Item là chuỗi, setImages với mảng chứa 1 phần tử
                     setImages([{ preview:  Item }]);
                 }
-        }
- 
+            }
         }, [Item]);
+
+        useEffect(() => {
+            if (value === "") {
+                // Nếu Item là chuỗi rỗng, xóa hết dữ liệu trong mảng images
+                setImages([]);
+            } 
+        }, [value]);
 
         useEffect(() => {
             // cleanup
@@ -50,7 +57,6 @@
             setImages(newImages);
             onImageChange(e.target.files);
         };
-        
         return (
             <section className={cx("wrapper")}>
                 {images.map((img, keys) => (
@@ -58,23 +64,23 @@
                         <article className={cx("images")}>                            
                             <img src={img.preview} alt="img" />
                         </article>
-                        <article className={cx("item")}>
-                            <button onClick={handleButtonClick}>
-                                Chọn {name}
-                                {/* Thêm ref vào thẻ input để tham chiếu đến nó */}
-                                <input
-                                    ref={fileInputRef}
-                                    type="file"
-                                    name={name}
-                                    id={id}
-                                    required={required}
-                                    multiple={multiple}
-                                    onChange={(e) => handleFileInputChange(e)}
-                                />
-                            </button>
-                        </article>
                     </section>
                 ))}
+                    <article className={cx("item")}>
+                        <button onClick={handleButtonClick}>
+                            Chọn {name}
+                            {/* Thêm ref vào thẻ input để tham chiếu đến nó */}
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                name={name}
+                                id={id}
+                                required={required}
+                                multiple={multiple}
+                                onChange={(e) => handleFileInputChange(e)}
+                            />
+                        </button>
+                    </article>
             </section>
         );
     }

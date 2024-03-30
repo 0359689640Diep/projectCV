@@ -36,9 +36,6 @@ function ListResult() {
           toast.error("The system is maintenance")
         }
     }
-    const handleUpdate =  (id) => {
-        SetUpdate(id);
-    }
 
     const Edit = (item, key) => {
 
@@ -127,7 +124,7 @@ function ListResult() {
                                 <td>{item.Type === 0 ? "Education": "Experience"}</td>
                                 <td>
                                     <button onClick={() => {handleDelete(item._id)}} className={cx("Delete")}>Delete</button>
-                                    <button onClick={() => {handleUpdate(item._id)}} className={cx("Edit")}>Edit</button>
+                                    <button onClick={() => {SetUpdate(item._id)}} className={cx("Edit")}>Edit</button>
                                 </td>
                             </tr>
                         ))
