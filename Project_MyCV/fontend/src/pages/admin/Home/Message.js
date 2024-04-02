@@ -4,15 +4,14 @@ import { useState } from "react";
 import styles from "./Home.module.scss";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
-import Notification from "../../../components/Notification";
-import { updateStatusMessage, deleteEmail, sendEmail } from "../../../Services/message";
+import { updateStatusMessage, deleteEmail, replyGmail } from "../../../Services/message";
+import { toast } from "react-toastify";
 
 const cx = classNames.bind(styles);
 
-function Message({item}) {
+function Message({item, callAPi}) {
 
     const [display, setDisplay] = useState(false);
-    const [alert, setAlert] = useState("");
     const [reply, setReply] = useState("");
 
     const handleDisplay = () => {
@@ -29,32 +28,27 @@ function Message({item}) {
     const handleRemoteEmail = async (id) => {
         try {
             const result = await deleteEmail(id);
-            setAlert(result.message);
-            removeEmailFromUI(id);
+            toast.success(result.message);
+            callAPi();
         } catch (error) {
             console.log(error);
-            setAlert("The system is maintenance");
+            toast.error("The system is maintenance");
         }
     };
-    function removeEmailFromUI(id) {
-        // Code để xóa email từ giao diện người dùng (ví dụ: sử dụng DOM manipulation)
-        const emailElement = document.getElementById(id);
-        emailElement.parentNode.removeChild(emailElement);
-    }
 
-    const handleReplyEmail = async (id, NameUserReceiver, EmailReceiver) =>{
+
+    const handleReplyEmail = async (id) =>{
         try {
-            const body ={
-                    _id: id,
-                    NameUserReceiver,
-                    EmailReceiver,
-                    "TitleMessage": "Reply To Gmail",
-                    ReplyMessage: reply  
+            const result = await replyGmail({"ReplyMessage": reply}, id);   
+            if(result.Status >= 400){
+                toast.warning(result.data.message);
+            }else{
+                toast.success(result.data.message);
+                setReply("");
+                callAPi();
             }
-            let result = await  sendEmail(body);
-            setAlert(result.message);
         } catch (error) {
-            setAlert("The system is maintenance");
+            toast.error("The system is maintenance");
             console.log(error);
         }
     }
@@ -90,8 +84,9 @@ function Message({item}) {
                         name="Reply The Message"
                         type="text"
                         required
-                        id={`itemReplyMessage-${item._id}`}
+                        value={reply}
                         onFocus={() => {}}
+                        id={`itemReplyMessage-${item._id}`}
                         onChange={(e) => setReply(e.target.value)}
                     />
                     <Button
@@ -99,17 +94,11 @@ function Message({item}) {
                         width="15%"
                         height="10%"
                         padding="1%"
-                        onClick={() => handleReplyEmail(item._id, item.NameUserReceiver, item.EmailReceiver)}
+                        onClick={() => handleReplyEmail(item._id)}
                     />
                 </article>
             </section>
         </section>        
-            {alert && (
-                <Notification
-                    content={alert}
-                    title="Message"
-                />
-            )}
         </>
     );
 }

@@ -24,10 +24,6 @@ function HeaderAdmin() {
                     <i className="bi bi-people"></i>
                     <p>User</p>
                 </Link>
-                <Link to = {routerConfig.myaccount} className={cx("itemNav")}>
-                    <i className="bi bi-person-circle"></i>
-                    <p>My Account</p>
-                </Link>
                 <Link to = {routerConfig.home} className={cx("itemNav")} onClick={handleLogout}>
                     <i className="bi bi-box-arrow-right"></i>
                     <p>Logout</p>

@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { CreateAccount, signIn,  getAccount, deleteAccount, updateAccount } from "../controllers/account.js";
+import { CreateAccount, signIn,  getAccount, deleteAccount, updateAccount, getAccountByRequest } from "../controllers/account.js";
 import {upload, handleInvalidFile, deleteUploadImg} from "../middleware/image.js";
 
 const routerAccount = Router();
@@ -27,6 +27,7 @@ routerAccount.get('/images/:filename', async (req, res) => {
 });
 routerAccount.post("/createAccount", upload, handleInvalidFile, deleteUploadImg, CreateAccount);
 routerAccount.get("/getAllAccount", getAccount);
+routerAccount.get("/:request", getAccountByRequest);
 routerAccount.delete("/deleteAccount/:id", deleteAccount);
 routerAccount.put("/updateAccount/:id", upload, handleInvalidFile, deleteUploadImg,updateAccount);
 

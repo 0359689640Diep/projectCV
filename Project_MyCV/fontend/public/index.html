@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/IcontLogo.png" />
+    <link rel="icon" id="IconLogo" href="%PUBLIC_URL%/IcontLogo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
@@ -40,4 +40,14 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+    <script>
+      const IcontLogo = document.getElementById("IcontLogo");
+      fetch("http://localhost:7000/api/account/IconLogo")
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          IconLogo.href = data.dataAccount[0].IconLogo;
+        })
+        .catch(err => console.log(err))
+    </script>
 </html>

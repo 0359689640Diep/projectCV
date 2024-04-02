@@ -1,0 +1,45 @@
+@import "../GlobalStyles/mixin.scss";
+
+.wrapper{
+    @include widthHeight(100%, auto);
+    @include flexCenter(space-around, center);
+    border-bottom: 2px solid var(--TextColor1);
+    flex-wrap: wrap;
+    margin: 5% 0;
+} 
+
+.show-file {
+    @include widthHeight(100%, auto);
+    @include flexCenter(space-around, center);
+    flex-wrap: wrap;
+    
+    img {
+        object-fit: cover;
+        object-position: center;
+        margin: 2% 0;
+        @include widthHeight(30%, 200px);
+    }
+}
+
+.input-file {
+    @include widthHeight(100%, 15%);
+    @include flexCenter(center, center);
+
+    button {
+        width: 20%;
+        height: 100%;
+        border-radius: 5px;
+        border: none;
+        font-size: 0.7rem;
+        padding: 2%;
+
+        input {
+            display: none;
+        }
+    }
+
+    button:hover {
+        @include buttonHover;
+    }
+}
+

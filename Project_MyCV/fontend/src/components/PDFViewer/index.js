@@ -1,34 +1,77 @@
-import React, { useState } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
-import classNames from "classnames";
+import React, { useState, useRef, useEffect } from "react";
+import { Document, Page, pdfjs } from 'react-pdf';
+import classNames from "classnames/bind";
 
 import styles from "./PDFViewer.module.scss";
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
+import { toast } from "react-toastify";
+
 
 const cx = classNames.bind(styles);
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.js',
-  import.meta.url,
-).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-function PDFViewer({ path }) {
-  const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
+function PDFViewer({ name, value , Item=""}) {
+    const [numPages, setNumPages] = useState(null);
+    const [pageNumber, setPageNumber] = useState(1);
+    const [pdfURL, setPdfURL] = useState(null);
 
-  const onDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages);
-  };
+    const fileInputRef = useRef(null);
+    useEffect(() => {
+        if(Item === ""){
+            setPdfURL("");
+        }else{
+            setPdfURL(Item)
+        }
+    }, [Item])
 
-  return (
-    <section className={cx("wrapper")}>
-      <Document file="http://localhost:7000/api/image/get-image/1710905070105CV_Vu_Hong_Diep.pdf" onLoadSuccess={onDocumentLoadSuccess}>
-        <Page pageNumber={pageNumber} />
-      </Document>
-      <p>
-        Page {pageNumber} of {numPages}
-      </p>
-    </section>
-  );
+    const handleButtonClick = () => {
+        fileInputRef.current.click();
+    };
+
+    const fileType = ["application/pdf"];
+
+    const handleFileInputChange = (e) => {
+        let selectedFile = e.target.files[0];
+        if (selectedFile && fileType.includes(selectedFile.type)) {
+            value(selectedFile);
+
+            let reader = new FileReader();
+            reader.onload = () => {
+                setPdfURL(reader.result);
+            };
+            reader.readAsDataURL(selectedFile);
+        }else{
+            toast.warning("Please select pdf file");
+        }
+    };
+
+    return (
+        <section className={cx("wrapper")}>
+            <article className={cx("show-file")}>
+                {pdfURL && (
+                    <Document
+                        file={pdfURL}
+                        onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+                    >
+                        <Page pageNumber={pageNumber} />
+                    </Document>
+                )}
+            </article>
+            <article className={cx("input-file")}>
+                <button onClick={handleButtonClick}>
+                    Chọn {name}
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        name={name}
+                        onChange={(e) => handleFileInputChange(e)}
+                    />
+                </button>
+            </article>
+        </section>
+    );
 }
 
 export default PDFViewer;

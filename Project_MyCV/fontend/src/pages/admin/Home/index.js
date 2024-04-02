@@ -38,7 +38,7 @@ function Home() {
     return (
         <section className={cx("listMessage")}>
             {data.map((item) => (
-                <Message key={item._id} item={item}/>
+                <Message key={item._id} item={item} callAPi={fetchAPI}/>
             ))}
         </section>
     );

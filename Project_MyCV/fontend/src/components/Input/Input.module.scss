@@ -20,6 +20,9 @@
         font-size: 1.5rem;
         color: var(--TextColor1);
     }
+    .label:hover{
+        cursor: pointer;
+    }
     @include input(input);
 
     i{

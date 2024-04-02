@@ -16,15 +16,18 @@ export const sendMessageValidator = Joi.object({
         "string.max": "Your Subject must have at most {#limit} characters",
         "any.required": "Your Subject is required"
     }),
-    Content: Joi.string().min(6).max(255).messages({
+    Content: Joi.string().min(3).max(255).messages({
         "string.empty": "Your Message cannot be empty",
         "string.min": "Your Message must have at least {#limit} characters",
         "string.max": "Your Message must have at most {#limit} characters",
         "any.required": "Your Message is required"
-    }),
-    ReplyMessage: Joi.string().min(6).max(255).messages({
+    })
+});
+export const replyMessageValidator = Joi.object({
+    ReplyMessage: Joi.string().min(3).max(255).messages({
         "string.min": "Your Content must have at least {#limit} characters",
         "string.max": "Your Content must have at most {#limit} characters",
         "any.required": "Your Content is required"
     }),
 });
+

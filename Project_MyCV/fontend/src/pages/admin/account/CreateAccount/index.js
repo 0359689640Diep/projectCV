@@ -1,12 +1,13 @@
 import classNames from "classnames/bind";
 import {useState} from "react";
+import { toast } from "react-toastify";
 
 import styles from "./CreateAccount.module.scss";
 import Input from "../../../../components/Input/index.js";
 import Button from "../../../../components/Button/index.js";
 import Product from "./MoreProduct";
-import { toast } from "react-toastify";
 import { postAccount } from "../../../../Services/account.js";
+import PDFViewer from "../../../../components/PDFViewer/index.js";
 
 const cx =classNames.bind(styles);
 
@@ -45,9 +46,6 @@ function Account() {
     const handleUpAccount = async () => {
         try {
             const formData  = new FormData();
-            formData.append("CV", CV);
-            formData.append("Logo", Logo);
-            formData.append("IconLogo", IconLogo);
             formData.append("Name", Name);
             formData.append("Email", Email);
             formData.append("Birthday", Birthday);
@@ -59,7 +57,10 @@ function Account() {
             formData.append("Job", Job);
             formData.append("Language", Language);
             formData.append("Phone", Phone);
-
+            formData.append("CV", CV);
+            formData.append("Logo", Logo);
+            formData.append("IconLogo", IconLogo);
+      
             // Lặp qua từng phần tử trong object Image
             for (const key in Image) {
                 if (Object.hasOwnProperty.call(Image, key)) {
@@ -179,13 +180,9 @@ function Account() {
                 <Product value = {Job} name = "Job" type="text" onDataUpdate={handleJob}/>
                 <Product value = {Language} name = "Language" type="text" onDataUpdate={handleLanguage}/>
                 <Product value = {Phone} name = "Phone" type="number" onDataUpdate={handlePhone}/>
-                <Input 
+                <PDFViewer
                     name="CV"
-                    type="file"
-                    required
-                    title="Can not be empty"
-                    id="CV"
-                    onChange={(e) => setCV(e.target.files[0])}
+                    value={setCV}
                 />
                 <Input 
                     name="Images"

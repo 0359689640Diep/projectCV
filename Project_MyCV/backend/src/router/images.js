@@ -14,6 +14,8 @@ const __dirname = dirname(__filename);
 routerImages.get("/get-image/:imageName", (req, res) => {
     const imageName = req.params.imageName;
     const parentDirectory = dirname(__dirname);
+     // Thiết lập header Content-Disposition để trình duyệt tự động tải xuống tệp
+    res.setHeader('Content-Disposition', `attachment; filename="${imageName}"`);
     res.sendFile(path.join(parentDirectory, "uploads/Images", imageName));
 })
 

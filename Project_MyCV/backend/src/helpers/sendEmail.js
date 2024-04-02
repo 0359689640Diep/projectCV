@@ -3,18 +3,21 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const sendMail = async (email, subject, html) => {
+const sendMail = async (email, subject, html, form = "Hi Nice To Miss You") => {
   try {
     const transporter = nodemailer.createTransport({
-      service: "Gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, 
       auth: {
         user: process.env.email,
         pass: process.env.password_mail,
       },
-    });
+  });
+
 
     const message = {
-      from: "Hi Nice To Miss You",
+      from: form,
       to: email,
       subject,
       html,

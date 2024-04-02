@@ -35,17 +35,15 @@ export const deleteEmail = async (id) => {
         const response = await httpRequest.remote(`message/deleteemail/${id}`);
         return response;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 }
 
-export const sendEmail = async (body) => {
+export const replyGmail = async (body, id) => {
     try {
-        const response = await httpRequest.update(`message/sendemail`, {
-            ...body
-        });
+        const response = await httpRequest.update(`message/reply-email/`, body, id,'"Content-Type": "application/json"');
         return response;
     } catch (error) {
-        console.log(error);
+        return error;
     }
 };

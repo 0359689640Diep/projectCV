@@ -1,19 +1,28 @@
 import message  from "../model/message.js";
-import {sendMessageValidator} from "../validation/message.js";
-import email from "../helpers/sendEmail.js"
+import {sendMessageValidator, replyMessageValidator} from "../validation/message.js";
+import sendMail from "../helpers/sendEmail.js"
 
 
 export const sendMessage = async (req, res) => {
     try {
-        console.log(req.body);
+        const {NameUserReceiver, EmailReceiver, TitleMessage, Content} = req.body;
         const {error} = sendMessageValidator.validate(req.body, {abortEarly: false});
         if(error) {
             const errors = error.details.map((error) => error.message);
-            return res.status(400).json({message: errors});
+            return res.status(400).json({message: errors[0]});
         }
 
         await message.create({...req.body});
-
+        const subject = "Notification";
+        const html = `
+            <h1> ${NameUserReceiver}:  Sent you a message from the CV website </h1> 
+            <ul>
+                <li>Email Receiver: ${EmailReceiver}</li>
+                <li>Title Message: ${TitleMessage}</li>
+                <li>Content: ${Content}</li>
+            </ul>
+        `;
+        sendMail("vudiep621@gmail.com", subject, html)
         return res.status(200).json({
             message: "Thank you for sending me message. I will reply you as soon as possible"
         })
@@ -47,35 +56,47 @@ export const getMessage = async (req, res) =>{
     }
 }
 
-export const sendEmail = async(req, res) => {
+export const replyGmail = async(req, res) => {
     try {
-        const { _id, ReplyMessage, ...updatedData } = req.body;
-        const {error} = sendMessageValidator.validate(updatedData, {abortEarly: false});
+        const {ReplyMessage} = req.body;
+        const id = req.params.id;
+        const {error} = replyMessageValidator.validate(req.body, {abortEarly: false});
+
         if(error) {
             const errors = error.details.map((error) => error.message);
+           
             return res.status(400).json({
-                message: errors
+                message: errors[0]
             })
         }
-        let updateStatus = await message.updateOne({_id:  _id},{$set: {Status: 1, ReplyMessage: ReplyMessage}});
-        if(updateStatus.modifiedCount > 0){
-            let mailEmail = email(updatedData.EmailReceiver, updatedData.TitleMessage, updatedData.Content);
 
-            if(mailEmail){
-                return res.status(200).json({
-                    message: "Mail sent successfully"
-                })
+        const result = await message.findByIdAndUpdate(
+            {_id:  id},
+            {$set: {
+                Status: 1, 
+                ReplyMessage: ReplyMessage
+            }});
+            if(Object.keys(result).length > 0){
 
+                const {EmailReceiver, ...data} = result;
+                const TitleMessage = "Vũ Hồng Điệp Replly Email";
+
+                let mailEmail = sendMail(EmailReceiver, TitleMessage, ReplyMessage);
+    
+                if(mailEmail){
+                    return res.status(200).json({
+                        message: "Mail sent successfully"
+                    })
+                }else{
+                    return res.status(500).json({
+                        message: "Mail sent error"
+                    })
+                }
             }else{
                 return res.status(500).json({
                     message: "The system is maintenance"
                 })
-            }
-        }else{
-            return res.status(500).json({
-                message: "The system is maintenance"
-            })
-        }
+            };
 
     } catch (error) {
         return res.status(500).json({

@@ -4,13 +4,12 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 import styles from "./Home.module.scss";
-import { images } from "../../../asset/img";
 import { sendMessage } from "../../../Services/message";
-import Notification from "../../../components/Notification";
 import { getAccount } from "../../../Services/account";
 import { getResult } from "../../../Services/result";
 import { getProject } from "../../../Services/project";
 import { getSkill } from "../../../Services/skills";
+import { toast } from "react-toastify";
 
 const cx = className.bind(styles);
 
@@ -34,8 +33,6 @@ function Home() {
     const hideDesProject = () => {
         setDesProjectVisible(false);
     };
-
-    const [message, setMessage] = useState(null);
 
     // lay du lieu tu form
     const [NameUserReceiver, setNameUserReceiver] = useState("");
@@ -74,11 +71,15 @@ function Home() {
         }
        const response = await  sendMessage(body);
         // Reset the input fields
-        setNameUserReceiver("");
-        setEmailReceiver("");
-        setTitleMessage("");
-        setContent("");
-        setMessage(response.message);
+        if(response.status >= 400){
+            toast.warning(response.data.message);
+        }else{
+            toast.success(response.data.message);
+            setNameUserReceiver("");
+            setEmailReceiver("");
+            setTitleMessage("");
+            setContent("");
+        }
     }
     return ( 
  
@@ -389,14 +390,6 @@ function Home() {
                                 <input type="text" name="TitleMessage" required value={TitleMessage} placeholder="Your Subject" onChange={(e) => setTitleMessage(e.target.value)}/>
                                 <textarea name="Content" id="" cols="30" rows="10" value={Content} placeholder="Your Message" onChange={(e) => setContent(e.target.value)}></textarea>
                                 <button type="submit" onClick={fectAPI}>Send Message</button>
-
-                            {message && (
-                                <Notification
-                                    content={message}
-                                    title="Message"
-                                />
-                            )}
-
                             </form>
                         </section>
                         <section className = {cx("ContactInfro")}>

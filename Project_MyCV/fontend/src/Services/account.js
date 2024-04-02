@@ -37,6 +37,15 @@ export const getAccount = async () => {
     }
 }
 
+export const getAccountByRequest = async (request) => {
+    try {
+        const response = await httpRequest.get(`account/${request}`);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const cancenAPIAccount = async (body) => {
     
     try {

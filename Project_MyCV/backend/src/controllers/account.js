@@ -7,6 +7,7 @@ import Account from "../model/account.js";
 import { signInValidator, CreateAccountValidator} from "../validation/account.js";
 import account from "../model/account.js";
 import { deleteUploadedImages, deleteImage } from "../helpers/image.js";
+import { request } from "express";
 
 
 dotenv.config();
@@ -73,26 +74,27 @@ export const CreateAccount = async (req, res) => {
 
         const hashePassword = await CryptoJS.AES.encrypt(password, secretKey).toString();
 
-        const result = await Account.create({
-            ...body,
-            Language: LanguageArr,
-            Phone: PhoneArr,
-            Job: JobArr,
-            CV: CV,
-            IconLogo: IconLogo,
-            Logo: Logo,
-            Image: Images,
-            Password: hashePassword
-        });
+                const newData = {
+                ...body,
+                Language: LanguageArr,
+                Phone: PhoneArr,
+                Job: JobArr,
+                CV: CV,
+                IconLogo: IconLogo,
+                Logo: Logo,
+                Image: Images,
+                Password: hashePassword
+                }
+                
+                const result = await Account.create(newData);
 
         result.Password = undefined;
-        id = result._id;
         return res.status(200).json({
             message: "Create account success"
         });
     } catch (error) {
         // Nếu có lỗi, xóa các file ảnh đã được tải lên
-        deleteUploadedImages(req.files);
+        // deleteUploadedImages(req.files);
         return res.status(500).json({
             message: "The system is maintenance"
         });
@@ -229,6 +231,55 @@ export const signIn = async (req, res) =>{
 }
 
 
+export const getAccountByRequest = async (req, res) => {
+    try {
+        const request = req.params.request
+        const dataAccount = await account.find().select(request);
+        if(dataAccount.length === 0) {
+            return res.status(404).json({
+                message: "No Account"
+            })
+        }
+        dataAccount.forEach(obj => {
+            // format dữ liệu
+            switch(request){
+                case "Password":
+                    const password = obj.Password; 
+                    obj.Password = CryptoJS.AES.decrypt(password,  secretKey).toString(CryptoJS.enc.Utf8);    
+                break;
+                case "CV":
+                    obj.CV = baseUrl + obj.CV;
+                break;
+                case "IconLogo":
+                    obj.IconLogo = baseUrl + obj.IconLogo;
+                break;
+                case "Logo":
+                    obj.Logo = baseUrl + obj.Logo;
+                break;
+                case "dateFormat":
+                    const dateFormat = format(new Date(obj.Birthday), "yyyy-MM-dd");
+                    obj.Birthday = dateFormat;
+                break;
+                case "Image":
+                    if(obj.Image.length !== 0) {
+                        obj.Image.forEach((field, key) => {
+                                obj.Image[key] = baseUrl + field;
+                        })
+                    }
+                break;
+                default:
+                    console.error("errr");
+                break;
+
+            }
+        })
+        return res.status(200).json({dataAccount: dataAccount})
+    } catch (error) {
+        return res.status(500).json({
+            message: "The system is maintenance"
+        })
+    }
+}
 export const getAccount = async (req, res) => {
     try {
         const dataAccount = await account.find();

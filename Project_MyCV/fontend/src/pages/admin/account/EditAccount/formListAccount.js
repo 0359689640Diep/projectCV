@@ -9,6 +9,7 @@ import Button from "../../../../components/Button/index.js";
 import Product from "../CreateAccount/MoreProduct";
 import UploadImage from "../../../../components/UploadImage";
 import { deleteAccount, updateAccount } from "../../../../Services/account.js";
+import PDFViewer from "../../../../components/PDFViewer/index.js";
 
 const cx = classNames.bind(styles);
 
@@ -40,7 +41,7 @@ function FormListAccount({Item, onUpdateData}) {
         setPhone(data);
     };
     const handleCV = (data) => {
-        setCV(data[0]);
+        setCV(data);
     };
     const handleLogo = (data) => {
         setLogo(data[0]);
@@ -187,14 +188,12 @@ function FormListAccount({Item, onUpdateData}) {
                 <Product value = {Language} name = "Language" type="text" onDataUpdate={handleLanguage}/>
                 <Product value = {Phone} name = "Phone" type="number" onDataUpdate={handlePhone}/>
             </article>
+
             <article className={cx("itemRight")}>
-                <UploadImage 
+                <PDFViewer
                     name="CV"
-                    type="file"
                     Item = {CV}
-                    id="CV"
-                    value="1"
-                    onImageChange = {handleCV}
+                    value = {handleCV}
                 />
                 <UploadImage 
                     name="Images"
