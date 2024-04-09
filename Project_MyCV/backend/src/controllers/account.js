@@ -7,7 +7,6 @@ import Account from "../model/account.js";
 import { signInValidator, CreateAccountValidator} from "../validation/account.js";
 import account from "../model/account.js";
 import { deleteUploadedImages, deleteImage } from "../helpers/image.js";
-import { request } from "express";
 
 
 dotenv.config();

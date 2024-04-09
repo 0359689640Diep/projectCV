@@ -10,7 +10,7 @@ const baseUrl = process.env.baseUrl;
 export const update = async (req,res) => {
     try {
          const {Image,...data} = req.body;
-         const {Author, Technology, ObjectInProject, ...dataObject} = data;
+         const {Author, Technology, ObjectInProject, Task, ...dataObject} = data;
         const { error } = projectValidator.validate(data, { abortEarly: false });
   
         if (error) {
@@ -26,6 +26,7 @@ export const update = async (req,res) => {
         const id = req.params.id;
         const newData = {
             ...dataObject,
+            Task: Task.split(","),
             Technology: Technology.split(","),
             Author: Author.split(","),
             ObjectInProject: ObjectInProject.split(","),          
@@ -78,14 +79,16 @@ export const create = async (req,res) => {
 
         const Images = req.files.Image.map(file => file.filename);
 
-        const {Author, Technology, ObjectInProject, ...data} = req.body;
+        const {Author, Technology, ObjectInProject, Task, ...data} = req.body;
 
         const ObjectInProjectArr = ObjectInProject.split(",");
         const AuthorArr = Author.split(",");
         const TechnologyArr = Technology.split(",");
+        const TaskArr = Task.split(",");
 
         await Project.create({
             ...data,
+            Task: TaskArr,
             Technology: TechnologyArr,
             Author: AuthorArr,
             ObjectInProject: ObjectInProjectArr,

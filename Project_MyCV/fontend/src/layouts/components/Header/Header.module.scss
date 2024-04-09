@@ -1,7 +1,7 @@
 @import '../../../components/GlobalStyles/mixin.scss';
 
 header {
-    width: 99%;
+    width: 100%;
     height: 100px;
     position: fixed;
     background-color: rgba(10, 16, 30, 0.8);
@@ -11,6 +11,7 @@ header {
     .logo {
         width: 15%;
         height: 100%;
+        padding: 0.2% 0%;
 
         img {
             @include image;
@@ -40,9 +41,17 @@ header {
                         font-weight: 500;
                         cursor: pointer;
                         color: var(--TextColor1);
+                        font-size: 1.2rem;
 
                         &:hover {
                             color: var(--TextColor2);
+                        }
+                    }
+
+                    .active{
+                        color: var(--ImpressiveColors);
+                        &:hover {
+                            color: var(--ImpressiveColors);
                         }
                     }
                 }
@@ -82,10 +91,160 @@ header {
                         color: var(--TextColor1);
                         font-size: 1.2rem;
                         margin: 0 2%;
+                    }                 
+                }
+            }
+        }
+    }
+
+    .nav-table-mobile{
+        display: none;
+        position: relative;
+
+        .icont{
+            i{
+                font-size: 3.2rem;
+                color: var(--TextColor2);
+                transition: font-size 1s ease, color 1s ease;
+            }
+            
+        }
+
+        .icont:hover{
+            cursor: pointer;
+        }  
+    }
+    .content{
+        top: 100px;
+        left: 0%;
+        position: absolute;
+        display: none;
+        background-color: rgba(10, 16, 30, 0.8);
+        @include widthHeight(100%, auto);
+
+
+        ul {
+            width: 100%;
+            height: 100%;
+
+            li {
+                margin: 3% 2%;
+                list-style-type: none;
+
+                a {
+                    text-transform: uppercase;
+                    font-family: Roboto, sans-serif;
+                    font-weight: 500;
+                    cursor: pointer;
+                    color: var(--TextColor2);
+                    font-size: 1.2rem;
+
+                    &:hover {
+                        color: var(--TextColor1);
+                    }
+                }
+                .active{
+                    color: var(--ImpressiveColors);
+                    &:hover {
+                        color: var(--ImpressiveColors);
                     }
                 }
             }
         }
     }
 
+}
+
+
+// resposive
+
+
+// desktop
+@media screen and (min-width: 1920px) and (max-width: 1080) {
+    header{
+
+    }
+}
+
+// ipad pro
+@media screen and (min-width: 1024px) and  (max-width: 1366px) {
+    ul{
+        li{
+            font-size: 0.9rem;
+            a{
+                font-size: 0.9rem;
+            }
+        }
+    }
+    
+}
+
+// tablet
+@media screen and (min-width: 767px) and  (max-width: 1023px) {
+    header{
+        padding: 0 2%;
+        @include flexCenter(space-between, center);
+
+        .contentHeader{
+            display: none;
+        }  
+        .nav-table-mobile{
+            display: block;
+
+        }
+    } 
+}
+
+
+//smart phone
+@media screen and (min-width: 472px) and (max-width: 766px) {
+    header{
+        padding: 0 2%;
+        @include flexCenter(space-between, center);
+
+        .contentHeader{
+            display: none;
+        }  
+        .nav-table-mobile{
+            display: block;
+
+        }
+        .logo{
+            width: 35%;
+        }
+    } 
+}
+@media screen and (min-width: 377px) and (max-width: 471px) {
+    header{
+        padding: 0 2%;
+        @include flexCenter(space-between, center);
+
+        .contentHeader{
+            display: none;
+        }  
+        .nav-table-mobile{
+            display: block;
+
+        }
+        .logo{
+            width: 35%;
+        }
+    } 
+}
+@media screen and (max-width: 376px) {
+    header{
+        padding: 0 2%;
+        @include flexCenter(space-between, center);
+
+        .contentHeader{
+            display: none;
+        }  
+        .nav-table-mobile{
+            display: block;
+
+        }
+        .logo{
+            width: 35%;
+        }
+    } 
 }

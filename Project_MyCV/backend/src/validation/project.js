@@ -20,6 +20,12 @@ export const projectValidator = Joi.object({
         "string.max": "Introduce must have at most {#limit} characters",
         "any.required": "Introduce is required",
     }),
+    Task: Joi.string().min(3).max(255).required().messages({
+        "string.empty": "Task cannot be empty",
+        "string.min": "Task must have at least {#limit} characters",
+        "string.max": "Task must have at most {#limit} characters",
+        "any.required": "Task is required",
+    }),
     Technology: Joi.string().min(3).max(255).required().messages({
         "string.empty": "Technology cannot be empty",
         "string.min": "Technology must have at least {#limit} characters",

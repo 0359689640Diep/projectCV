@@ -19,6 +19,7 @@ function CreateProject() {
     const [Image, SetImage] = useState([]);
     const [Author, SetAuthor] = useState([]);
     const [Technology, SetTechnology] = useState([]);
+    const [Task, SetTask] = useState([]);
     const [ObjectInProject, SetObjectInProject] = useState([]);
 
     const handleCreateProjet = async () => {
@@ -30,6 +31,7 @@ function CreateProject() {
         formData.append("LinkProject", LinkProject);
         formData.append("Author", Author);
         formData.append("Technology", Technology);
+        formData.append("Task", Task);
         formData.append("ObjectInProject", ObjectInProject);
 
 
@@ -95,6 +97,13 @@ function CreateProject() {
                 type="text"
                 value={Author}
                 dataOnMore={SetAuthor}
+            />
+            <More
+                name="Task"
+                id="Task"
+                type="text"
+                value={Task}
+                dataOnMore={SetTask}
             />
             <More
                 name="Technology"

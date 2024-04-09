@@ -10,6 +10,7 @@ import { getResult } from "../../../Services/result";
 import { getProject } from "../../../Services/project";
 import { getSkill } from "../../../Services/skills";
 import { toast } from "react-toastify";
+import ItemProject from "./itemProject";
 
 const cx = className.bind(styles);
 
@@ -24,15 +25,7 @@ function Home() {
     const [DataProject, SetDataProject] = useState([]);
     const [DataSkills, SetDataSkills] = useState([]);
     const [DataResule, SetdataResule] = useState([]);
-    const [isDesProjectVisible, setDesProjectVisible] = useState(false);
-
-    const toggleDesProjectVisibility = () => {
-        setDesProjectVisible(!isDesProjectVisible);
-    };
-
-    const hideDesProject = () => {
-        setDesProjectVisible(false);
-    };
+    const [isDesProjectVisible, setDesProjectVisible] = useState(null);
 
     // lay du lieu tu form
     const [NameUserReceiver, setNameUserReceiver] = useState("");
@@ -60,6 +53,13 @@ function Home() {
 
     useEffect(() => {getData()}, []);
 
+    const handleShowAndHidlen = (value) => {
+        if(value === null){
+            setDesProjectVisible(value);
+        }else{
+            setDesProjectVisible(value);
+        }
+    }
     // call api
     const fectAPI = async (e) => {
        e.preventDefault();
@@ -81,6 +81,7 @@ function Home() {
             setContent("");
         }
     }
+
     return ( 
  
         <main className = {cx("homeMain")}>   
@@ -322,50 +323,27 @@ function Home() {
                     </article>
                     <section className = {cx("contentProject")}>
                         <section className = {cx("listContentProject")}>
-                        {DataProject.map((item, index) => {
-                            return (
-                                <section key={index} className = {cx("itemListContentProject")}  onClick={toggleDesProjectVisibility}>
-                                    <img src={item.Image[0]} alt="imgProject"/>
-                                    <article className = {cx("contentItem")} >
-                                        <h2>{item.Name}</h2>
-                                        <p>Design / Marketing</p>
-                                    </article>
-                                    <section className={cx("desProject")} style={{ display: isDesProjectVisible ? 'flex' : 'none' }}>
-                                        <article className = {cx("imageDesProject")}>
-                                            <img src={item.Image[1]} alt="imgProject"/>
+                            {DataProject.map((item, index) => {
+                                return (
+                                    <section key={index} 
+                                        
+                                        className = {cx("itemListContentProject")}  
+                                        onClick={() => handleShowAndHidlen(item._id)}>
+
+                                        <img src={item.Image[0]} alt="imgProject"/>
+                                        <article className = {cx("contentItem")} >
+                                            <h2>{item.Name}</h2>
+                                            <p>{item.Task}</p>
                                         </article>
-                                        <section className = {cx("contentDesProject")}>
-                                            <section className = {cx("itemContentDesProject")}>
-                                                <h2>Giới thiệu</h2>
-                                                <p>{item.Introduce}</p>
-                                                <h2>Cộng nghệ</h2>
-                                                <ul>
-                                                {item.Technology.map((itemTechnology, indexTechnology) => {
-                                                    return (
-                                                        <li key={indexTechnology}>{itemTechnology}</li>
-                                                    )
-                                                })}
-                                                </ul>
-                                                <h2> Đối tượng có trong dự án</h2>
-                                                <ul>
-                                                {item.ObjectInProject.map((itemObjectInProject, indexObjectInProject) => {
-                                                    return (
-                                                        <li key={indexObjectInProject}>{itemObjectInProject}</li>
-                                                    )
-                                                })}
-                                                </ul>
-                                                <a href={`${item.LinkProject}`}>
-                                                    <button>Trải nhiệm ngay</button>
-                                                </a>
-                                            </section>
-                                            <article className = {cx("icontDesProject")}>
-                                                <i className="bi bi-x-circle" onClick={hideDesProject}></i>
-                                            </article>
-                                        </section>
                                     </section>
-                                </section>
-                            )
-                        })}
+                                )
+                            })}
+                            
+                            <ItemProject
+                                item={DataProject}
+                                idShow={isDesProjectVisible}
+                                hidlen={(e) => e !== "show" ?  handleShowAndHidlen(e) : ""}
+                            />
                         </section>
                         <article className = {cx("loadMore")}>
                             <a href="/">

@@ -12,6 +12,8 @@ function Header() {
 
   const [to, setTo] = useState(null);
   const [DataAccount, SetDataAccount] = useState([]);
+  const [hiddenNav, setHiddenNav] = useState("bi-list");
+  const [active, setActive] = useState(1);
 
   const callAPIAccount = async () => {
     try {
@@ -32,6 +34,14 @@ function Header() {
     else{setTo(routesConfig.login)}
   }
 
+  const hiddenAsShow = () => {
+    if(hiddenNav === "bi-list"){
+      setHiddenNav("bi-x-lg");
+    }else{
+      setHiddenNav("bi-list");
+    }
+  }
+
   return (
     <header>
       <div className={cx("logo")}>
@@ -42,12 +52,12 @@ function Header() {
       <div className={cx("contentHeader")}>
         <div className={cx("category")}>
           <ul>
-            <li> <a href="#home"> Home </a> </li>
-            <li> <a href="#about"> About </a> </li>
-            <li> <a href="#resume"> Resume </a> </li>
-            <li> <a href="#skills"> Skills </a> </li>
-            <li> <a href="#project"> Project </a> </li>
-            <li> <a href="#contact"> Contact </a> </li>
+            <li onClick={() => {setActive(1)}}> <a className={cx({"active": active === 1})} href="#home"> Home </a> </li>
+            <li onClick={() => {setActive(2)}}> <a className={cx({"active": active === 2})} href="#about"> About </a> </li>
+            <li onClick={() => {setActive(3)}}> <a className={cx({"active": active === 3})} href="#resume"> Resume </a> </li>
+            <li onClick={() => {setActive(4)}}> <a className={cx({"active": active === 4})} href="#skills"> Skills </a> </li>
+            <li onClick={() => {setActive(5)}}> <a className={cx({"active": active === 5})} href="#project"> Project </a> </li>
+            <li onClick={() => {setActive(6)}}> <a className={cx({"active": active === 6})} href="#contact"> Contact </a> </li>
           </ul>
         </div>
         <div className={cx("phone")}>
@@ -58,6 +68,21 @@ function Header() {
           </ul>
         </div>
       </div>
+      <nav className={cx("nav-table-mobile")}>
+        <article className={cx("icont")}>
+          <i onClick={() => {hiddenAsShow()}} className={`bi ${hiddenNav}`}></i>
+        </article>
+      </nav>
+      <article style={{ display: hiddenNav !== 'bi-list' ? "block" : "none" }} className={cx("content")}>
+        <ul>
+          <li onClick={() => {setActive(1)}}> <a className={cx({"active": active === 1})} href="#home"> Home </a> </li>
+          <li onClick={() => {setActive(2)}}> <a className={cx({"active": active === 2})} href="#about"> About </a> </li>
+          <li onClick={() => {setActive(3)}}> <a className={cx({"active": active === 3})} href="#resume"> Resume </a> </li>
+          <li onClick={() => {setActive(4)}}> <a className={cx({"active": active === 4})} href="#skills"> Skills </a> </li>
+          <li onClick={() => {setActive(5)}}> <a className={cx({"active": active === 5})} href="#project"> Project </a> </li>
+          <li onClick={() => {setActive(6)}}> <a className={cx({"active": active === 6})} href="#contact"> Contact </a> </li>
+        </ul>
+      </article>
     </header>
   );
 }

@@ -19,6 +19,7 @@ function Update({data, callAPI}){
     const [Image, SetImage] = useState(data.Image);
     const [Author, SetAuthor] = useState(data.Author);
     const [Technology, SetTechnology] = useState(data.Technology);
+    const [Task, SetTask] = useState(data.Task);
     const [ObjectInProject, SetObjectInProject] = useState(data.ObjectInProject);
 
     const handleUpdateProjet = async (id) => {
@@ -30,6 +31,7 @@ function Update({data, callAPI}){
         formData.append("LinkProject", LinkProject);
         formData.append("Author", Author);
         formData.append("Technology", Technology);
+        formData.append("Task", Task);
         formData.append("ObjectInProject", ObjectInProject);
 
 
@@ -100,6 +102,13 @@ function Update({data, callAPI}){
                 type="text"
                 value={Author}
                 dataOnMore={SetAuthor}
+            />
+            <More
+                name="Task"
+                id="Task"
+                type="text"
+                value={Task}
+                dataOnMore={SetTask}
             />
             <More
                 name="Technology"

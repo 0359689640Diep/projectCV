@@ -15,6 +15,12 @@ const projectSchema = new mongoose.Schema({
             require: true            
         }
     ],
+    Task: [
+        {
+            type: String,
+            require: true            
+        }
+    ],
     Author: [
         {
             type: String,

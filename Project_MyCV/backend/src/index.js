@@ -27,3 +27,4 @@ app.use("/uploads/Images", express.static(path.join(process.cwd(), "uploads/Imag
 app.listen(port, () =>{
     console.log(`Server is running on port: ${port}`)
 })
+// cors middler chỉ cho phép lấy sản phẩm của trang web mimh

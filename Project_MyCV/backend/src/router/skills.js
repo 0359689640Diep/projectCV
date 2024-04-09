@@ -1,12 +1,13 @@
 import { Router } from "express";
 
 import { createSkills, deleteSkills, getAllSkills, updateSkills } from "../controllers/skills.js";
+import { checkPermisson } from "../middleware/checkPermission.js";
 
 const routerSkills = Router();
 
 routerSkills.get("/", getAllSkills);
-routerSkills.post("/create", createSkills);
-routerSkills.delete("/delete/:id", deleteSkills);
-routerSkills.put("/update/:id", updateSkills);
+routerSkills.post("/create",checkPermisson, createSkills);
+routerSkills.delete("/delete/:id",checkPermisson, deleteSkills);
+routerSkills.put("/update/:id",checkPermisson, updateSkills);
 
 export default routerSkills;
