@@ -28,7 +28,7 @@ function Message({item, callAPi}) {
     const handleRemoteEmail = async (id) => {
         try {
             const result = await deleteEmail(id);
-            toast.success(result.message);
+            toast.success(result.data.message);
             callAPi();
         } catch (error) {
             console.log(error);
@@ -54,7 +54,6 @@ function Message({item, callAPi}) {
     }
 
     return ( 
-        <>
         <section className={cx("message")}  id={item._id} onClick={() => handleLogId(item._id)}>
             <article className={cx("title")} onClick={handleDisplay} 
                 style={{color: item.Status === 0 ? "#fdfeff" : ""}}>
@@ -99,7 +98,6 @@ function Message({item, callAPi}) {
                 </article>
             </section>
         </section>        
-        </>
     );
 }
 

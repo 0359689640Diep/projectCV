@@ -11,6 +11,7 @@ import { getProject } from "../../../Services/project";
 import { getSkill } from "../../../Services/skills";
 import { toast } from "react-toastify";
 import ItemProject from "./itemProject";
+import LoadingIcon from './../../../components/Loading/index';
 
 const cx = className.bind(styles);
 
@@ -26,6 +27,7 @@ function Home() {
     const [DataSkills, SetDataSkills] = useState([]);
     const [DataResule, SetdataResule] = useState([]);
     const [isDesProjectVisible, setDesProjectVisible] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     // lay du lieu tu form
     const [NameUserReceiver, setNameUserReceiver] = useState("");
@@ -33,25 +35,29 @@ function Home() {
     const [TitleMessage, setTitleMessage] = useState("");
     const [Content, setContent] = useState("");
 
+
     const getData = async () => {
         try {
             const account = await getAccount();
             const result = await getResult();
             const project = await getProject();
             const skill = await getSkill();
-
             SetDataAccount(account.dataAccount);
             SetDataSkills(skill.data);
             SetDataProject(project.data);
             SetdataResule(result.data);
-            
             
         } catch (error) {
             console.log(error);
         }
     }
 
-    useEffect(() => {getData()}, []);
+    useEffect(() => {
+        getData(); 
+        setTimeout(() => {
+            setLoading(false);
+        }, 1200)
+    }, []);
 
     const handleShowAndHidlen = (value) => {
         if(value === null){
@@ -85,7 +91,8 @@ function Home() {
     return ( 
  
         <main className = {cx("homeMain")}>   
-            {DataAccount  && DataAccount[0] && DataSkills && DataSkills[0] && DataProject && DataProject && DataResule &&   
+        
+            {DataAccount  && DataAccount[0] && DataSkills && DataSkills[0] && DataProject && DataProject && DataResule &&   loading === false ?
             <>      
             <section className = {cx("home")} id="home">
                 <section className = {cx("contentHome")} data-aos="fade-up" data-aos-duration="1000">
@@ -404,7 +411,9 @@ function Home() {
                     </section>
                 </section>
             </section>
-            </>}
+            </>
+            : <LoadingIcon/>
+            }
         </main>
  
      );

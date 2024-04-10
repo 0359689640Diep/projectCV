@@ -12,7 +12,21 @@ dotenv.config();
 
 const port = process.env.port;
 const url_db = process.env.url_db;
+const allowedOrigins = ['http://localhost:3000']; // Thay đổi origin tùy theo trang web của bạn
+
+const corsOptions = {
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+};
+
+app.use(cors(corsOptions));
 connect(url_db);
+
 
 app.use(express.json());
 app.use(cors());
@@ -27,4 +41,4 @@ app.use("/uploads/Images", express.static(path.join(process.cwd(), "uploads/Imag
 app.listen(port, () =>{
     console.log(`Server is running on port: ${port}`)
 })
-// cors middler chỉ cho phép lấy sản phẩm của trang web mimh
+

@@ -5,7 +5,21 @@ const httpRequest = axios.create({
 });
 const token = localStorage.getItem("accessToken");
 
-export const update = async (url, data, id, header = '"Content-Type": "multipart/form-data"', tokens = false) => {
+export const remote = async(url, id) => {
+    try {
+        const response = await httpRequest.delete(`${url}/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response
+        
+    } catch (error) {
+        return error.response;
+    }
+}
+
+export const update = async (url, data, id, tokens = false, header = '"Content-Type": "multipart/form-data"') => {
     try {
         const headers = {header};
         if(tokens === true){
@@ -56,11 +70,3 @@ export const post = async (url, data, headers = '"Content-Type": "multipart/form
 }
 
 
-export const remote = async(url, id) => {
-    const response = await httpRequest.delete(url, id, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    });
-    return response.data
-}

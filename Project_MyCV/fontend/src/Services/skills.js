@@ -9,7 +9,7 @@ export const createSkill = async (data) => {
 }
 export const updateSkill = async (data, id) => {
     try {
-        return await httpRequest.update("skills/update/", data, id,'"Content-Type": "application/json"');
+        return await httpRequest.update("skills/update/", data, id, true, '"Content-Type": "application/json"');
     } catch (error) {
         return error;
     }
@@ -23,7 +23,7 @@ export const getSkill = async () => {
 }
 export const deleteSkill = async (id) => {
     try {
-        return await httpRequest.remote(`skills/delete/${id}`);
+        return await httpRequest.remote('skills/delete', id);
     } catch (error) {
         return error;
     }

@@ -9,7 +9,6 @@ const cx = className.bind(styles);
 function ItemProject({item, idShow, hidlen = "show"}){
 
     const [data, setData] = useState([]);
-    const [show, setShow] = useState(true);
 
     useEffect(() => {
         if( idShow !== undefined && idShow !== null  ){
@@ -36,7 +35,7 @@ function ItemProject({item, idShow, hidlen = "show"}){
             <section className={cx("warpper")}>
                 {
                    data.length > 0  ? 
-                    <section className={cx("desProject", {'visible': show})}>
+                    <section className={cx("desProject", {'visible': true})}>
                         <article className = {cx("imageDesProject")}>
                             <img src={Image[1]} alt="imgProject"/>
                         </article>

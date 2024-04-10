@@ -17,7 +17,7 @@ function Update({item, callAPI}) {
     const handleDelete = async (id) => {
         try {
             const resutlt = await deleteSkill(id);
-            toast.success(resutlt.message);
+            toast.success(resutlt.data.message);
             callAPI();
         } catch (error) {
             console.log(error);

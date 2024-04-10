@@ -111,7 +111,7 @@ export const deleteAccount = async (req, res) => {
             deleteImage(result.Logo);
 
             return res.status(200).json({
-                message: "Product deletion was successful"
+                message: "Account deletion was successful"
             })
         }else{
             return res.status(404).json({

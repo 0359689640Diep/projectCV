@@ -29,7 +29,7 @@ function ListResult() {
     const handleDelete = async (id) => {
         try {
             const resultDelete = await deleteResult(id);
-            toast.success(resultDelete.message);  
+            toast.success(resultDelete.data.message);  
             getAPI();
         } catch (error) {
           console.log(error);  

@@ -56,11 +56,17 @@ function FormListAccount({Item, onUpdateData}) {
     const handleDeleteAccount = async (id) => {
         try {
             let result = await deleteAccount(id);
-            toast.success(result.message);   
-             // Gọi hàm callback để cập nhật lại DOM
-            onUpdateData();
+
+            if(result.status > 400){
+                toast.error(result.data.message);   
+            }else{
+                toast.success(result.data.message);   
+                 // Gọi hàm callback để cập nhật lại DOM
+                onUpdateData();
+            };
         } catch (error) {
-            toast.error("Hệ thống đang bảo trì");   
+            console.log(error);
+            toast.error("The system is maintenance");   
         }
     }
 

@@ -52,6 +52,7 @@ function CreateProject() {
             
             SetName("");
             SetIntroduce("");
+            SetTask("");
             SetLinkProject("");
             SetImage("");
             SetAuthor("");

@@ -9,7 +9,7 @@ const createResult = async (data) => {
 }
 const updateResult = async (data, id) => {
     try {
-        return await httpRequest.update("result/update/", data, id,'"Content-Type": "application/json"')
+        return await httpRequest.update("result/update/", data, id, true, '"Content-Type": "application/json"')
     } catch (error) {
         return error;
     }
@@ -25,7 +25,7 @@ const getResult = async () => {
 
 const deleteResult = async (id) => {
     try {
-        return await httpRequest.remote(`result/delete/${id}`);
+        return await httpRequest.remote('result/delete', id);
     } catch (error) {
         return error;
     }    

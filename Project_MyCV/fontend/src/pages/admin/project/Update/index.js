@@ -56,7 +56,7 @@ function Update({data, callAPI}){
     const handleDelete = async (id) => {
         try {
             const result = await deleteProject(id);
-            toast.success(result.message);
+            toast.success(result.data.message);
             callAPI();
         } catch (error) {
             console.log(error);

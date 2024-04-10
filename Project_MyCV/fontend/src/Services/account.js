@@ -21,7 +21,7 @@ export const singIn = async (body) => {
 
 export const updateAccount = async (data, id) => {
     try {
-        const response = await httpRequest.update("account/updateAccount/", data, id);
+        const response = await httpRequest.update("account/updateAccount/", data, id, true);
         return response;
     } catch (error) {
         return error;
@@ -46,32 +46,11 @@ export const getAccountByRequest = async (request) => {
     }
 }
 
-export const cancenAPIAccount = async (body) => {
-    
-    try {
-        const response = await httpRequest.remote(`account/cancelAPI`, {
-            ...body
-        });
-        return response;
-    } catch (error) {
-        return error;
-    }
-};
-
 export const deleteAccount = async (id) => {
     try {
-        const response = await httpRequest.remote(`account/deleteAccount/${id}`);
+        const response = await httpRequest.remote('account/deleteAccount', id);
         return response;
     } catch (error) {
-        
-    }
-}
-
-export const uploadImage = async (formData) => {
-    try {
-        const response = await httpRequest.post(`image/uploadImage`, formData);
-        return response;
-    } catch (error) {
-        return error;
+        return error.response;
     }
 }

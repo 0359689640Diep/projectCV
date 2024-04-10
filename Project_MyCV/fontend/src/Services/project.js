@@ -10,7 +10,7 @@ const createProject = async (data) => {
 
 const updateProject = async (data, id) => {
     try {
-        return await httpRequest.update("/project/update/", data, id);
+        return await httpRequest.update("/project/update/", data, id, true);
     } catch (error) {
         return error;
     }
@@ -18,7 +18,7 @@ const updateProject = async (data, id) => {
 
 const deleteProject = async (id) => {
     try {
-        return await httpRequest.remote(`/project/delete/${id}`);
+        return await httpRequest.remote('/project/delete',id);
     } catch (error) {
         return error;
     }

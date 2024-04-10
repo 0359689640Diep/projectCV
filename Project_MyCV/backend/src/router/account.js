@@ -29,8 +29,7 @@ routerAccount.get('/images/:filename', async (req, res) => {
 routerAccount.post("/createAccount",checkPermisson, upload, handleInvalidFile, deleteUploadImg, CreateAccount);
 routerAccount.get("/getAllAccount", getAccount);
 routerAccount.get("/:request", getAccountByRequest);
-routerAccount.delete("/deleteAccount/:id",checkPermisson);
-// routerAccount.delete("/deleteAccount/:id",checkPermisson, deleteAccount);
+routerAccount.delete("/deleteAccount/:id",checkPermisson, deleteAccount);
 routerAccount.put("/updateAccount/:id",checkPermisson, upload, handleInvalidFile, deleteUploadImg,updateAccount);
 
 routerAccount.post("/signin", signIn);

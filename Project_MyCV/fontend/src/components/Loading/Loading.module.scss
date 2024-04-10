@@ -1,0 +1,13 @@
+@import "../GlobalStyles/mixin.scss";
+.warrper{
+
+    left: 50%;
+    top: 50%;
+    position: fixed;
+    @include widthHeight(15%, 25%);
+
+
+    img{
+        @include image;
+    }
+}
