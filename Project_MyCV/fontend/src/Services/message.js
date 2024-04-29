@@ -8,7 +8,7 @@ export const sendMessage = async (body) => {
         });
         return response;
     } catch (error) {
-        return error;
+        return error.response;
     }
 };
 
@@ -17,7 +17,7 @@ export const getMessage = async () => {
         const response = await httpRequest.get(`message/getemail`, {}, true);
         return response;
     } catch (error) {
-        return error;
+        return error.response;
     }
 };
 
@@ -26,7 +26,7 @@ export const updateStatusMessage = async (id) => {
         const response = await httpRequest.post(`message/updatestatusmessage/${id}`);
         return response;
     } catch (error) {
-        return error;
+        return error.response;
     }
 };
 
@@ -35,7 +35,7 @@ export const deleteEmail = async (id) => {
         const response = await httpRequest.remote('message/deleteemail', id);
         return response;
     } catch (error) {
-        return error;
+        return error.response;
     }
 }
 
@@ -44,6 +44,6 @@ export const replyGmail = async (body, id) => {
         const response = await httpRequest.update(`message/reply-email/`, body, id, true, '"Content-Type": "application/json"');
         return response;
     } catch (error) {
-        return error;
+        return error.response;
     }
 };

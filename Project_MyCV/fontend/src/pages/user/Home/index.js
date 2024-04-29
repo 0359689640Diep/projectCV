@@ -5,11 +5,11 @@ import 'aos/dist/aos.css';
 
 import styles from "./Home.module.scss";
 import { sendMessage } from "../../../Services/message";
-import { getAccount } from "../../../Services/account";
+import { getAccountForClient } from "../../../Services/account";
 import { getResult } from "../../../Services/result";
 import { getProject } from "../../../Services/project";
 import { getSkill } from "../../../Services/skills";
-import { toast } from "react-toastify";
+import Notification from "../../../components/Notification";
 import ItemProject from "./itemProject";
 import LoadingIcon from './../../../components/Loading/index';
 
@@ -38,7 +38,7 @@ function Home() {
 
     const getData = async () => {
         try {
-            const account = await getAccount();
+            const account = await getAccountForClient();
             const result = await getResult();
             const project = await getProject();
             const skill = await getSkill();
@@ -78,9 +78,9 @@ function Home() {
        const response = await  sendMessage(body);
         // Reset the input fields
         if(response.status >= 400){
-            toast.warning(response.data.message);
+            Notification(response.data.message, "warning");
         }else{
-            toast.success(response.data.message);
+            Notification(response.data.message, "success");
             setNameUserReceiver("");
             setEmailReceiver("");
             setTitleMessage("");
@@ -116,7 +116,7 @@ function Home() {
                     <img src={DataAccount[0].Image[0]} alt="avata"/>
                     <section className = {cx("media")} data-aos="fade-right">
                         <article className = {cx("contentMedia")} >
-                            <a href="/">
+                            <a href="https://github.com/0359689640Diep">
                                 <i className="bi bi-github"></i>
                             </a>
                         </article>
@@ -379,7 +379,7 @@ function Home() {
                         </section>
                         <section className = {cx("ContactInfro")}>
                             <h2>Contact Info</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ligula nulla tincidunt id faucibus sed suscipit feugiat.</p>
+                            <p>Please contact me. I'm always ready to wait for you.</p>
                             <section className = {cx("contentContactInfro")}>
                                 <article className = {cx("icontContentContactInfro")}>
                                     <i className="bi bi-envelope"></i>

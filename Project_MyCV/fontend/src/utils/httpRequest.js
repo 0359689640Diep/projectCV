@@ -3,9 +3,10 @@ import axios from "axios";
 const httpRequest = axios.create({
     baseURL: "http://localhost:7000/api/"
 });
-const token = localStorage.getItem("accessToken");
+
 
 export const remote = async(url, id) => {
+    const token = localStorage.getItem("accessToken");
     try {
         const response = await httpRequest.delete(`${url}/${id}`, {
             headers: {
@@ -20,6 +21,7 @@ export const remote = async(url, id) => {
 }
 
 export const update = async (url, data, id, tokens = false, header = '"Content-Type": "multipart/form-data"') => {
+    const token = localStorage.getItem("accessToken");
     try {
         const headers = {header};
         if(tokens === true){
@@ -33,6 +35,7 @@ export const update = async (url, data, id, tokens = false, header = '"Content-T
 }
 
 export const get = async (url, option = {}, tokens = false) => {
+    const token = localStorage.getItem("accessToken");
     try {
         // Kiểm tra xem có token được truyền vào không và thiết lập header nếu có
         if (tokens) {
@@ -49,12 +52,12 @@ export const get = async (url, option = {}, tokens = false) => {
         return response.data;
     } catch (error) {
         // Xử lý lỗi nếu có
-        console.error('Error:', error);
         throw error; // Ném lỗi để cho phép component gọi hàm `get` xử lý lỗi nếu cần
     }
 };
 
 export const post = async (url, data, headers = '"Content-Type": "multipart/form-data"') => {
+    const token = localStorage.getItem("accessToken");
     try {
         
         const response = await httpRequest.post(`${url}`, data, {

@@ -1,4 +1,5 @@
 import classNames from "classnames/bind";
+import { useNavigate } from "react-router-dom";
 
 import styles from "../project.module.scss";
 import Input from './../../../../components/Input/index';
@@ -7,7 +8,7 @@ import { useState } from "react";
 import More from "../../../../components/More";
 import Button from "../../../../components/Button";
 import { createProject } from "../../../../Services/project";
-import { toast } from "react-toastify";
+import Notification from "../../../../components/Notification";
 
 const cx = classNames.bind(styles);
 
@@ -21,6 +22,7 @@ function CreateProject() {
     const [Technology, SetTechnology] = useState([]);
     const [Task, SetTask] = useState([]);
     const [ObjectInProject, SetObjectInProject] = useState([]);
+    const navigate = useNavigate()
 
     const handleCreateProjet = async () => {
 
@@ -45,10 +47,15 @@ function CreateProject() {
 
         const result = await createProject(formData);
 
-        if(result.status >= 400){
-            toast.warning(result.data.message);
-        }else{
-            toast.success(result.data.message);
+        if(result.status >= 404){
+            Notification(result.data.message, "warning");
+        }else if(result.status === 403){
+
+                Notification(result.data.message, "warning");     
+                navigate("/login");
+        }
+        else{
+            Notification(result.data.message, "success");
             
             SetName("");
             SetIntroduce("");

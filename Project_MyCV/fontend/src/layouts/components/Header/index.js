@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import styles from "./Header.module.scss";
 import routesConfig from "../../../config/router.js";
-import { getAccount } from '../../../Services/account.js';
+import { getAccountForClient } from '../../../Services/account.js';
 
 const cx = classNames.bind(styles);
 
@@ -17,7 +17,7 @@ function Header() {
 
   const callAPIAccount = async () => {
     try {
-      const result = await getAccount();
+      const result = await getAccountForClient();
       SetDataAccount(result.dataAccount);
     } catch (error) {
       console.log(error);

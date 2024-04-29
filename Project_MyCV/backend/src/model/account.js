@@ -57,14 +57,21 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     CV: {
-        type: String
+        type: String,
+        required: true
     },
     IconLogo: {
-        type: String
+        type: String,
+        required: true
     },
     Logo: {
-        type: String
-    }
+        type: String,
+        required: true
+    },
+    Token: [
+        {type: Object}
+    ]
+
 }, { versionKey: false, timestamps: true }); 
 
 export default mongoose.model("Account", userSchema);

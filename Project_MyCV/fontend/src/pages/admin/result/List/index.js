@@ -3,7 +3,8 @@ import classNames from "classnames/bind";
 import styles from "./List.module.scss";
 import {  useEffect, useRef, useState } from "react";
 import { getResult, deleteResult, updateResult } from "../../../../Services/result";
-import { toast } from "react-toastify";
+import Notification from "../../../../components/Notification";
+import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles)
 
@@ -11,13 +12,19 @@ function ListResult() {
 
     const [data, SetData] = useState([]);
     const [update, SetUpdate] = useState(-1);
+    const navigate = useNavigate();
 
     const getAPI = async () => {
         try {
-            const resultData = await getResult()
-            SetData(resultData.data);
+            const resultData = await getResult();
+            if(resultData.status === 403){
+                Notification(resultData.data.message, "warning");   
+                navigate("/login");
+            }else{
+                SetData(resultData.data);
+            };            
         } catch (error) {
-            toast.error("The system is maintenance")
+            Notification("The system is maintenance", "error");
             console.log("error: ".error);
         }
     }
@@ -29,11 +36,16 @@ function ListResult() {
     const handleDelete = async (id) => {
         try {
             const resultDelete = await deleteResult(id);
-            toast.success(resultDelete.data.message);  
-            getAPI();
+            Notification(resultDelete.data.message, "success");  
+            if(resultDelete.status === 403){
+                Notification(resultDelete.data.message, "warning");   
+                navigate("/login");
+            }else{
+                getAPI();
+            };
         } catch (error) {
           console.log(error);  
-          toast.error("The system is maintenance")
+          Notification("The system is maintenance", "error");
         }
     }
 
@@ -62,16 +74,22 @@ function ListResult() {
         const handleUpdateResult = async () => { 
             try {
                 const resultUpdate = await updateResult({Name, Degree, Date, SchoolName, Describe, Type}, update);
-                if(resultUpdate.status >= 400){
-                    toast.warning(resultUpdate.data.message);
-                }else{
-                    toast.success(resultUpdate.data.message);
+                if(resultUpdate.status >= 404){
+                    Notification(resultUpdate.data.message, "warning");
+                }
+                else if(resultUpdate.status === 403){
+
+                    Notification(resultUpdate.data.message, "warning");     
+                    navigate("/login");
+                }                   
+                else{
+                    Notification(resultUpdate.data.message, "success");
                     SetUpdate(-1);
                     getAPI();
                 };
                 
             } catch (error) {
-                toast.error("The system is maintenance");
+                Notification("The system is maintenance", "error");
                 console.log(error);
             }
         }

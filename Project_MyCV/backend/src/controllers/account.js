@@ -1,5 +1,3 @@
-import Jwt from "jsonwebtoken";
-import CryptoJS from "crypto-js";
 import dotenv from "dotenv";
 import { compareAsc, format } from "date-fns";
 
@@ -7,12 +5,12 @@ import Account from "../model/account.js";
 import { signInValidator, CreateAccountValidator} from "../validation/account.js";
 import account from "../model/account.js";
 import { deleteUploadedImages, deleteImage } from "../helpers/image.js";
+import { createJWT, verifyToken } from "../middleware/JWTAction.js";
+import { encrypt, decrypt } from "../helpers/crypto.js";
 
 
 dotenv.config();
 
-
-const secretKey = process.env.secretKey; 
 const baseUrl = process.env.baseUrl;
 
 export const CreateAccount = async (req, res) => {
@@ -71,8 +69,14 @@ export const CreateAccount = async (req, res) => {
         const PhoneArr = Phone.split(",");
         const password = Password;
 
-        const hashePassword = await CryptoJS.AES.encrypt(password, secretKey).toString();
-
+        const hashePassword =  encrypt(password);
+        if(hashePassword === false){
+            // Nếu có lỗi, xóa các file ảnh đã được tải lên
+            deleteUploadedImages(req.files);
+            return res.status(500).json({
+                message: "The system is maintenance"
+            });            
+        }
                 const newData = {
                 ...body,
                 Language: LanguageArr,
@@ -93,7 +97,7 @@ export const CreateAccount = async (req, res) => {
         });
     } catch (error) {
         // Nếu có lỗi, xóa các file ảnh đã được tải lên
-        // deleteUploadedImages(req.files);
+        deleteUploadedImages(req.files);
         return res.status(500).json({
             message: "The system is maintenance"
         });
@@ -141,8 +145,15 @@ export const updateAccount = async (req, res) => {
         }
         const {Job, Language, Phone, Password, ...body} = req.body;
         const id = req.params.id;
-        const hashePassword = await CryptoJS.AES.encrypt(Password, secretKey).toString();
-
+        
+        // mã hóa password
+        const hashePassword = await encrypt(Password);
+        if(hashePassword === false){
+            return res.status(500).json({
+                message: "The system is maintenance"
+            });            
+        }
+        
         const newData = {
                 ...body,
             Language: Language.split(","),
@@ -150,6 +161,20 @@ export const updateAccount = async (req, res) => {
             Job: Job.split(","),
             Password: hashePassword,  
         }
+
+        // kiểm tra xem người dùng có cập nhật mật khẩu mới không
+        const oldPassword = await Account.findById({_id: Object(id)}, {Password: 1});
+        const decryptPasswordOld = await decrypt(oldPassword.Password);
+        if(decryptPasswordOld !== false && decryptPasswordOld !== Password){
+            const newToken = createJWT({ _id: oldPassword._id });
+            newData["Token"] = [
+                {
+                    "accessToken": newToken, 
+                    "signeAt": Date.now().toString()
+                }
+            ]
+        }
+
         // kiểm tra xem có được up ảnh lên hay không
         if(Object.keys(req.files).length > 0){
             const getImageByIdAccount = await Account.findById({_id: Object(id)}, {CV: 1, Image: 1, IconLogo: 1, Logo: 1});
@@ -171,7 +196,9 @@ export const updateAccount = async (req, res) => {
                 deleteImage(getImageByIdAccount.Logo);
             }
                     
-        }        
+        }
+        
+        // cập nhật account
         await Account.findByIdAndUpdate(id, {...newData}); 
         return res.status(201).json({
             message: "Update successful"
@@ -202,7 +229,7 @@ export const signIn = async (req, res) =>{
             });
         }
 
-        const decodePassword = CryptoJS.AES.decrypt(user.Password, secretKey).toString(CryptoJS.enc.Utf8);
+        const decodePassword = decrypt(user.Password);
 
         if(req.body.password !== decodePassword) {
             return res.status(401).json({
@@ -211,15 +238,23 @@ export const signIn = async (req, res) =>{
         }
 
         // Tạo token
-        const accessToken = Jwt.sign({ _id: user._id }, secretKey);
-
+        const accessToken = createJWT({ _id: user._id });
         // Xóa mật khẩu trước khi gửi thông tin người dùng và token về
         user.Password = undefined;
-
+ 
+        // cập nhật token của tài khoản đó
+        await Account.findByIdAndUpdate(user._id, {Token: 
+            [            
+                {
+                    accessToken, 
+                    signeAt: Date.now().toString()
+                }
+            ]
+        });
+ 
         return res.status(200).json({
             message: "Logged in successfully",
-            user,
-            accessToken
+            accessToken: accessToken
         });
 
     } catch (error) {
@@ -229,6 +264,35 @@ export const signIn = async (req, res) =>{
     }
 }
 
+export const signOut = async (req, res) => {
+    if(req.headers && req.headers.authorization){
+        
+        try {
+            const token = req.headers.authorization.split(" ")[1];
+            const decode = verifyToken(token);
+
+            if(token === false || decode === false ){
+                return res.status(200).json({message: "Sign out successfully"});
+            }
+            const user = await Account.findById(decode._id);
+    
+            if(!user){
+                return res.status(300).json({message: "Unauthorized access!"})
+            }
+
+            if(!token){
+                res.status(404).json({message: 'Authorization fail'})
+            }
+            await Account.findByIdAndUpdate(user._id, {Token: []});
+
+            return res.status(200).json({message: "Sign out successfully"});
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({message: "The system is maintenance"});
+        }
+
+    }
+}
 
 export const getAccountByRequest = async (req, res) => {
     try {
@@ -243,8 +307,8 @@ export const getAccountByRequest = async (req, res) => {
             // format dữ liệu
             switch(request){
                 case "Password":
-                    const password = obj.Password; 
-                    obj.Password = CryptoJS.AES.decrypt(password,  secretKey).toString(CryptoJS.enc.Utf8);    
+                    const password = obj.Password;                 
+                    obj.Password = decrypt(password);  
                 break;
                 case "CV":
                     obj.CV = baseUrl + obj.CV;
@@ -279,6 +343,39 @@ export const getAccountByRequest = async (req, res) => {
         })
     }
 }
+export const getAccountForClient = async (req, res) => {
+    try {
+        const dataAccount = await account.find();
+
+        if(dataAccount.length === 0) {
+            return res.status(404).json({
+                message: "No Account"
+            })
+        }
+        dataAccount.forEach(obj => {
+            // format dữ liệu
+            const dateFormat = format(new Date(obj.Birthday), "yyyy-MM-dd");
+            
+            obj.Password = "";
+            obj.Token = [];
+            obj.CV = baseUrl + obj.CV;
+            obj.IconLogo = baseUrl + obj.IconLogo;
+            obj.Logo = baseUrl + obj.Logo;
+            obj.Birthday = dateFormat;
+
+            if(obj.Image.length !== 0) {
+                obj.Image.forEach((field, key) => {
+                        obj.Image[key] = baseUrl + field;
+                })
+            }
+        })
+        return res.status(200).json({dataAccount: dataAccount})
+    } catch (error) {
+        return res.status(500).json({
+            message: "The system is maintenance"
+        })
+    }
+}
 export const getAccount = async (req, res) => {
     try {
         const dataAccount = await account.find();
@@ -291,8 +388,8 @@ export const getAccount = async (req, res) => {
             // format dữ liệu
             const password = obj.Password; 
             const dateFormat = format(new Date(obj.Birthday), "yyyy-MM-dd");
-            
-            obj.Password = CryptoJS.AES.decrypt(password,  secretKey).toString(CryptoJS.enc.Utf8);
+                       
+            obj.Password =  decrypt(password);
             obj.CV = baseUrl + obj.CV;
             obj.IconLogo = baseUrl + obj.IconLogo;
             obj.Logo = baseUrl + obj.Logo;
@@ -303,7 +400,8 @@ export const getAccount = async (req, res) => {
                         obj.Image[key] = baseUrl + field;
                 })
             }
-        })
+        });
+
         return res.status(200).json({dataAccount: dataAccount})
     } catch (error) {
         return res.status(500).json({

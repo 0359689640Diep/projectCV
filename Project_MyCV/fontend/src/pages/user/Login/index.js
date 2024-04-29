@@ -1,12 +1,13 @@
 import className from "classnames/bind";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./Login.module.scss";
 import { images } from "../../../asset/img";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import { singIn } from "../../../Services/account";
-import { toast } from "react-toastify";
+import Notification from "../../../components/Notification";
 
 const cx = className.bind(styles);
 
@@ -14,23 +15,22 @@ function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
             const response = await singIn({email,password});
             if(response.status >= 400){
-                toast.warning(response.data.message);
+                Notification(response.data.message, "warning");
                 return ;
             }
             localStorage.setItem("accessToken", response.data.accessToken);
-            const userJson = JSON.stringify(response.data.user);
-            localStorage.setItem("user", userJson);
-            toast.success(response.data.message);
-            window.location.replace("/admin");
+            Notification(response.data.message, "success");
+            navigate("/admin");
         } catch (error) {
             console.log(error);
-            toast.error("500 Server not found");
+            Notification("500 Server not found", "error");
         }
     };
 

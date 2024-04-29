@@ -1,8 +1,9 @@
 import classNames from "classnames/bind";
 import { useState } from "react";
- import {toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 import styles from "./EditAccount.module.scss";
+import Notification from "../../../../components/Notification.js";
 import Input from "../../../../components/Input/index.js";
 import Textarea from "../../../../components/Textarea";
 import Button from "../../../../components/Button/index.js";
@@ -30,6 +31,7 @@ function FormListAccount({Item, onUpdateData}) {
     const [Job, setJob] = useState(Item.Job);
     const [Phone, setPhone] = useState(Item.Phone);
     const [Language, setLanguage] = useState(Item.Language);
+    const navigate = useNavigate();
 
     const handleJob = (data) => {
         setJob(data);
@@ -57,16 +59,22 @@ function FormListAccount({Item, onUpdateData}) {
         try {
             let result = await deleteAccount(id);
 
-            if(result.status > 400){
-                toast.error(result.data.message);   
-            }else{
-                toast.success(result.data.message);   
+            if(result.status > 404){
+                Notification(result.data.message, "error");   
+            }
+            else if(result.status === 403){
+
+                Notification(result.data.message, "warning");     
+                navigate("/login");
+            }
+            else{
+                Notification(result.data.message, "success");   
                  // Gọi hàm callback để cập nhật lại DOM
                 onUpdateData();
             };
         } catch (error) {
             console.log(error);
-            toast.error("The system is maintenance");   
+            Notification("The system is maintenance", "error");   
         }
     }
 
@@ -104,10 +112,16 @@ function FormListAccount({Item, onUpdateData}) {
             }
 
             const retultformData = await updateAccount(formData, id);
-            if(retultformData.status >= 400) {
-                toast.warning(retultformData.data.message);
-            }else{
-                toast.success(retultformData.data.message);
+            if(retultformData.status >= 404) {
+                Notification(retultformData.data.message, "warning");
+            }
+            else if(retultformData.status === 403){
+
+                Notification(retultformData.data.message, "warning");     
+                navigate("/login");
+            }
+            else{
+                Notification(retultformData.data.message, "success");
                 onUpdateData();
             }
     }

@@ -1,5 +1,6 @@
 import classNames from "classnames/bind";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./Create.module.scss";
 import Input from "../../../../components/Input";
@@ -7,7 +8,7 @@ import Textarea from "../../../../components/Textarea";
 import Button from './../../../../components/Button/index';
 import Option from "../../../../components/Option";
 import { createResult } from "../../../../Services/result";
-import { toast } from "react-toastify";
+import Notification from "../../../../components/Notification";
 
 const cx = classNames.bind(styles);
 const type = [{0: "Education"},{1: "Experience"}];
@@ -19,6 +20,7 @@ function CreateResult() {
     const [Date, setDate] = useState("");  
     const [Describe, setDescribe] = useState("");  
     const [Type, setType] = useState("");  
+    const navigate = useNavigate();
 
     const handleType = (value) => {
         setType(value);
@@ -43,12 +45,19 @@ function CreateResult() {
         const data = localStorage.getItem("user");
         const userId = JSON.parse(data)._id;
         const newData = {"IdAccount" : userId, Name, SchoolName,Describe, Type, Date, Degree};
+
         const resultCreate = await createResult(newData);
 
-        if(resultCreate.status >= 400){
-            toast.warning(resultCreate.data.message);
-        }else{
-            toast.success(resultCreate.data.message);
+        if(resultCreate.status >= 404){
+            Notification(resultCreate.data.message, "warning");
+        }
+        else if(resultCreate.status === 403){
+
+                Notification(resultCreate.data.message, "warning");     
+                navigate("/login");
+            }
+        else{
+            Notification(resultCreate.data.message, "success");
             setName("");
             setDegree("");
             setSchoolName("");

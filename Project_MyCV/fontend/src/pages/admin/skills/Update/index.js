@@ -1,10 +1,12 @@
 import classNames from "classnames/bind";
+import {  useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import styles from "../List/List.module.scss";
 import Input from "../../../../components/Input";
 import MoreSkills from "../Create/MoreSkills";
-import {  useState } from "react";
 import { deleteSkill, updateSkill } from "../../../../Services/skills";
-import { toast } from "react-toastify";
+import Notification from "../../../../components/Notification";
 import Button from "../../../../components/Button";
 
 const cx = classNames.bind(styles);
@@ -13,15 +15,21 @@ function Update({item, callAPI}) {
     const [Skills, SetSkills] = useState(item.Skills);
     const [TitleSkills, SetTitleSkills] = useState(item.TitleSkills);
     const [ContentSkills, SetContentSkills] = useState(item.ContentSkills);
+    const navigate = useNavigate();
 
     const handleDelete = async (id) => {
         try {
-            const resutlt = await deleteSkill(id);
-            toast.success(resutlt.data.message);
-            callAPI();
+            const result = await deleteSkill(id);
+           Notification(result.data.message, "success");
+            if(result.status === 403){
+                Notification(result.data.message, "warning");   
+                navigate("/login");
+            }else{
+                callAPI();
+            };           
         } catch (error) {
             console.log(error);
-            toast.error("The system is maintenance")
+           Notification("The system is maintenance", "error");
         }
     } 
     const handleUpdate = async (id) => {
@@ -32,14 +40,14 @@ function Update({item, callAPI}) {
             const newData = {"IdAccount": userId, TitleSkills, ContentSkills, "Skills": Skills};
             const result = await  updateSkill(newData, id)
             if(result.status >= 400){
-                toast.warning(result.data.message);
+                Notification(result.data.message, "warning");
             }else{
-                toast.success(result.data.message);
+                Notification(result.data.message, "success");
                 callAPI();
             };
         } catch (error) {
             console.log(error);
-            toast.error("The system is maintenance")
+            Notification("The system is maintenance", "error");
         }
     } 
     return(

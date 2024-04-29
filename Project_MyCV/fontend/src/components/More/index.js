@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 
 import styles from "./More.module.scss";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import Notification from "../Notification";
 import Input from "../Input";
 
 const cx = classNames.bind(styles);
@@ -28,7 +28,7 @@ function More({name, id, type,  dataOnMore, value}) {
     const handleUpData = (e) => {
         if(e.key === "Enter"){
             if(InputMore.length === 0){
-                toast.warning(`${name} cannot empty`);
+                Notification(`${name} cannot empty`, "warning");
             }else{
                 setData([...data,  InputMore]);
                 setInputMore("");

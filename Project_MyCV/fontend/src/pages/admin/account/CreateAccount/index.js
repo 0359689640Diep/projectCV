@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import {useState} from "react";
-import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./CreateAccount.module.scss";
 import Input from "../../../../components/Input/index.js";
@@ -8,6 +8,7 @@ import Button from "../../../../components/Button/index.js";
 import Product from "./MoreProduct";
 import { postAccount } from "../../../../Services/account.js";
 import PDFViewer from "../../../../components/PDFViewer/index.js";
+import Notification from "../../../../components/Notification.js";
 
 const cx =classNames.bind(styles);
 
@@ -28,7 +29,7 @@ function Account() {
     const [Job, setJob] = useState("");
     const [Phone, setPhone] = useState("");
     const [Language, setLanguage] = useState("");
-
+    const navigate = useNavigate();
 
     const handleJob = (data) => {
         setJob(data);
@@ -86,15 +87,19 @@ function Account() {
                 setJob("");
                 setPhone("");
                 setLanguage("");
-                toast.success(retultformData.data.message);
-            }else{
-                toast.warning(retultformData.data.message);           
+                Notification(retultformData.data.message, "success");
+            }else if(retultformData.status === 403){
+
+                Notification(retultformData.data.message, "warning");     
+                navigate("/login");
+            }
+            else{
+                Notification(retultformData.data.message, "warning");     
             }
         } catch (error) {
-            toast.error(error);
+            Notification("The system is maintenance", "error");
+            console.log(error);
         }
-
-
     }
 
     return ( 

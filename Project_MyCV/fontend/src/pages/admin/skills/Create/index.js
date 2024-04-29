@@ -1,4 +1,5 @@
 import classNames from "classnames/bind";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./Create.module.scss";
 import Input from "../../../../components/Input";
@@ -6,7 +7,7 @@ import MoreSkills from "./MoreSkills";
 import { useState } from "react";
 import Button from "../../../../components/Button";
 import { createSkill } from "../../../../Services/skills";
-import { toast } from "react-toastify";
+import Notification from "../../../../components/Notification";
 
 const cx = classNames.bind(styles);
 
@@ -15,7 +16,7 @@ function CreateSkills() {
     const [Skills, SetSkills] = useState([]);
     const [TitleSkills, SetTitleSkills] = useState("");
     const [ContentSkills, SetContentSkills] = useState("");
-
+    const navigate = useNavigate();
 
     const handleCreateSkills = async () => {
         try {
@@ -23,15 +24,21 @@ function CreateSkills() {
             const userId = JSON.parse(data)._id;
             const result = await createSkill({"IdAccount": userId, TitleSkills , ContentSkills, Skills});
             if(result.status >= 400){
-                toast.warning(result.data.message);
-            }else{
+                Notification(result.data.message, "warning");
+            }
+            else if(result.status === 403){
+
+                Notification(result.data.message, "warning");     
+                navigate("/login");
+            }
+            else{
                 SetTitleSkills("");
                 SetContentSkills("");
                 SetSkills("");
-                toast.success(result.data.message);
+                Notification(result.data.message, "success");
             }        
         } catch (error) {
-            toast.error("The system is maintenance");
+            Notification("The system is maintenance", "error");
         }
     }
 

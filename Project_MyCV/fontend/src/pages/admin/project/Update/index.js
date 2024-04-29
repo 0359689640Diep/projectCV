@@ -7,7 +7,8 @@ import { useState } from "react";
 import More from "../../../../components/More";
 import Button from "../../../../components/Button";
 import { updateProject, deleteProject } from "../../../../Services/project";
-import { toast } from "react-toastify";
+import Notification from "../../../../components/Notification";
+import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
@@ -21,6 +22,7 @@ function Update({data, callAPI}){
     const [Technology, SetTechnology] = useState(data.Technology);
     const [Task, SetTask] = useState(data.Task);
     const [ObjectInProject, SetObjectInProject] = useState(data.ObjectInProject);
+    const navigate = useNavigate();
 
     const handleUpdateProjet = async (id) => {
 
@@ -45,9 +47,14 @@ function Update({data, callAPI}){
 
         const result = await updateProject(formData, id);
         if(result.status >= 400){
-            toast.warning(result.data.message);
-        }else{
-            toast.success(result.data.message);
+            Notification(result.data.message, "warning");
+        }else if(result.status === 403){
+
+                Notification(result.data.message, "warning");     
+                navigate("/login");
+        }
+        else{
+            Notification(result.data.message, "success");
             
             callAPI();
         };
@@ -56,11 +63,16 @@ function Update({data, callAPI}){
     const handleDelete = async (id) => {
         try {
             const result = await deleteProject(id);
-            toast.success(result.data.message);
-            callAPI();
+            Notification(result.data.message, "success");
+            if(result.status === 403){
+                Notification(result.data.message, "warning");   
+                navigate("/login");
+            }else{
+                callAPI();
+            }           
         } catch (error) {
             console.log(error);
-            toast.error("The system is maintenance");
+            Notification("The system is maintenance", "error");
         }
     }
 

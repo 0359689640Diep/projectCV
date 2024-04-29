@@ -1,11 +1,12 @@
 import classNames from "classnames/bind";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./Home.module.scss";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import { updateStatusMessage, deleteEmail, replyGmail } from "../../../Services/message";
-import { toast } from "react-toastify";
+import Notification from "../../../components/Notification";
 
 const cx = classNames.bind(styles);
 
@@ -13,6 +14,7 @@ function Message({item, callAPi}) {
 
     const [display, setDisplay] = useState(false);
     const [reply, setReply] = useState("");
+    const navigate = useNavigate();
 
     const handleDisplay = () => {
         setDisplay(!display);
@@ -28,11 +30,16 @@ function Message({item, callAPi}) {
     const handleRemoteEmail = async (id) => {
         try {
             const result = await deleteEmail(id);
-            toast.success(result.data.message);
-            callAPi();
+            Notification(result.data.message, "success");
+            if(result.status === 403){
+                Notification(result.data.message, "warning");   
+                navigate("/login");
+            }else{
+                callAPi();
+            };            
         } catch (error) {
             console.log(error);
-            toast.error("The system is maintenance");
+            Notification("The system is maintenance", "error");
         }
     };
 
@@ -40,15 +47,21 @@ function Message({item, callAPi}) {
     const handleReplyEmail = async (id) =>{
         try {
             const result = await replyGmail({"ReplyMessage": reply}, id);   
-            if(result.Status >= 400){
-                toast.warning(result.data.message);
-            }else{
-                toast.success(result.data.message);
+            if(result.Status >= 404){
+                Notification(result.data.message, "warning");
+            }
+            else if(result.status === 403){
+
+                Notification(result.data.message, "warning");     
+                navigate("/login");
+            }
+            else{
+                Notification(result.data.message, "success");
                 setReply("");
                 callAPi();
             }
         } catch (error) {
-            toast.error("The system is maintenance");
+            Notification("The system is maintenance", "error");            
             console.log(error);
         }
     }

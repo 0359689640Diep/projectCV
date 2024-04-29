@@ -1,6 +1,8 @@
-.Textarea{
+@import "../GlobalStyles/mixin.scss";
+
+.Textarea {
     width: 100%;
-    height: 25px;
+    height: 25px; /* Chiều cao tối thiểu ban đầu */
     margin: 15px 0;
     outline: none;
     font-size: 1rem;
@@ -8,8 +10,10 @@
     color: var(--TextColor2);
     border: none;
     border-bottom: 2px solid var(--TextColor2);
-
+    resize: vertical; /* Cho phép textarea mở rộng theo chiều dọc */
+    @include customScrollbar();
 }
+
 .Textarea:-webkit-autofill,
 .Textarea:-webkit-autofill:hover, 
 .Textarea:-webkit-autofill:focus, 

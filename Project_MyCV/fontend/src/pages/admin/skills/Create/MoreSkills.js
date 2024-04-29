@@ -2,9 +2,8 @@ import classNames from "classnames/bind";
 
 import styles from "./Create.module.scss";
 import Input from "../../../../components/Input";
-import Button from "../../../../components/Button";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import Notification from "../../../../components/Notification";
 
 const cx = classNames.bind(styles)
 
@@ -31,13 +30,13 @@ function MoreSkills({dataOnMore, value}) {
     const handleUpData = (e) => {
         if(e.key === "Enter"){
             if(Name.length === 0){
-                toast.warning("Name cannot empty");
+                Notification("Name cannot empty", "warning");
             }
             else if(Percentage.length === 0){
-                toast.warning("Percentage cannot empty")
+                Notification("Percentage cannot empty", "warning");
             }else{
                 if(Percentage < 0 || Percentage > 100){
-                    toast.warning("Percentages do not exceed 0 and 100")
+                    Notification("Percentages do not exceed 0 and 100", "warning");
                 }else{  
                     setData([...data,{"Name": Name, "Percentage": Percentage}]);
                     setName("");

@@ -7,6 +7,7 @@ import Input from "../../../../components/Input";
 const cx = classNames.bind(styles);
 
 function MoreProduct({name, type, onDataUpdate, value}) {
+
   const [data, setData] = useState([]);
   const [inputValue, setInputValue] = useState('');
 

@@ -5,7 +5,7 @@ import classNames from "classnames/bind";
 import styles from "./PDFViewer.module.scss";
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
-import { toast } from "react-toastify";
+import Notification from "../Notification";
 
 
 const cx = classNames.bind(styles);
@@ -43,7 +43,7 @@ function PDFViewer({ name, value , Item=""}) {
             };
             reader.readAsDataURL(selectedFile);
         }else{
-            toast.warning("Please select pdf file");
+           Notification("Please select pdf file", "warning");
         }
     };
 
