@@ -1,0 +1,42 @@
+[{
+  "_id": {
+    "$oid": "662c64eeef671666f9bbd261"
+  },
+  "Name": "Vũ Hồng Điệp",
+  "Email": "vudiep621@gmail.com",
+  "Image": [
+    "17144679510644.jpg",
+    "1714467951075banner3.jpg"
+  ],
+  "Birthday": "2004-12-27",
+  "Phone": [
+    "0976142427"
+  ],
+  "From": "House number 12, lane 23/142, Duc Dien street, Bac Tu Liem district, Hanoi",
+  "Language": [
+    "Viet Nam",
+    "English"
+  ],
+  "Password": "U2FsdGVkX1/A6D4MnfPsI7AXwBUJEe3IVt96DWVjjTicK2E2L/s4v8FPXuew2m3V",
+  "Majors": "Student",
+  "Job": [
+    "student"
+  ],
+  "Maxim": "Always look to the future",
+  "Describe": "I am a young, energetic programmer. I always try my best in every assigned task. I am always open to improving my own skills, getting along with everyone, having the ability to work in groups and have very high self-discipline.",
+  "CV": "17143046166761712717165599Vu_Hong_Diep_CV_RectJS_NodeJS.pdf",
+  "IconLogo": "1714467951064IcontLogo.png",
+  "Logo": "1714467951064logoCaNhan.png",
+  "Token": [
+    {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjJjNjRlZWVmNjcxNjY2ZjliYmQyNjEiLCJpYXQiOjE3MTQ0Njk3NTksImV4cCI6MTcxNDU1NjE1OX0.bVyqyaM5ycdjHT8OozNfPbflz3536eV75v4LBsueqnM",
+      "signeAt": "1714469759912"
+    }
+  ],
+  "createdAt": {
+    "$date": "2024-04-27T02:37:34.486Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-30T09:35:59.912Z"
+  }
+}]

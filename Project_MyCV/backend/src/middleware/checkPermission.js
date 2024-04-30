@@ -29,9 +29,9 @@ export const checkPermisson = async (req, res, next) => {
                 message: "Login to use the service"
             });
         }
+        req.user = user;
         // next
         next();
     } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
+     }
 };

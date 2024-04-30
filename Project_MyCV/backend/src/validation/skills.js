@@ -1,19 +1,13 @@
 import Joi from "joi";
 
 export const skillsValidator = Joi.object({
-    IdAccount: Joi.string().min(6).max(255).required().messages({
-        "string.empty": "IdAccount cannot be empty",
-        "string.min": "IdAccount must have at least {#limit} characters",
-        "string.max": "IdAccount must have at most {#limit} characters",
-        "any.required": "IdAccount is required",
-    }),
-    TitleSkills: Joi.string().min(6).max(30).required().messages({
+    TitleSkills: Joi.string().min(6).max(255).required().messages({
         "string.empty": "Title Skills cannot be empty",
         "string.min": "Title Skills must have at least {#limit} characters",
         "string.max": "Title Skills must have at most {#limit} characters",
         "any.required": "Title Skills is required",
     }),
-    ContentSkills: Joi.string().min(6).max(30).required().messages({
+    ContentSkills: Joi.string().min(6).max(255).required().messages({
         "string.empty": "Content Skills cannot be empty",
         "string.min": "Content Skills must have at least {#limit} characters",
         "string.max": "Content Skills must have at most {#limit} characters",
@@ -21,7 +15,7 @@ export const skillsValidator = Joi.object({
     }),
     Skills: Joi.array().items(
         Joi.object({
-            Name: Joi.string().min(3).max(30).required().messages({
+            Name: Joi.string().min(3).max(255).required().messages({
                 "string.empty": "Name skills cannot be empty",
                 "string.min": "Name skills must have at least {#limit} characters",
                 "string.max": "Name skills must have at most {#limit} characters",

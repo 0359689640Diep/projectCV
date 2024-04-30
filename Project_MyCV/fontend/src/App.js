@@ -2,7 +2,7 @@ import React from "react";
 import { Fragment } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { pulicRouter, privateRouters } from "./routers";

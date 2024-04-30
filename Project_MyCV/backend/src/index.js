@@ -14,17 +14,17 @@ dotenv.config();
 const port = process.env.port;
 
  // Thay đổi origin tùy theo trang web của bạn
-// const allowedOrigins = [process.env.serverUrl];
+const allowedOrigins = [process.env.fontendUrl];
 
-// const corsOptions = {
-//   origin: function(origin, callback) {
-//     if (!origin || allowedOrigins.includes(origin)) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   }
-// };
+const corsOptions = {
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+};
 
 // app.use(cors(corsOptions));
 connectDbB();

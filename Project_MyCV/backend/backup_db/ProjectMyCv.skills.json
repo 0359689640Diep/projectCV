@@ -1,0 +1,42 @@
+[{
+  "_id": {
+    "$oid": "660603e8de6bb43be0b1ce27"
+  },
+  "IdAccount": {
+    "$oid": "662c64eeef671666f9bbd261"
+  },
+  "TitleSkills": "Title Skills Test1",
+  "ContentSkills": "Title Skills Test1",
+  "Skills": [
+    {
+      "Name": "HTML",
+      "Percentage": 10
+    },
+    {
+      "Name": "PHP",
+      "Percentage": 20
+    },
+    {
+      "Name": "Vũ Hồng Điệp",
+      "Percentage": 12
+    },
+    {
+      "Name": "Vũ Hồng Điệp",
+      "Percentage": 23
+    },
+    {
+      "Name": "Vũ Hồng Điệp",
+      "Percentage": 23
+    },
+    {
+      "Name": "Vũ Hồng Điệp",
+      "Percentage": 23
+    }
+  ],
+  "createdAt": {
+    "$date": "2024-03-28T23:57:28.645Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-30T09:36:52.945Z"
+  }
+}]

@@ -42,9 +42,7 @@ function CreateResult() {
     }
     const handleSubmit = async () => {
 
-        const data = localStorage.getItem("user");
-        const userId = JSON.parse(data)._id;
-        const newData = {"IdAccount" : userId, Name, SchoolName,Describe, Type, Date, Degree};
+        const newData = {Name, SchoolName, Describe, Type, Date, Degree};
 
         const resultCreate = await createResult(newData);
 
@@ -52,10 +50,9 @@ function CreateResult() {
             Notification(resultCreate.data.message, "warning");
         }
         else if(resultCreate.status === 403){
-
-                Notification(resultCreate.data.message, "warning");     
-                navigate("/login");
-            }
+            Notification(resultCreate.data.message, "warning");     
+            navigate("/login");
+        }
         else{
             Notification(resultCreate.data.message, "success");
             setName("");
@@ -64,9 +61,7 @@ function CreateResult() {
             setDate("");
             setDescribe("");
             setType("");
-
         }
-
     }
       
     return (

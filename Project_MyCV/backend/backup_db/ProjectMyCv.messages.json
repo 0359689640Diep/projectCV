@@ -1,0 +1,19 @@
+[{
+  "_id": {
+    "$oid": "662fd2cad3488016664d1ef7"
+  },
+  "NameUserReceiver": "Vũ Hồng Điệp",
+  "EmailReceiver": "diepvhph36272@fpt.edu.vn",
+  "TitleMessage": "diepvhph36272@fpt.edu.vn",
+  "Content": [
+    "diepvhph36272@fpt.edu.vn"
+  ],
+  "Status": 1,
+  "createdAt": {
+    "$date": "2024-04-29T17:03:06.251Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-30T09:08:53.261Z"
+  },
+  "ReplyMessage": "asdd"
+}]

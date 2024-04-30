@@ -50,7 +50,6 @@ function CreateProject() {
         if(result.status >= 404){
             Notification(result.data.message, "warning");
         }else if(result.status === 403){
-
                 Notification(result.data.message, "warning");     
                 navigate("/login");
         }

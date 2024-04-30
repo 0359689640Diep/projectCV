@@ -1,0 +1,80 @@
+[{
+  "_id": {
+    "$oid": "66029f224b123f105023633a"
+  },
+  "IdAccount": {
+    "$oid": "65fea7dc313a83e4169e4598"
+  },
+  "Name": "Vũ Hồng Điệp",
+  "Degree": "Vũ Hồng Điệp1",
+  "Date": "1111-03-12",
+  "SchoolName": "Vũ Hồng Điệp",
+  "Describe": "Vũ Hồng Điệp",
+  "Type": 1,
+  "createdAt": {
+    "$date": "2024-03-26T10:10:42.862Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-27T07:51:37.765Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6607d2548d7f135927377155"
+  },
+  "IdAccount": {
+    "$oid": "65fea7dc313a83e4169e4598"
+  },
+  "Name": "Vũ Hồng Điệp",
+  "Degree": "Vũ Hồng Điệp",
+  "Date": "2222-02-22",
+  "SchoolName": "Vũ Hồng Điệp",
+  "Describe": "Describe",
+  "Type": 1,
+  "createdAt": {
+    "$date": "2024-03-30T08:50:28.117Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-10T03:01:22.426Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6615e9d0b9723f5c1001ec5b"
+  },
+  "IdAccount": {
+    "$oid": "65fea7dc313a83e4169e4598"
+  },
+  "Name": "NameTest",
+  "Degree": "DegreeTest",
+  "Date": "27-12-2004",
+  "SchoolName": "SchoolNameTest",
+  "Describe": "DescribeTest",
+  "Type": 0,
+  "createdAt": {
+    "$date": "2024-04-10T01:22:24.371Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-10T01:22:24.371Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6630be7bbd5088de835cd84e"
+  },
+  "IdAccount": {
+    "$oid": "662c64eeef671666f9bbd261"
+  },
+  "Name": "Vũ Hồng Điệp",
+  "Degree": "Vũ Hồng Điệp",
+  "Date": "1111-11-11",
+  "SchoolName": "Vũ Hồng Điệp",
+  "Describe": "Describe",
+  "Type": 1,
+  "createdAt": {
+    "$date": "2024-04-30T09:48:43.281Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-30T09:48:43.281Z"
+  }
+}]

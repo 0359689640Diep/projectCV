@@ -20,7 +20,8 @@ const getAll = async (req, res) => {
 
 const createResul = async (req, res) => {
     try {
-        const {IdAccount, Type, ...data} = req.body;
+        const {Type, ...data} = req.body;
+        const IdAccount = req.user._id;
         const { error } = resuleValidator.validate(data, { abortEarly: false });
         if (error) {
             const errors = error.details.map((err) => err.message);
@@ -28,10 +29,10 @@ const createResul = async (req, res) => {
                 message: errors[0]
             });
         }
-        await Resule.create({...req.body});     
-           return res.status(200).json({
+        await Resule.create({"IdAccount": IdAccount, ...req.body});     
+        return res.status(200).json({
             message: "Create a successful summary"
-           })
+        })
     } catch (error) {
         return res.status(500).json({
             message: "The system is maintenance"
@@ -54,7 +55,7 @@ const deleteResul = async (req, res) => {
 
 const editResult = async (req, res) => {
     try {
-        const {IdAccount, Type, ...data} = req.body;
+        const {Type, ...data} = req.body;
         const {error} = resuleValidator.validate(data, {abortEarly: false});
         if(error) {
             const errors = error.details.map((err) => err.message);

@@ -25,6 +25,7 @@ function Login() {
                 Notification(response.data.message, "warning");
                 return ;
             }
+
             localStorage.setItem("accessToken", response.data.accessToken);
             Notification(response.data.message, "success");
             navigate("/admin");

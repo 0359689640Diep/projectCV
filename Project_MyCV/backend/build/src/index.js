@@ -14,17 +14,16 @@ _dotenv["default"].config();
 var port = process.env.port;
 
 // Thay đổi origin tùy theo trang web của bạn
-// const allowedOrigins = [process.env.serverUrl];
-
-// const corsOptions = {
-//   origin: function(origin, callback) {
-//     if (!origin || allowedOrigins.includes(origin)) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   }
-// };
+var allowedOrigins = [process.env.fontendUrl];
+var corsOptions = {
+  origin: function origin(_origin, callback) {
+    if (!_origin || allowedOrigins.includes(_origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+};
 
 // app.use(cors(corsOptions));
 (0, _database["default"])();

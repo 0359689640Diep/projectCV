@@ -352,11 +352,6 @@ function Home() {
                                 hidlen={(e) => e !== "show" ?  handleShowAndHidlen(e) : ""}
                             />
                         </section>
-                        <article className = {cx("loadMore")}>
-                            <a href="/">
-                                <button>Load More</button>
-                            </a>
-                        </article>
                     </section>
                 </section>
             </section>
@@ -372,7 +367,7 @@ function Home() {
                             <form action="" method="post">
                                 <input type="text" name="NameUserReceiver" required value={NameUserReceiver} placeholder="Your Name" onChange={(e) => setNameUserReceiver(e.target.value)}/>
                                 <input type="email" name="EmailReceiver" required value={EmailReceiver} placeholder="Your Email" onChange={(e) => setEmailReceiver(e.target.value)}/>
-                                <input type="text" name="TitleMessage" required value={TitleMessage} placeholder="Your Subject" onChange={(e) => setTitleMessage(e.target.value)}/>
+                                <input type="text" name="TitleMessage" required value={TitleMessage} placeholder="Title Email" onChange={(e) => setTitleMessage(e.target.value)}/>
                                 <textarea name="Content" id="" cols="30" rows="10" value={Content} placeholder="Your Message" onChange={(e) => setContent(e.target.value)}></textarea>
                                 <button type="submit" onClick={fectAPI}>Send Message</button>
                             </form>

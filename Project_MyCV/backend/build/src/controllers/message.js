@@ -49,12 +49,11 @@ var sendMessage = exports.sendMessage = /*#__PURE__*/function () {
         case 14:
           _context.prev = 14;
           _context.t0 = _context["catch"](0);
-          console.log(_context.t0.message);
-          console.log(_context.t0.name);
+          console.log(_context.t0);
           return _context.abrupt("return", res.status(500).json({
             message: "The system is maintenance"
           }));
-        case 19:
+        case 18:
         case "end":
           return _context.stop();
       }

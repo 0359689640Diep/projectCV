@@ -11,8 +11,8 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 var _resule = _interopRequireDefault(require("../model/resule.js"));
 var _resule2 = require("../validation/resule.js");
-var _excluded = ["IdAccount", "Type"],
-  _excluded2 = ["IdAccount", "Type"];
+var _excluded = ["Type"],
+  _excluded2 = ["Type"];
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { (0, _defineProperty2["default"])(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 var getAll = exports.getAll = /*#__PURE__*/function () {
@@ -55,17 +55,18 @@ var getAll = exports.getAll = /*#__PURE__*/function () {
 }();
 var createResul = exports.createResul = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-    var _req$body, IdAccount, Type, data, _resuleValidator$vali, error, errors;
+    var _req$body, Type, data, IdAccount, _resuleValidator$vali, error, errors;
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
           _context2.prev = 0;
-          _req$body = req.body, IdAccount = _req$body.IdAccount, Type = _req$body.Type, data = (0, _objectWithoutProperties2["default"])(_req$body, _excluded);
+          _req$body = req.body, Type = _req$body.Type, data = (0, _objectWithoutProperties2["default"])(_req$body, _excluded);
+          IdAccount = req.user._id;
           _resuleValidator$vali = _resule2.resuleValidator.validate(data, {
             abortEarly: false
           }), error = _resuleValidator$vali.error;
           if (!error) {
-            _context2.next = 6;
+            _context2.next = 7;
             break;
           }
           errors = error.details.map(function (err) {
@@ -74,24 +75,26 @@ var createResul = exports.createResul = /*#__PURE__*/function () {
           return _context2.abrupt("return", res.status(400).json({
             message: errors[0]
           }));
-        case 6:
-          _context2.next = 8;
-          return _resule["default"].create(_objectSpread({}, req.body));
-        case 8:
+        case 7:
+          _context2.next = 9;
+          return _resule["default"].create(_objectSpread({
+            "IdAccount": IdAccount
+          }, req.body));
+        case 9:
           return _context2.abrupt("return", res.status(200).json({
             message: "Create a successful summary"
           }));
-        case 11:
-          _context2.prev = 11;
+        case 12:
+          _context2.prev = 12;
           _context2.t0 = _context2["catch"](0);
           return _context2.abrupt("return", res.status(500).json({
             message: "The system is maintenance"
           }));
-        case 14:
+        case 15:
         case "end":
           return _context2.stop();
       }
-    }, _callee2, null, [[0, 11]]);
+    }, _callee2, null, [[0, 12]]);
   }));
   return function createResul(_x3, _x4) {
     return _ref2.apply(this, arguments);
@@ -141,12 +144,12 @@ var deleteResul = exports.deleteResul = /*#__PURE__*/function () {
 }();
 var editResult = exports.editResult = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
-    var _req$body2, IdAccount, Type, data, _resuleValidator$vali2, error, errors, id;
+    var _req$body2, Type, data, _resuleValidator$vali2, error, errors, id;
     return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) switch (_context4.prev = _context4.next) {
         case 0:
           _context4.prev = 0;
-          _req$body2 = req.body, IdAccount = _req$body2.IdAccount, Type = _req$body2.Type, data = (0, _objectWithoutProperties2["default"])(_req$body2, _excluded2);
+          _req$body2 = req.body, Type = _req$body2.Type, data = (0, _objectWithoutProperties2["default"])(_req$body2, _excluded2);
           _resuleValidator$vali2 = _resule2.resuleValidator.validate(data, {
             abortEarly: false
           }), error = _resuleValidator$vali2.error;

@@ -35,21 +35,19 @@ var checkPermisson = exports.checkPermisson = /*#__PURE__*/function () {
             message: "Login to use the service"
           }));
         case 9:
+          req.user = user;
           // next
           next();
           _context.next = 15;
           break;
-        case 12:
-          _context.prev = 12;
+        case 13:
+          _context.prev = 13;
           _context.t0 = _context["catch"](0);
-          return _context.abrupt("return", res.status(500).json({
-            message: _context.t0.message
-          }));
         case 15:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 12]]);
+    }, _callee, null, [[0, 13]]);
   }));
   return function checkPermisson(_x, _x2, _x3) {
     return _ref.apply(this, arguments);

@@ -28,8 +28,7 @@ export const sendMessage = async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error.message);
-        console.log(error.name);
+        console.log(error);
         return res.status(500).json({
             message: "The system is maintenance"
         })

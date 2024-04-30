@@ -2,7 +2,7 @@ import axios from "axios";
 
 const httpRequest = axios.create({
     baseURL: "http://localhost:7000/api/"
-});
+}); 
 
 
 export const remote = async(url, id) => {

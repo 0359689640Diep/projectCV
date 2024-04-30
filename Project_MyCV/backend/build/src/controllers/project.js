@@ -46,7 +46,9 @@ var update = exports.update = /*#__PURE__*/function () {
           }));
         case 8:
           id = req.params.id;
-          newData = _objectSpread(_objectSpread({}, dataObject), {}, {
+          newData = _objectSpread(_objectSpread({
+            "IdAccount": id
+          }, dataObject), {}, {
             Task: Task.split(","),
             Technology: Technology.split(","),
             Author: Author.split(","),
@@ -138,7 +140,9 @@ var create = exports.create = /*#__PURE__*/function () {
           TechnologyArr = Technology.split(",");
           TaskArr = Task.split(",");
           _context2.next = 16;
-          return _project["default"].create(_objectSpread(_objectSpread({}, data), {}, {
+          return _project["default"].create(_objectSpread(_objectSpread({
+            "IdAccount": req.user._id
+          }, data), {}, {
             Task: TaskArr,
             Technology: TechnologyArr,
             Author: AuthorArr,

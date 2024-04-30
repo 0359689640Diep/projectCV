@@ -7,26 +7,20 @@ Object.defineProperty(exports, "__esModule", {
 exports.skillsValidator = void 0;
 var _joi = _interopRequireDefault(require("joi"));
 var skillsValidator = exports.skillsValidator = _joi["default"].object({
-  IdAccount: _joi["default"].string().min(6).max(255).required().messages({
-    "string.empty": "IdAccount cannot be empty",
-    "string.min": "IdAccount must have at least {#limit} characters",
-    "string.max": "IdAccount must have at most {#limit} characters",
-    "any.required": "IdAccount is required"
-  }),
-  TitleSkills: _joi["default"].string().min(6).max(30).required().messages({
+  TitleSkills: _joi["default"].string().min(6).max(255).required().messages({
     "string.empty": "Title Skills cannot be empty",
     "string.min": "Title Skills must have at least {#limit} characters",
     "string.max": "Title Skills must have at most {#limit} characters",
     "any.required": "Title Skills is required"
   }),
-  ContentSkills: _joi["default"].string().min(6).max(30).required().messages({
+  ContentSkills: _joi["default"].string().min(6).max(255).required().messages({
     "string.empty": "Content Skills cannot be empty",
     "string.min": "Content Skills must have at least {#limit} characters",
     "string.max": "Content Skills must have at most {#limit} characters",
     "any.required": "Content Skills is required"
   }),
   Skills: _joi["default"].array().items(_joi["default"].object({
-    Name: _joi["default"].string().min(3).max(30).required().messages({
+    Name: _joi["default"].string().min(3).max(255).required().messages({
       "string.empty": "Name skills cannot be empty",
       "string.min": "Name skills must have at least {#limit} characters",
       "string.max": "Name skills must have at most {#limit} characters",

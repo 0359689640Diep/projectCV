@@ -34,11 +34,9 @@ function Update({item, callAPI}) {
     } 
     const handleUpdate = async (id) => {
 
-        try {
-            const data = localStorage.getItem("user");
-            const userId = JSON.parse(data)._id;            
-            const newData = {"IdAccount": userId, TitleSkills, ContentSkills, "Skills": Skills};
-            const result = await  updateSkill(newData, id)
+        try {         
+            const newData = {TitleSkills, ContentSkills, "Skills": Skills};
+            const result = await  updateSkill(newData, id);
             if(result.status >= 400){
                 Notification(result.data.message, "warning");
             }else{

@@ -78,10 +78,9 @@ function ListResult() {
                     Notification(resultUpdate.data.message, "warning");
                 }
                 else if(resultUpdate.status === 403){
-
                     Notification(resultUpdate.data.message, "warning");     
                     navigate("/login");
-                }                   
+                }                
                 else{
                     Notification(resultUpdate.data.message, "success");
                     SetUpdate(-1);

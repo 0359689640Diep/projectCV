@@ -14,7 +14,7 @@ var isDateBeforeNow = function isDateBeforeNow(value, helpers) {
   return value;
 };
 var resuleValidator = exports.resuleValidator = _joi["default"].object({
-  Name: _joi["default"].string().min(6).max(30).required().messages({
+  Name: _joi["default"].string().min(6).max(255).required().messages({
     "string.empty": "Name cannot be empty",
     "string.min": "Name must have at least {#limit} characters",
     "string.max": "Name must have at most {#limit} characters",

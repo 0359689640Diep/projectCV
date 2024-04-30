@@ -20,14 +20,11 @@ function CreateSkills() {
 
     const handleCreateSkills = async () => {
         try {
-            const data = localStorage.getItem("user");
-            const userId = JSON.parse(data)._id;
-            const result = await createSkill({"IdAccount": userId, TitleSkills , ContentSkills, Skills});
+            const result = await createSkill({TitleSkills , ContentSkills, Skills});
             if(result.status >= 400){
                 Notification(result.data.message, "warning");
             }
             else if(result.status === 403){
-
                 Notification(result.data.message, "warning");     
                 navigate("/login");
             }

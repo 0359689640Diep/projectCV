@@ -8,12 +8,13 @@ export const createSkills = async (req, res) => {
             const errors = error.details.map((err) => err.message);
             return res.status(400).json({message: errors[0]});
         }
-         await Skills.create(req.body);
+        const data = req.body;
+        data["IdAccount"] = req.user._id;
+        await Skills.create(data);
         return res.status(200).json({message: "Create Skills successful"})
     } catch (error) {
         console.log(error);
-        return res.status(500).json({message: "The system is maintenance"})
-        
+        return res.status(500).json({message: "The system is maintenance"})   
     }
 }
 
@@ -52,7 +53,9 @@ export const updateSkills = async (req, res) => {
             const errors = error.details.map((err) => err.message);
             return res.status(400).json({message: errors[0]});
         }
-        await Skills.findByIdAndUpdate({_id: Object(id)}, {...req.body});
+        const data = req.body;
+        data["IdAccount"] = req.user._id;
+        await Skills.findByIdAndUpdate({_id: Object(id)}, data);
         return res.status(201).json({message: "Update skills successful"});
     } catch (error) {
         return res.status(500).json({message: "The system is maintenance"})       

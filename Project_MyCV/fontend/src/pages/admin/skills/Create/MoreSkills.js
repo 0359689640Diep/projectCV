@@ -41,7 +41,6 @@ function MoreSkills({dataOnMore, value}) {
                     setData([...data,{"Name": Name, "Percentage": Percentage}]);
                     setName("");
                     setPercentage("");
-                    
                 }
             }
         }

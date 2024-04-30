@@ -9,13 +9,13 @@ const baseUrl = process.env.baseUrl;
 
 export const update = async (req,res) => {
     try {
-         const {Image,...data} = req.body;
-         const {Author, Technology, ObjectInProject, Task, ...dataObject} = data;
+        const {Image,...data} = req.body;
+        const {Author, Technology, ObjectInProject, Task, ...dataObject} = data;
         const { error } = projectValidator.validate(data, { abortEarly: false });
   
         if (error) {
              // Nếu có lỗi, xóa các file ảnh đã được tải lên
-            deleteUploadedImages(req.files)
+            deleteUploadedImages(req.files);
 
             const errors = error.details.map((err) => err.message);
             return res.status(400).json({
@@ -25,6 +25,7 @@ export const update = async (req,res) => {
 
         const id = req.params.id;
         const newData = {
+            "IdAccount": id,
             ...dataObject,
             Task: Task.split(","),
             Technology: Technology.split(","),
@@ -87,6 +88,7 @@ export const create = async (req,res) => {
         const TaskArr = Task.split(",");
 
         await Project.create({
+            "IdAccount": req.user._id,
             ...data,
             Task: TaskArr,
             Technology: TechnologyArr,
