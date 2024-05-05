@@ -1,23 +1,22 @@
 @import '../../../components/GlobalStyles/mixin.scss';
 .warpper{
     width: 100%;
-    height: auto;
-    z-index: 99999;
-    position: relative;
-
+    height: 100%;
+    top: 0;
+    right: 0;
+    position: absolute;
+    border-radius: 26px;
+    overflow-x: auto;
+    @include customScrollbar();
 
     .desProject {
-        @include widthHeight(100%, auto);
-        position: absolute;
-        top: -282%;
-        left: 0;    
-        right: 0;
-        z-index: 99999;
         background-color: var(--BorderColor);
         display: none;
         transition: all linear;
         overflow-x: auto;
+        @include customScrollbar();
         border-radius: 26px;
+        @include widthHeight(100%, auto);
         
 
         .imageDesProject {
@@ -113,18 +112,13 @@
 
 // destop
 @media screen and (min-width: 1602px) and (max-width: 1920px){
-    .warpper{
-        .desProject{
-            top: -295%; 
-        }
-    }
+
 }
 
 // tablet
 @media screen and (min-width: 767px) and  (max-width: 1023px) {
     .warpper{
         .desProject{
-            top: -260%; 
             .contentDesProject{
                 .itemContentDesProject{
                     button{
@@ -141,8 +135,6 @@
 @media screen and (min-width: 472px) and (max-width: 766px) {
     .warpper{
         .desProject{
-            top: -254%; 
-
                 .contentDesProject{
                     .itemContentDesProject{
                         button{
@@ -159,7 +151,6 @@
     .warpper{
         .desProject{
             width: 100%;
-            top: -246%;
             .contentDesProject{
                 .itemContentDesProject{
                     button{
@@ -189,12 +180,11 @@
 
         .desProject{
             width: 100%;
-            top: -245%;
 
             .contentDesProject{
                 .itemContentDesProject{
                     button{
-                        width: 40%;
+                        width: 50%;
                         height: 8%;
                     }
                 }

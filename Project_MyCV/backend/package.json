@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "./src/index.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./src/index.js",
+    "start": "nodemon ./src/index.js",
     "clean": "del /S /Q build && mkdir build",
     "build-babel": "babel ./src -d ./build/src",
     "build": "npm run clean && npm run build-babel",

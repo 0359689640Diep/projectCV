@@ -38,6 +38,7 @@ function handleInvalidFile(err, req, res, next) {
     if (err instanceof multer.MulterError) {
         return res.status(400).json({ message: err.message });
     } else if (err) {
+        console.log(err);
         return res.status(500).json({ message: "Hệ thống đang bảo trì" });
     }
     // Nếu không có lỗi, chuyển tiếp sang middleware hoặc controller tiếp theo

@@ -14,7 +14,7 @@ export const projectValidator = Joi.object({
         "any.required": "Author is required", 
     }),
 
-    Introduce: Joi.string().min(8).max(255).required().messages({
+    Introduce: Joi.string().min(8).max(1000).required().messages({
         "string.empty": "Introduce cannot be empty",
         "string.min": "Introduce must have at least {#limit} characters",
         "string.max": "Introduce must have at most {#limit} characters",

@@ -18,13 +18,11 @@ export const checkPermisson = async (req, res, next) => {
         const checkToken = user.Token[0].accessToken === token;
         
         if (
-            !token ||
             decoded === false ||
             user === null ||
             checkToken === false ||
             user.Token.length === 0
         ) {
-                
             return res.status(403).json({
                 message: "Login to use the service"
             });
@@ -33,5 +31,8 @@ export const checkPermisson = async (req, res, next) => {
         // next
         next();
     } catch (error) {
+       return res.status(403).json({
+                message: "Login to use the service"
+            });        
      }
 };

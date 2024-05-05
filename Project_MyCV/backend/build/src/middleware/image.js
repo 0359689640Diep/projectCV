@@ -12,7 +12,7 @@ var _fs = _interopRequireDefault(require("fs"));
 // Cấu hình lưu trữ tệp
 var storage = _multer["default"].diskStorage({
   destination: function destination(req, file, cb) {
-    cb(null, "src/uploads/Images"); // Thay đổi đường dẫn lưu trữ theo ý muốn của bạn
+    cb(null, "/home/courseid/MyCV_Nodejs/build/src/uploads/Images"); // Thay đổi đường dẫn lưu trữ theo ý muốn của bạn
   },
   filename: function filename(req, file, cb) {
     cb(null, Date.now() + file.originalname);

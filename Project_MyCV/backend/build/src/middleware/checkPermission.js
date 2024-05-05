@@ -27,7 +27,7 @@ var checkPermisson = exports.checkPermisson = /*#__PURE__*/function () {
           user = _context.sent;
           //nếu không tồn tại token gửi lên, token đó  hết hạn, không tìm thấy token trong db, hoặc token đó  rỗng trên db
           checkToken = user.Token[0].accessToken === token;
-          if (!(!token || decoded === false || user === null || checkToken === false || user.Token.length === 0)) {
+          if (!(decoded === false || user === null || checkToken === false || user.Token.length === 0)) {
             _context.next = 9;
             break;
           }
@@ -38,12 +38,15 @@ var checkPermisson = exports.checkPermisson = /*#__PURE__*/function () {
           req.user = user;
           // next
           next();
-          _context.next = 15;
+          _context.next = 16;
           break;
         case 13:
           _context.prev = 13;
           _context.t0 = _context["catch"](0);
-        case 15:
+          return _context.abrupt("return", res.status(403).json({
+            message: "Login to use the service"
+          }));
+        case 16:
         case "end":
           return _context.stop();
       }

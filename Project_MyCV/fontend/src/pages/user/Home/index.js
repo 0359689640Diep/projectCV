@@ -46,6 +46,7 @@ function Home() {
             SetDataSkills(skill.data);
             SetDataProject(project.data);
             SetdataResule(result.data);
+            console.log(project.data)
             
         } catch (error) {
             console.log(error);
@@ -329,6 +330,7 @@ function Home() {
                         <h2>Project</h2>
                     </article>
                     <section className = {cx("contentProject")}>
+
                         <section className = {cx("listContentProject")}>
                             {DataProject.map((item, index) => {
                                 return (
@@ -340,18 +342,19 @@ function Home() {
                                         <img src={item.Image[0]} alt="imgProject"/>
                                         <article className = {cx("contentItem")} >
                                             <h2>{item.Name}</h2>
-                                            <p>{item.Task}</p>
+                                            <p>{item.Task.join(" / ")}</p>
                                         </article>
                                     </section>
                                 )
                             })}
-                            
-                            <ItemProject
-                                item={DataProject}
-                                idShow={isDesProjectVisible}
-                                hidlen={(e) => e !== "show" ?  handleShowAndHidlen(e) : ""}
-                            />
-                        </section>
+                        </section>      
+                        
+                        {/* hiển thị chi tiết project khi được gọi */}
+                        <ItemProject
+                            item={DataProject}
+                            idShow={isDesProjectVisible}
+                            hidlen={(e) => e !== "show" ?  handleShowAndHidlen(e) : ""}
+                        />                         
                     </section>
                 </section>
             </section>
@@ -381,7 +384,7 @@ function Home() {
                                 </article>
                                 <article className = {cx("itemContentContactInfro")}>
                                     <h2>Email</h2>
-                                    <p>vudiep621@gmail.com</p>
+                                    <p>{DataAccount[0].Email}</p>
                                 </article>
                             </section>
                             <section className = {cx("contentContactInfro")}>
@@ -390,7 +393,7 @@ function Home() {
                                 </article>
                                 <article className = {cx("itemContentContactInfro")}>
                                     <h2>Phone</h2>
-                                    <p>0976142427</p>
+                                    <p>{DataAccount[0].Phone.join(" - ")}</p>
                                 </article>
                             </section>
                             <section className = {cx("contentContactInfro")}>
@@ -399,13 +402,14 @@ function Home() {
                                 </article>
                                 <article className = {cx("itemContentContactInfro")}>
                                     <h2>Address</h2>
-                                    <p>Tu Hoàn Phương Canh Hà Nội</p>
+                                    <p>{DataAccount[0].From}</p>
                                 </article>
                             </section>
                         </section>
                     </section>
                 </section>
             </section>
+           
             </>
             : <LoadingIcon/>
             }

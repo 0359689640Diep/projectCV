@@ -43,6 +43,14 @@ function ItemProject({item, idShow, hidlen = "show"}){
                             <section className = {cx("itemContentDesProject")}>
                                 <h2>Introduce</h2>
                                 <p>{Introduce}</p>
+                                <h2>Author</h2>
+                                <ul>
+                                {Author.map((itemAuthor, indexAuthor) => {
+                                    return (
+                                        <li key={indexAuthor}>{itemAuthor}</li>
+                                    )
+                                })}
+                                </ul>
                                 <h2>Technology</h2>
                                 <ul>
                                 {Technology.map((itemTechnology, indexTechnology) => {
