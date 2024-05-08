@@ -45,9 +45,7 @@ function Home() {
             SetDataAccount(account.dataAccount);
             SetDataSkills(skill.data);
             SetDataProject(project.data);
-            SetdataResule(result.data);
-            console.log(project.data)
-            
+            SetdataResule(result.data);            
         } catch (error) {
             console.log(error);
         }

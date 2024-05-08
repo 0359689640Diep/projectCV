@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const httpRequest = axios.create({
-    baseURL: "http://localhost:7000/api/"
+    baseURL: "https://course.id.vn/api/"
 }); 
 
 

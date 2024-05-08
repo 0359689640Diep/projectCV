@@ -1,54 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" class="IconLogo"  href="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Henry's personal page"
-    />
-    <link rel="apple-touch-icon" class="IconLogo"  href="" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>Henry-Personal Proifolio</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Henry's personal page" />
+  <meta name="author" content="Henry"/>
+  <meta name="keywords" content="Henry, Personal, Portfolio" />
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+  <!-- Open Graph kiểm soát giao diện khi chia sẻ trên mạng xã hội. Hỗ trợ: facebook, zalo, linkendIn -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Always Looking Towards The Future" />
+  <meta property="og:description" content="Henry's Personal Portfolio" />
+  <meta property="og:url" content="https://course.id.vn/" />
+  <meta property="og:image"  content="%PUBLIC_URL%/1714467951064IcontLogo.png" />
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
-    <script>
-      const IcontLogo = document.querySelectorAll(".IconLogo");
-      fetch("http://localhost:7000/api/account/IconLogo")
+  <title>Henry's Personal Portfolio</title>
+
+  <!-- Link to your favicon.ico -->
+  <link rel="icon" class="IconLogo" href="" />
+
+  <!-- Link to your apple-touch-icon -->
+  <link rel="apple-touch-icon" class="IconLogo" href="" />
+
+  <!-- Link to your manifest.json -->
+  <link rel="manifest" class="IconLogo"  href="%PUBLIC_URL%/manifest.json" />
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <script>
+    // Wait for the DOM to fully load
+    document.addEventListener('DOMContentLoaded', () => {
+      // Select all elements with class 'IconLogo'
+      const iconLogos = document.querySelectorAll('.IconLogo');
+      const contentMeta = document.getElementById("IconLogo");
+    
+      // Fetch data from your API
+      fetch('https://course.id.vn/api/account/IconLogo')
         .then(res => res.json())
         .then(data => {
-          IcontLogo.forEach((item) =>{
-            item.href = data.dataAccount[0].IconLogo;
-          })
+          // Update each 'IconLogo' link with the fetched URL
+          iconLogos.forEach(icon => {
+            icon.href = data.dataAccount[0].IconLogo;
+            contentMeta.content = data.dataAccount[0].IconLogo;
+          });
         })
-        .catch(err => console.log(err))
-    </script>
+        .catch(err => console.error('Error fetching IconLogo:', err));
+    });
+  </script>
+</body>
+
 </html>
